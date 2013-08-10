@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+    <wicket:extend>
+    	<table>
+    		<tr>
+    			<td>
+    				<div class="well">
+    					<form wicket:id="form">
+    						<table>
+    							<tr>
+    								<td>
+    									<span wicket:id="statusLbl"/>
+    								</td>
+    							</tr>
+    							<tr>
+    								<td>
+    									<table>
+    										<tr>
+    											<td>
+    												<select wicket:id = "proposalsList"/>
+    											</td>
+    										</tr>
+    										<tr>
+    											<td>
+    												<select wicket:id = "myProposalsList"/>
+    											</td>
+    										</tr>
+    									</table>
+    								</td>
+    								<td style="width:600px;">
+    									<span wicket:id = "proposalsPanel" />
+    								</td>
+    							</tr>
+    						</table>
+    					</form>
+    				</div>
+    			</td>	
+    			<td>
+    				<div class= "well">
+    					Messages:
+    					<form wicket:id = "msgForm">
+    						<table>
+    							<tr>
+    								<td>To:</td>
+    								<td><select wicket:id="msgUserSelector" /></td>
+    							</tr>
+    							<tr>
+    								<td>Subject:</td>
+    								<td><input wicket:id="subjectTbx" type="text" /></td>
+    							</tr>
+    							<tr>
+    								<td>Text:</td>
+    								<td><textarea style="resize:none" wicket:id="textTbx" rows="6" cols="40"></textarea></td>
+    							</tr>
+    							
+    							<tr>
+    								<td></td>
+    								<td><input type="submit" value="Send" /></td>
+    							</tr>
+    						</table>  					 	
+    					</form>
+    				</div>
+    			</td>	 
+    		</tr>
+    	</table>
+    	   				    		
+    </wicket:extend>
+</body>
+</html>

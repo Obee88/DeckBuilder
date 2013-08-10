@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+	<head>
+		<meta charset="utf-8" />
+		<title wicket:id="pageTitle"></title>
+		<wicket:head>
+		    <wicket:link>
+				<link href="../../../bootstrap/css/style.css" rel='stylesheet' type='text/css' />
+			    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+			    <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		    </wicket:link>
+		</wicket:head>
+	</head>
+	<body>
+	    <script src="http://code.jquery.com/jquery.js"></script>
+	    <script src="../../../bootstrap/js/bootstrap.min.js"></script>
+		<div id="hd">
+			<table width="100%">
+				<tr>
+					<td  width="90%" style="text-align: center;">
+						<div id="logo">
+							<h1>Welcome <span wicket:id="userName"></span></h1>
+						</div>
+			       	</td>
+			       	<td>
+		       			<input class="btn btn-inverse" style="right:12px;" type="button" wicket:id="logOffButton" value="Sign out" />
+			       	</td>
+				</tr>
+			</table>
+		</div>
+		<div id="bd" style="padding-top:10px; background-color:white ;width:90%; left:1.5%;  margin-left:0">
+			<div id="navigator" style="text-align:right;border-radius:3px;"> 
+				<ul class="nav nav-tabs" style="margin-bottom: 0px;">
+					<li wicket:id="listView">
+					 	<a href="#" wicket:id="pageLink"><span wicket:id="pageName"/>  </a>
+					</li>
+				</ul>
+			</div> 
+			<div >
+				<wicket:child />
+			</div>
+		</div>
+		<div id="ft" style="text-align: center;">
+		<br/>
+		<br/>
+			Page built by Obee. Current version: <span wicket:id="versionLabel"/><br/>
+			<span wicket:id="feedback" style="color: red"></span>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+    <wicket:extend>
+    	<br/>
+    	<table>
+    		<tr>
+    			<td>
+    				<form wicket:id="form">
+			    		<div id="authDiv" class="well">
+				    		<table>
+				    			<tr>
+				    				<td>
+				    					<span wicket:id="userCards"></span>
+				    				</td>
+				    				<td>
+				    					<span wicket:id="sacCards"></span>
+				    				</td>
+				    				<td>
+				    					<input type="submit" value="Recycle"> </input> 
+				    				</td>
+					    			<td style="width:240px;height:400px;vertical-align: top;" >
+					    				<span wicket:id="cardView" style="vertical-align: top" />
+					    			</td>
+					    			<td>
+					    				<div class="well">
+					    					Recycle cards you're not using.<br/><br/>
+					    					Destroy 6 non printed cards from your trading list and new random card will appear in your booster page.
+					    					<br/>
+					    					<br/>
+					    					<p>
+					    					<span wicket:id="recycledCardsNumLbl"></span> cards recycled so far!
+					    					</p>
+					    				</div>
+					    			</td>
+				    			</tr>
+				    		</table>
+				    		
+			    		</div>
+					</form>
+    			</td>
+    		</tr>
+    	</table>
+   		
+   		
+    </wicket:extend>
+</body>
+</html>

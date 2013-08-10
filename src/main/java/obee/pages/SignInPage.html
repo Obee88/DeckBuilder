@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+	<head>
+		<meta charset="utf-8" />
+		<title>SignIn</title>
+	</head>
+	<body>
+		<wicket:extend>
+			<h2>Welcome!</h2>
+			
+			<p>
+				Trenutno imamo <wicket:container wicket:id="usersNumber"/> korisnika.
+			</p>
+			<span wicket:id="signInPanel"/>
+			<a href="#" wicket:id="registerLink">
+                Register!
+            </a>
+            <form wicket:id ="init">
+            	<div class="well">
+            		<input type="submit" value="Init"/>
+            	</div>
+            </form>
+       </wicket:extend>
+	</body>
+</html>

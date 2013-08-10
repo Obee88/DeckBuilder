@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+    <wicket:extend>
+    	<br/>
+    	<table>
+    		<tr>
+    			<td>
+    				<div class="well">
+    					<form wicket:id="form">
+					    	<table>
+					    		<tr>
+					    			<td>
+					    				<select wicket:id="userChooser" />
+					    			</td>
+					    			<td>
+					    				<input type="button" value=">>>" wicket:id="addAllBtn" />
+					    			</td>
+					    		</tr>
+					    		<tr>
+					    			<td>
+					    				<span wicket:id="cardsPanel" />
+					    			</td>
+					    			<td style="vertical-align: bottom;"> 
+					    				<span wicket:id="readyPanel" />
+					    			</td>
+					    		</tr>
+					    		<tr>
+					    			<td>
+					    			</td>
+					    			<td> 
+					    				<input type="submit" value="choose" />
+					    			</td>
+					    		</tr>
+					    	</table>
+						</form>				 
+    				</div>
+    			</td>	
+    			<td>
+    				<table>
+    					<tr>
+    						<td>
+				                <form wicket:id="prepareForm">
+    								<div class="well">
+				                        <table>
+				                            <tr>
+				                                <td>
+				                                	There's <wicket:container wicket:id="readyNum"/>  cards ready for printing (<span wicket:id="posibleNum"></span> pages).<br/>
+				                            	</td>
+				                            </tr>
+				                            <tr>
+				                                <td>
+											        Prepare <input style="width: 20px;text-align: right;" type="text" wicket:id="takeNum" value="" size="2" /> page(s) for download: 
+					                            	<input type="submit" value="Prepare" />
+				                                </td>
+				                            </tr>
+				                            <tr>
+					                            <td>
+					                            </td>
+				                            </tr>
+				                        </table>
+                    				</div>
+				                </form>
+    						</td>
+    					</tr>
+    					<tr>
+    						<td>
+    							<form wicket:id="downloadForm">
+				                    <div class="well">
+				                        <table>
+				                            <tr>
+				                                <td>
+				                                	<wicket:container wicket:id="pagesNum"/>  page(s) ready for printing.<br/>
+				                            	</td>
+				                            </tr>
+				                            <tr>
+				                                <td> 
+					                            	<input  type="button" wicket:id="downloadButton" value="Download" />
+					                            	<input  type="submit" value="Finish" />
+				                                </td>
+				                            </tr>
+				                            <tr>
+					                            <td>
+					                            </td>
+				                            </tr>
+				                        </table>
+				                    </div>
+			                    </form>
+    						</td>
+    					</tr>
+    				</table>
+	    			
+    			</td>		 
+    		</tr>
+    	</table>
+    	   				    		
+    </wicket:extend>
+</body>
+</html>

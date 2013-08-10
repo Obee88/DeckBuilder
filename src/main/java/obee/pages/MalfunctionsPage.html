@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+    <wicket:extend>
+		<div class="well">
+	    	<table>
+	    		<tr>
+	    			<td>
+						<form wicket:id="form">
+		    				<table>
+		    					<tr>
+					    			<td>
+					    				right owner but not in list!
+					    				<span wicket:id="ownerNotInListPanel" />
+					    			</td>
+					    			<td>
+					    			in list but not right owner!
+					    				<span wicket:id="inListNotOwnerPanel" />
+					    			</td>	 
+					    			<td>
+					    				<span wicket:id = "infoPanel" />
+					    			</td>
+					    			<td style="width:240px;height:400px;vertical-align: top;" >
+					    				<span wicket:id="image" style="vertical-align: top" />
+					    			</td>
+					    			<td>
+					    				<div class="well">
+					    					name: <label wicket:id ="cardNameLbl"></label>   <br/>
+					    					owner : <select wicket:id = "userChooser"></select><br/>
+					    					<input type="submit" value="Repair"/> 
+					    				</div>
+					    			</td>
+					    		</tr>
+		    				</table>
+						</form> 		
+	    			</td>	
+	    			<td>
+	    				<form wicket:id="allForm">
+	    					<INPUT type="submit" value="repair all"/>
+	    				</form>
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td>
+	    				<form wicket:id="checkDoublesForm">
+	    					<INPUT type="submit" value="ThisJustRemoveAllDoubles"/>
+	    				</form>
+	    			</td>
+	    			<td>
+	    				<form wicket:id="allToBoostersForm">
+	    					<INPUT type="submit" value="allToBoosters"/>
+	    				</form>
+	    			</td>
+	    		</tr>
+	    	</table>
+	</div>		   
+    </wicket:extend>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+    <wicket:extend>
+    	<br/>
+    	<table>
+    		<tr>
+    			<td>
+    				<form wicket:id="authForm">
+			    		<div id="authDiv" class="well">
+				    		<table class="header">
+				    			<tr>
+				    				<td>
+				    					User Authentication
+				    				</td>
+				    			</tr>
+				    		</table>
+				    		<table class="box">
+				    			<tr>
+				    				<td>
+			    						<select wicket:id="authList"></select>
+										<input type="submit" value="Aprove" />
+				    				</td>
+				    			</tr>
+				    		</table>
+			    		</div>
+					</form>
+    			</td>
+    			<td>
+    				<form wicket:id="rolesForm">
+			    		<div id="rolesDiv" class="well">
+				    		<table class="header">
+				    			<tr>
+				    				<td>
+				    					roles box 
+				    				</td>
+				    			</tr>
+				    		</table>
+				    		<table class="box">
+				    			<tr>
+				    				<td>
+				    					User: <select wicket:id="userSelector" />
+				    				</td>
+				    				<td>
+				    					<table>
+											  <tr>
+											  	<td>
+				    								Admin :
+											  	</td>
+											  	<td>
+				    								<input type="checkbox" wicket:id="isAdmin" />
+											  	</td>
+											  </tr>
+											  <tr>
+											  	<td>
+				    								User : 
+											  	</td>
+											  	<td>
+				    								<input type="checkbox" wicket:id="isUser" />
+											  	</td>
+											  </tr>
+											  <tr>
+											  	<td>
+				    								Printer : 
+											  	</td>
+											  	<td>
+				 									<input type="checkbox" wicket:id="isPrinter" />
+											  	</td>
+											  </tr>
+										</table>
+				    				</td>
+				    				<td>
+			    						<input type="submit" value="Save"/> 
+				    				</td>
+				    				<td>
+			    						
+				    				</td>
+				    			</tr>
+				    		</table>
+			    		</div>
+			   		</form>
+    			</td>
+    		</tr>
+    		<tr>
+    			<td>
+    				<div class= "well">
+    					<form wicket:id = "msgForm">
+    						<table>
+    							<tr>
+    								<td>To:</td>
+    								<td><select wicket:id="msgUserSelector" /></td>
+    							</tr>
+    							<tr>
+    								<td>Subject:</td>
+    								<td><input wicket:id="subjectTbx" type="text" /></td>
+    							</tr>
+    							<tr>
+    								<td>Text:</td>
+    								<td><input wicket:id="textTbx" type="text" /></td>
+    							</tr>
+    							
+    							<tr>
+    								<td></td>
+    								<td><input type="submit" /></td>
+    							</tr>
+    						</table>  					 	
+    					</form>
+    				</div>
+    			</td>
+    			<td>
+	    			<div class="well">
+		    			<form wicket:id="deleteForm">
+		    				<input type="text" wicket:id="startIdTbx" value=""/> <br/>
+		    				<input type="text" wicket:id="endIdTbx" value="" /><br/>
+		    				<input type="submit"  value="delete" />
+		    			</form>
+	    			</div>
+    			</td>
+    		</tr>
+            <tr>
+                <td>
+                    <div class="well">
+                        <form wicket:id="resetPasswordsForm">
+                            <input type="submit"  value="reset passwords" />
+                        </form>
+                    </div>
+                </td>
+                <td>
+                    <div class="well">
+                        <form wicket:id="setDatesForm">
+                            <input type="submit"  value="set dates" />
+                        </form>
+                    </div>
+                </td>
+                <td>
+                    <div class="well">
+                        <form wicket:id="fixForm">
+                            <input type="submit"  value="fix" />
+                        </form>
+                    </div>
+                </td>
+            </tr>
+    	</table>
+   		
+   		
+    </wicket:extend>
+</body>
+</html>

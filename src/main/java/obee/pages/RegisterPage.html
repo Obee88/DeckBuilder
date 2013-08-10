@@ -1,0 +1,50 @@
+<html>
+	<body>
+    	<wicket:extend>
+            <div class="well">
+                 <form wicket:id="registerForm" class="registerForm">
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="nickName">Nick name:</label>
+                            </td>
+                            <td>
+                                <input wicket:id="nickName"  type="text" size="40"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="eMail">eMail:</label>
+                            </td>
+                            <td>
+                                <input wicket:id="eMail" type="text" size="40"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="password">password:</label>
+                            </td>
+                            <td>
+                                <input wicket:id="password"  type="password" size="40"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="submit" value="register" />
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <span wicket:id="msg" id="msg">Message goes here</span>
+                            </td>
+                        </tr>
+                    </table>
+                 </form>
+            </div>
+		 </wicket:extend>
+	</body>
+</html>

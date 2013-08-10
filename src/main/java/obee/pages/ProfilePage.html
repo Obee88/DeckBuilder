@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+    <wicket:extend>
+    	<br/>
+    	<table>
+    		<tr>
+    			<td>
+                    change password:
+    				<div class="well">
+    					<form wicket:id="form">
+    						<table>
+    							<tr>
+    								<td>
+    									Old password:
+    								</td>
+    								<td>
+    									<input type="password" wicket:id="oldPassTbx"/>
+    								</td>
+    							</tr>
+                                <tr>
+                                    <td>
+                                        New password:
+                                    </td>
+                                    <td>
+                                        <input type="password" wicket:id="newPassTbx"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="submit" value="submit"/>
+                                    </td>
+                                </tr>
+    						</table>
+    					</form>
+    				</div>
+    			</td>		 
+    		</tr>
+            <tr>
+                <td>
+                    Mail subscriptions:
+                    <div class="well">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" wicket:id="propMail" >Subscribe to 'Trading proposal mail notifications'</input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" wicket:id="wishMail" >Subscribe to 'Wishlist mail notifications'</input>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+    	</table>
+    	   				    		
+    </wicket:extend>
+</body>
+</html>

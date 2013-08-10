@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <title>Wicket Examples - sample panel</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+ 
+ Everything outside of the &lt;wicket:panel&gt; tags will be ignored.
+ Might be handy as preview code.
+ 
+ <wicket:panel>
+    <div class="alert alert-info">
+        <table style="width: 270px;">
+            <tr>
+                <td style="width:100px">
+                    <span wicket:id="textLabel"/>
+                </td>
+                <td style="width:200px">
+                    <div>
+                        <span style="width:200px" wicket:id="component"/>
+                    </div>
+                </td>
+                <td>
+                    <button wicket:id="includeBtn" class="close">&plus;</button>
+                    <button wicket:id="excludeBtn" class="close">&times;</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+ </wicket:panel>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+    <wicket:extend>
+        <table>
+            <tr style="height: 380px	">
+                <td>
+                    <div class="well" style="padding:0px; margin-right: 15px; margin-top:10px ">
+                        <form wicket:id="form" style="margin-top: 0px; margin-bottom: 0px">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="alert alert-success" style="margin:5px">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <span wicket:id="namePanel"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span wicket:id="typePanel"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span wicket:id="subtypePanel"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span wicket:id="rarityPanel"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span wicket:id="textPanel"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span wicket:id="manaCostPanel"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span wicket:id="datetimePanel"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span wicket:id="colorPanel"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <table>
+                                                            <tr>
+                                                                <td>
+                                                                </td>
+                                                                <td>
+                                                                    <input wicket:id="querySubmitBtn" type="submit" class="btn" value="Search"/>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <panel wicket:id="resultBox"/>
+                                    </td>
+                                    <td>
+                                        <span wicket:id="cardView"/>
+                                    </td>
+                                    <td>
+                                        <div class="well">
+                                            <span wicket:id="panel">panel contents come here</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <form wicket:id="unprintForm">
+                        <input type="submit" wicket:id="unprintBtn" value="Unprint"/>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="well">
+                        <ul>
+                            <li>Here you can query for cards any player controls that contains some text.</li>
+                            <li>Type a word, click -Search- and all cards containing that word will apear as a resoult.</li>
+                            <li>For example type Flying</li>
+                            <li>Search is case insensitive.</li>
+                            <li>
+                                <p>
+                                    Query is still in Beta. I know it's full of bugs yet so don't contact me
+                                    for bug reports.
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    </wicket:extend>
+</body>
+</html>

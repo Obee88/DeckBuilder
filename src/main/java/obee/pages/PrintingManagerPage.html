@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+    <wicket:extend>
+        <table>
+            <tr>
+                <td style="width: 60%">
+   				 	<div class="well" style="margin-top: 15px">
+	                    <form wicket:id="form">
+	                        <table>
+	                            <tr>
+	                                <td>
+	                                	Side deck:  <br/>
+	                            		<span wicket:id="usingCards"/>
+	                                </td>
+	                                <td>
+	                                	<span style="width: 215px;height: 305px" wicket:id = "image"/>
+	                                </td>
+	                                <td style="vertical-align: bottom;"> 
+	                                    <table>
+	                                        <tr>
+	                                        	<td>
+	                                        		Print list: <br/>
+	                                    			<span wicket:id="printingCards"  />
+	                                        	</td>
+	                                        </tr>
+	                                    </table>
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td>
+	                                </td>
+	                                <td>
+								        Send for printing: <input type="submit" value="Send" />
+	                                </td>
+	                            </tr>
+	                        </table>
+	                    </form>
+    				</div>
+                </td>
+                <td >
+                	<div class="well">
+                		<form wicket:id="landForm">
+                			<table>
+                				<tr >
+                					<td>
+							        <table>
+							        	<tr>
+		                					<td style="text-align: center">
+		                						<a wicket:id = "forestBtn">
+		                							<img src="http://magiccards.info/scans/en/som/249.jpg"/>
+		                						</a>
+		                						<span wicket:id="forestLbl" />
+		                					</td>
+		                					<td style="text-align: center">
+		                						<a wicket:id = "plainsBtn">
+		                							<img src="http://magiccards.info/scans/en/som/231.jpg"/>
+		                						</a>
+		                						<span wicket:id="plainsLbl" />
+		                					</td>
+		                					<td style="text-align: center">
+		                						<a wicket:id = "islandBtn">
+		                							<img src="http://magiccards.info/scans/en/som/235.jpg"/>
+		                						</a>
+		                						<span wicket:id="islandLbl" />
+		                					</td>
+		                					<td style="text-align: center">
+		                						<a wicket:id = "swampBtn">
+		                							<img src="http://magiccards.info/scans/en/nph/170.jpg"/>
+		                						</a>
+		                						<span wicket:id="swampLbl" />
+		                					</td>
+		                					<td style="text-align: center">
+		                						<a wicket:id = "mountainBtn">
+		                							<img src="http://magiccards.info/scans/en/som/245.jpg"/>
+		                						</a>
+		                						<span wicket:id="mountainLbl" />
+		                					</td> 	
+		                				</tr>
+								   	</table>
+								   	</td>
+                				</tr>
+            				    <tr>
+           							<td style="width: 100%; text-align: center;">
+             							<input type="submit" value="Print" />
+             						</td>
+                				</tr>
+                			</table>
+                		</form>
+                	</div>
+                </td>
+            </tr>
+        </table>
+    </wicket:extend>
+</body>
+</html>

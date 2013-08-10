@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <title>Wicket Examples - sample panel</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+ 
+ Everything outside of the &lt;wicket:panel&gt; tags will be ignored.
+ Might be handy as preview code.
+ 
+ <wicket:panel>
+    <table >
+   		<tr >
+ 			<td >
+    			<select wicket:id="colorPicker" />
+     			<form wicket:id="titleChangeForm">
+	     			<span wicket:id="titleLbl"  />
+	     			<input wicket:id="titleTbx" type="text" />
+     			</form>
+     		</td>
+     	</tr>
+   		<tr >
+     		<td>
+     			<select wicket:id = "listChooser" />
+     		</td>
+     	</tr>
+   		<tr >
+   			<td>
+     			<table style="width: 100%">
+     				<tr>
+			     		<td style="width: 85%;">
+			     			<input type="checkbox" wicket:id="printIndicator"> printed</input>
+			     		</td>
+			     		<td >
+			     			<span wicket:id="numLbl" style="text-align: right;" />
+     					</td>
+     				</tr>
+     			</table>
+     		</td>
+     	</tr>
+     </table>
+	 </wicket:panel>
+
+</body>
+</html>

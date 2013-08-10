@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <title>Wicket Examples - sample panel</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+ 
+ Everything outside of the &lt;wicket:panel&gt; tags will be ignored.
+ Might be handy as preview code.
+ 
+ 	<wicket:panel>
+ 		<table>
+ 			<tr>
+ 				<td>
+				    <table style="border: blue dotted 2px;" >
+				   		<tr >
+				     		<td>
+				     			<span wicket:id="fromLabel" /> is offering 
+				     		</td>
+				     	</tr>
+				     	<tr>
+				     		<td>
+				     			<table>
+				     				<tr>
+										<td>
+											<img wicket:id="imgFrom1" />
+										</td>
+										<td>
+											<img wicket:id="imgFrom2" />
+										</td>
+										<td>
+											<img wicket:id="imgFrom3" />
+										</td>
+										<td>
+											<img wicket:id="imgFrom4" />
+										</td>
+										<td>
+											<img wicket:id="imgFrom5" />
+										</td>
+										<td>
+											<img wicket:id="imgFrom6" />
+										</td>
+				     				</tr>
+				     			</table>
+				     		</td>
+					   	</tr>
+				   		<tr >
+				     		<td>
+				     			for 
+				     		</td>
+				     	</tr>
+				     	<tr>
+				     		<td>
+				     			<table>
+				     				<tr>
+										<td>
+											<img wicket:id="imgTo1" />
+										</td>
+										<td>
+											<img wicket:id="imgTo2" />
+										</td>
+										<td>
+											<img wicket:id="imgTo3" />
+										</td>
+										<td>
+											<img wicket:id="imgTo4" />
+										</td>
+										<td>
+											<img wicket:id="imgTo5" />
+										</td>
+										<td>
+											<img wicket:id="imgTo6" />
+										</td>
+				     				</tr>
+				     			</table>
+				     		</td>
+					   	</tr>
+					   	<tr>
+							<td>
+								<br/>This offer expires at <span wicket:id ="expireLbl"/>.
+							</td>
+				  		</tr>
+				  		<tr>
+                            <td style="text-align:center">
+                                <table style="width:100%">
+                                    <tr >
+                                        <td>
+                                            <input type="button" wicket:id ="aceptButton" value="Accept" />
+                                        </td>
+                                        <td>
+                                            <input type="button" wicket:id ="dismissButton" value="Dismiss"/>
+                                        </td>
+                                        <td>
+                                            <form wicket:id="negotiateForm">
+                                                <input type="submit"value="Negotiate"/>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+				  		</tr>
+			     	</table>
+				</td>
+				<td style="width: 250px;">
+					<span wicket:id = "zoom"/>
+				</td>
+			</tr>	
+	 	</table>	     
+	 </wicket:panel>
+
+</body>
+</html>

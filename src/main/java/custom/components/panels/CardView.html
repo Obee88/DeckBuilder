@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <title>Wicket Examples - sample panel</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+ 
+ Everything outside of the &lt;wicket:panel&gt; tags will be ignored.
+ Might be handy as preview code.
+ 
+ <wicket:panel>
+    <table >
+   		<tr >
+ 			<td style="text-align: center;">
+ 				<input type="button" wicket:id ="flipButton" 
+                	style="background-image: url(http://wheelquestions.org/img/layout/icon-flip.png); width: 60px; height: 52px;"/>
+     		</td>
+     	</tr>
+   		<tr >
+ 			<td >
+    			<a wicket:id="link"><img  wicket:id = "image"/></a>
+     		</td>
+     	</tr>
+   		<tr >
+ 			<td >
+ 				<span wicket:id="rarityLbl"/>
+     		</td>
+     	</tr>
+     </table>
+	 </wicket:panel>
+
+</body>
+</html>

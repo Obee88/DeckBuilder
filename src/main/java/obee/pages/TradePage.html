@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+    <wicket:extend>
+    	<br/>
+    	<table>
+    		<tr>
+    			<td>
+    				<div class=well>
+    					<form wicket:id="form">
+    						<table>
+    							<tr>
+    								<td>
+    									<span wicket:id = "homeTrade"/>
+    								</td>
+    								<td>
+    									<div id="tradeCart" style="border: dotted red 2px">
+    										<table>
+    											<tr>
+		    										<td style="width: 100%; text-align: center;">
+    													<input type="submit" wicket:id="tradeBtn" value=""
+    														style="width:79px; height:79px; ;background-image: url('http://t3.gstatic.com/images?q=tbn:ANd9GcS1uLh90gY2ikrL5B1Fj0tW6Lq4ARphjgewBkdjT-_AM3_O2VZU');"/>
+    												</td>
+    											</tr>
+    											<tr>
+    												<td>
+	    												<table>
+	    													<tr>
+			    												<td>	
+			    													<span wicket:id = "homeOffer"/>
+			    												</td>
+			    												<td>	
+			    													<span wicket:id = "awayOffer"/>
+			    												</td>
+			    											</tr>
+			    										</table>
+			    									</td>
+    											</tr>
+    										</table>
+    									</div>
+    								</td>
+    								<td>
+    									<select wicket:id = "userChooser" />
+    									<span wicket:id = "awayTrade"/>
+    								</td>
+    								<td>
+    									<span wicket:id = "cardView"/>
+    								</td>
+    							</tr>
+    						</table>
+    					</form>
+    				</div>
+    			</td>		 
+    		</tr>
+    	</table>
+    	   				    		
+    </wicket:extend>
+</body>
+</html>
