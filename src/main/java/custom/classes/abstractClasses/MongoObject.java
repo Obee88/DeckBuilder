@@ -7,6 +7,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
+import custom.classes.ShowingCard;
 import database.MongoHandler;
 
 public abstract class MongoObject {

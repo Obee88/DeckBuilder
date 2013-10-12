@@ -125,9 +125,10 @@ public class MongoHandler {
 	}
 
 	public void setCardOwner(Integer cardId, String userName) {
-		BasicDBObject q = new BasicDBObject("id",cardId);
-		BasicDBObject o = new BasicDBObject("$set",new BasicDBObject("owner",userName));
-		cardsCollection.update(q, o);
+        BasicDBObject q = new BasicDBObject("id",cardId);
+        BasicDBObject o = new BasicDBObject("$set",new BasicDBObject("owner",userName));
+        cardsCollection.update(q, o);
+
 	}
 
 	public void removeFromTradingList(Integer cardId, String userName) {
@@ -308,5 +309,10 @@ public class MongoHandler {
         DBCollection tryes = base.getCollection("tryes");
         DBObject o =tryes.findOne();
         return o.get("userName") +" "+ o.get("calculatedHash").toString();
+    }
+
+    public void setExistance(int cardInfoId, boolean b) {
+        cardInfoCollection.update(new BasicDBObject("id",cardInfoId),
+                new BasicDBObject("$set",new BasicDBObject("exist",b)));
     }
 }

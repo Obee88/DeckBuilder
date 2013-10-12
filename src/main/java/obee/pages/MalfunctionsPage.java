@@ -1,13 +1,15 @@
 package obee.pages;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import obee.pages.master.MasterPage;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -43,9 +45,10 @@ public class MalfunctionsPage extends MasterPage {
 	private ArrayList<String> usersStringList;
 	private Form<?> allForm;
 	private Form<Object> allToBoostersForm;
-	
+    private AjaxLink<Object> checkOwnerNotInListButton, checkInListNotOwnerButton;
 
-	public MalfunctionsPage(PageParameters params) {
+
+    public MalfunctionsPage(PageParameters params) {
 		super(params, "Malfunctions");
 		initLists();
 		initForm();
@@ -62,45 +65,80 @@ public class MalfunctionsPage extends MasterPage {
 		for(User usr : usrs){
 			usersStringList.add(usr.getUserName());
 		}
-		for(int id = 1; id<= Administration.getMaxCardId();id++) if (mongo.cardExist(id)) {
-			Card c;
-            User ownerUser;
-			try{
-				c = mongo.getCard(id);
-                ownerUser = mongo.getUser(c.getOwner());
-			}
-			catch(NullPointerException e){
-				Administration.addProblematicId(id);
-                continue;
-			}
-			if(ownerUser.hasCardIdInBoosters(id))
-				continue;
-			if(ownerUser.hasCardIdInUsing(id))
-				continue;
-			if(ownerUser.hasCardIdInTrading(id))
-				continue;
-
-			ShowingCard sc = new ShowingCard(c);
-			if(sc.name.equals("Plains")||sc.name.toLowerCase().equals("swamp")||sc.name.toLowerCase().equals("forest")||
-					sc.name.toLowerCase().equals("island")||sc.name.toLowerCase().equals("mountain"))
-				continue;
-			
-			ownerNotInListList.add(sc);
-		}
-		for(User user: mongo.getAllUsers()){
-			for(Card c: user.getBoosterCards())
-				if(!c.getOwner().equals(user.getUserName()))
-					inListNotOwnerList.add(new ShowingCard(c));
-			for(Card c: user.getUsingCards())
-				if(!c.getOwner().equals(user.getUserName()))
-					inListNotOwnerList.add(new ShowingCard(c));
-			for(Card c: user.getTradingCards())
-				if(!c.getOwner().equals(user.getUserName()))
-					inListNotOwnerList.add(new ShowingCard(c));
-		}
+//		fillOwnerNotInList();
+//      fillInListNotOwner();
 	}
 
-	private void initForm() {
+    private void fillInListNotOwner(){
+        BasicDBObject keys = new BasicDBObject("userName",1);
+        keys.append("_id",0);
+        keys.append("userCards",1);
+        BasicDBObject cardKeys =new BasicDBObject("id",1);
+        cardKeys.append("owner",1);
+        cardKeys.append("_id",0);
+        DBCursor usersCur = mongo.usersCollection.find(new BasicDBObject(),keys);
+        while(usersCur.hasNext()){
+            DBObject usrObj = usersCur.next();
+            String userName = usrObj.get("userName").toString();
+            DBObject userCardsObj  = (DBObject)usrObj.get("userCards");
+            List<BasicDBList> ll = new ArrayList<BasicDBList>();
+            ll.add((BasicDBList) userCardsObj.get("trading"));
+            ll.add((BasicDBList) userCardsObj.get("using"));
+            ll.add((BasicDBList) userCardsObj.get("boosters"));
+            for(BasicDBList dbl : ll){
+                for(Object oId : dbl){
+                    Integer id = (Integer)oId;
+                    DBObject cardObj = mongo.cardsCollection.findOne(new BasicDBObject("id", id), cardKeys);
+                    try{
+                        String owner = cardObj.get("owner").toString();
+                        if(!owner.equals(userName))
+                            inListNotOwnerList.add(new ShowingCard(mongo.getCard(id)));
+                    } catch (NullPointerException ne){
+                        System.out.println(ne.getMessage()+", id:"+id);
+                    }
+                }
+            }
+        }
+    }
+
+    private void fillOwnerNotInList(){
+        BasicDBObject cardKeys =new BasicDBObject("id",1);
+        cardKeys.append("owner",1);
+//        cardKeys.append("rarity",1);
+        cardKeys.append("_id",0);
+        DBCursor allIdsCur = mongo.cardsCollection.find(new BasicDBObject(),cardKeys);
+        while(allIdsCur.hasNext()){
+            DBObject cardObj = allIdsCur.next();
+            Integer id = (Integer)cardObj.get("id");
+            String owner = cardObj.get("owner").toString();
+            DBObject listOwner = mongo.usersCollection.findOne(new BasicDBObject("userCards.trading", id));
+            if(listOwner==null)
+                listOwner = mongo.usersCollection.findOne(new BasicDBObject("userCards.using",id));
+            if(listOwner==null)
+                listOwner = mongo.usersCollection.findOne(new BasicDBObject("userCards.boosters",id));
+            if(listOwner==null || !listOwner.get("userName").toString().equals(owner))   {
+                ShowingCard sc =new ShowingCard(mongo.getCard(id));
+                if(!sc.cardInfo.type.equals("land"))
+                    ownerNotInListList.add(sc);
+            }
+        }
+    }
+
+    private List<Integer> userCardsToList(DBObject obj) {
+        List<Integer> ret = new ArrayList<Integer>();
+        BasicDBList usingDBL =  (BasicDBList)obj.get("using");
+        BasicDBList tradingDBL =  (BasicDBList)obj.get("trading");
+        BasicDBList boostersDBL =  (BasicDBList)obj.get("boosters");
+        for (Object o : usingDBL)
+            ret.add((Integer)o);
+        for (Object o : tradingDBL)
+            ret.add((Integer)o);
+        for (Object o : boostersDBL)
+            ret.add((Integer)o);
+        return ret;
+    }
+
+    private void initForm() {
 		form = new Form<Object>("form"){
 			@Override
 			protected void onSubmit() {
@@ -112,6 +150,7 @@ public class MalfunctionsPage extends MasterPage {
 				selectedCard.setOwner(targetUser.getUserName());
 				selectedCard.setStatus("booster");
 				selectedCard.UPDATE();
+                info("1 card repaired");
 				setResponsePage(MalfunctionsPage.class);
 			}
 		};
@@ -132,6 +171,8 @@ public class MalfunctionsPage extends MasterPage {
 					} 
 					o.UPDATE();
 				}
+                info(ownerNotInListList.size()+ " cards repaired!");
+                setResponsePage(MalfunctionsPage.class);
 			}
 		};
 		add(allForm);
@@ -225,6 +266,28 @@ public class MalfunctionsPage extends MasterPage {
 		form.add(infoPanel);
 		image = new CardView("image");
 		form.add(image);
+        checkOwnerNotInListButton = new AjaxLink<Object>("checkOwnerNotInListButton"){
+            @Override
+            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                fillOwnerNotInList();
+                ownerNotInListPanel.setChoices(ownerNotInListList);
+                info(ownerNotInListList.size() + " cards detected");
+                ajaxRequestTarget.add(feedback);
+                ajaxRequestTarget.add(ownerNotInListPanel);
+            }
+        };
+        form.add(checkOwnerNotInListButton);
+        checkInListNotOwnerButton = new AjaxLink<Object>("checkInListNotOwnerButton"){
+            @Override
+            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                fillInListNotOwner();
+                inListNotOwnerPanel.setChoices(inListNotOwnerList);
+                info(inListNotOwnerList.size() + " cards detected");
+                ajaxRequestTarget.add(feedback);
+                ajaxRequestTarget.add(inListNotOwnerPanel);
+            }
+        };
+        form.add(checkInListNotOwnerButton);
 	}
 
 	private void initBehaviours() {

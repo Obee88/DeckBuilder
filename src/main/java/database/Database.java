@@ -4,6 +4,7 @@ import com.mongodb.BasicDBObject;
 
 import com.mongodb.DBCursor;
 import custom.classes.Card;
+import custom.classes.ShowingCard;
 import custom.classes.User;
 import custom.classes.UserMessage;
 

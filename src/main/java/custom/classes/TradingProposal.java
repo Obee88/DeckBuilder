@@ -92,19 +92,20 @@ public class TradingProposal extends MongoObject implements Serializable{
 		if (expire.isBefore(now)) 
 			return false;
 		User fromU = mongo.getUser(this.from);
-		if(!sillGot(fromU,fromList))
+		if(!stillGot(fromU,fromList))
 			return false;
 		User toU = mongo.getUser(this.to);
-		if(!sillGot(toU,toList))
+		if(!stillGot(toU,toList))
 			return false;
 		return true;
 	}
 
-	private boolean sillGot(User u, Set<Integer> list) {
+	private boolean stillGot(User u, Set<Integer> list) {
 		for(Integer id: list){
 			Card c =mongo.getCard(id);
             if(c==null){
                 Administration.addProblematicId(id);
+                return false;
             }
 			if(!c.owner.equals(u.userName))
 				return false;

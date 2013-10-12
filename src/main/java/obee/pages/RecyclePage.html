@@ -16,10 +16,33 @@
 				    					<span wicket:id="userCards"></span>
 				    				</td>
 				    				<td>
-				    					<span wicket:id="sacCards"></span>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <table style="width:100%">
+                                                        <tr>
+                                                            <td>
+                                                                weeks old
+                                                            </td>
+                                                            <td>
+                                                                <span wicket:id="weeksOldPanel"></span>
+                                                            </td>
+                                                            <td>
+                                                                <button class="btn-small btn-info pull-right" wicket:id="filterButton">filter</button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span wicket:id="sacCards"></span>
+                                                </td>
+                                            </tr>
+                                        </table>
 				    				</td>
 				    				<td>
-				    					<input type="submit" value="Recycle"> </input> 
+				    					<input class= "btn-small btn-danger" type="submit" value="Recycle"> </input>
 				    				</td>
 					    			<td style="width:240px;height:400px;vertical-align: top;" >
 					    				<span wicket:id="cardView" style="vertical-align: top" />

@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import custom.components.panels.PlusMinusPanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -36,9 +38,11 @@ public class RecyclePage extends MasterPage {
 	@SuppressWarnings("unused")
 	private int recycledCardsNum;
 	private Label recycledCardsNumLbl;
-		
-	
-	public RecyclePage(final PageParameters params) {
+    private PlusMinusPanel weeksOldPanel;
+    private AjaxLink<Object> filterButton;
+
+
+    public RecyclePage(final PageParameters params) {
 		super(params,"Recycle");
 		initLists();
 		initComponents();
@@ -66,7 +70,7 @@ public class RecyclePage extends MasterPage {
 			@Override
 			protected void onSubmit() {
 				super.onSubmit();
-				if(sacList.size()!=6){
+				if(sacList.size()!=6 ){
 					info("You must choose 6 cards!");
 					return;
 				}
@@ -85,7 +89,9 @@ public class RecyclePage extends MasterPage {
 		form.add(sacCards);
 		form.add(cardView);
 		form.add(recycledCardsNumLbl);
-		add(form);
+        form.add(weeksOldPanel);
+        form.add(filterButton);
+        add(form);
 	}
 
 	private void initComponents() {		
@@ -123,6 +129,19 @@ public class RecyclePage extends MasterPage {
                         return 0;
                     }
                 });
+        weeksOldPanel = new PlusMinusPanel("weeksOldPanel");
+        filterButton = new AjaxLink<Object>("filterButton"){
+            @Override
+            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                boolean ismore = weeksOldPanel.isMore();
+                int wo = weeksOldPanel.getNumber();
+                List<ShowingCard> filteredList = mongo.getUser(getUserName()).getTradingShowingCardsOlderThan(wo, ismore);
+                filteredList.removeAll(sacList);
+                tradeList=filteredList;
+                cardsPanel.setChoices(tradeList);
+                ajaxRequestTarget.add(cardsPanel);
+            }
+        };
 	}
 
 	private void initBehaviours() {

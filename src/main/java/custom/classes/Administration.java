@@ -139,13 +139,19 @@ public class Administration  {
 	
 	public static List<ShowingCard> getPrintingReadyList(){
 		BasicDBList ids = (BasicDBList) mongo.getAdminObject().get("printList");
+        BasicDBList remList = new BasicDBList();
 		if(ids==null) return new ArrayList<ShowingCard>();
 		List<ShowingCard> ret = new ArrayList<ShowingCard>();
 		for(Object obj : ids){
 			Integer scid  =(Integer)obj;
 			ShowingCard sc = mongo.getShowingCard(scid);
-			ret.add(sc);
+            if(sc.printed.equals("pending"))
+			    ret.add(sc);
+            else
+                remList.add(sc.getCardId());
 		}
+        if (!remList.isEmpty())
+            mongo.adminCollection.update(Administration.getQ(),new BasicDBObject("$pullAll",new BasicDBObject("printList",remList)));
 		return ret;
 	}
 	

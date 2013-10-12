@@ -25,7 +25,7 @@ public class Card extends MongoObject{
 		mongo = MongoHandler.getInstance();
 		int _cardId=Administration.getNextCardId();
 		boolean _printed=false;
-		int _cardInfoId = generateRandomCardInfo();
+		int _cardInfoId = generateRandomCardInfo(_cardId);
 		DBObject obj = new BasicDBObject()
 			.append("id", _cardId)
 			.append("printed", _printed)
@@ -33,16 +33,16 @@ public class Card extends MongoObject{
 			.append("cardInfoId", _cardInfoId)
 			.append("status", "booster")
             .append("creationDate", new DateTime().toDate());
-			
+		mongo.setExistance(_cardInfoId,true);
 		mongo.cardsCollection.insert(obj);
 		return new Card(obj);
 	}
 	
-	private static Integer generateRandomCardInfo() {
+	private static Integer generateRandomCardInfo(int creatingCardId) {
 		String rarity=CardGenerator.getRarity(new Random().nextInt(100));
 		Integer ret = null;
 		while(ret==null){
-			BasicDBObject basObj = new BasicDBObject("rarity",rarity);
+			BasicDBObject basObj = new BasicDBObject("rarity",rarity).append("exist",false);
 			DBCursor cur = MongoHandler.getInstance().cardInfoCollection.find(
 				basObj
 				);

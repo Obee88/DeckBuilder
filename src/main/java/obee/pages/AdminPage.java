@@ -225,38 +225,11 @@ public class AdminPage extends MasterPage {
             protected void onSubmit() {
                 DBCursor cur = mongo.cardInfoCollection.find();
                 while(cur.hasNext()){
-                    DBObject obj = cur.next();
-                    String manaCostString  = obj.get("manaCost").toString();
-                    int cmc = parse(manaCostString);
-                    mongo.cardInfoCollection.update(new BasicDBObject("id",(Integer)obj.get("id")),new BasicDBObject("$set",
-                            new BasicDBObject("convertedManaCost",cmc)));
+                    DBObject c = (DBObject)cur.next();
+                    if(c.get("exist")==null)
+                        mongo.cardInfoCollection.update(new BasicDBObject("_id",c.get("_id")),
+                                new BasicDBObject("$set",new BasicDBObject("exist",false)));
                 }
-            }
-
-            String chars = "WBURG";
-            String nums = "1234567890";
-            private int parse(String manaCostString) {
-                int total =0;
-                int numPart = 0;
-                boolean inside = false;
-                for (Character c : manaCostString.toCharArray()){
-                   if(inside)
-                       if(c=='}')
-                           inside = false;
-                        else
-                           continue;
-                   if (chars.contains(c.toString()))
-                       total++;
-                   else if(nums.contains(c.toString())){
-                       numPart*=10;
-                       numPart+= Integer.parseInt(c.toString());
-                   } else if(c == '{'){
-                       inside=true;
-                   }
-
-
-                }
-                return total+numPart;
             }
         };
         add(fixForm);

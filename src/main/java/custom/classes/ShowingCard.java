@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import database.MongoHandler;
+import org.joda.time.DateTime;
 
 @SuppressWarnings("serial")
 public class ShowingCard implements Serializable,Comparable<ShowingCard> {
@@ -137,5 +138,9 @@ public class ShowingCard implements Serializable,Comparable<ShowingCard> {
 
     public Date getCreationDate() {
         return creationDate;
+    }
+
+    public boolean isNewer(DateTime dateTime) {
+        return creationDate.after(dateTime.toDate());
     }
 }

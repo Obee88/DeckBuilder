@@ -57,7 +57,7 @@ public class MailSender {
         StringBuilder sb = new StringBuilder();
         sb.append("<h2>Good news!</h2>").append("</br>");
         sb.append("<p>").append(luckyOwner).append(" just gethered ")
-        .append(sc.name).append("card that is in your wishlist!").append("</p></br>");
+        .append(sc.name).append(" card that is in your wishlist!").append("</p></br>");
         sb.append("<img src=\"").append(sc.cardInfo.downloadLink).append("\"/></br>");
         sb.append("<a href=\"https://obee.xfer.hr/DeckBuilder-1.1/wicket/bookmarkable/obee.pages.TradePage?6\">Go and offer him a trade!</a>");
         send(u.getEmail(),"Wishlist notification!", sb.toString());
