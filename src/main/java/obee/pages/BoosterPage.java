@@ -46,7 +46,7 @@ public class BoosterPage extends MasterPage{
 	InfoPanel infoPanel;
 	Form<?> form;
 	CheckBox goodCheck, badCheck;
-	User u = mongo.getUser(getUserName());
+	User u = session.getUser();
 	int cardsAv = u.cardsAvailable();
 	CardSelectionPanel boosterPanel, goodChoice, badChoice;
 	CardView cardView;
@@ -91,9 +91,13 @@ public class BoosterPage extends MasterPage{
 					u.removeFromBooster(sc.cardId);
 					if(isGood){
 						goodChoice.addChoice(sc);
+                        sc.status = "using";
+                        sc.UPDATE();
 						u.addToUsing(sc.cardId);
 					} else{
 						badChoice.addChoice(sc);
+                        sc.status = "trading";
+                        sc.UPDATE();
 						u.addToTrading(sc.cardId);
 					}
 					u.UPDATE();
@@ -120,6 +124,8 @@ public class BoosterPage extends MasterPage{
 							u.removeFromTrading(sc.cardId);
 						boosterPanel.addChoice(sc);
 						u.addToBooster(sc.cardId);
+                        sc.status = "booster";
+                        sc.UPDATE();
 						u.UPDATE();
 						target.add(boosterPanel);
 						target.add(goodChoice);
@@ -160,7 +166,6 @@ public class BoosterPage extends MasterPage{
             }
 			@Override
 			public boolean isVisible() {
-				User u = mongo.getUser(getUserName());
 				return super.isVisible()&&u.getStarterDeck()==null;
 			}
         };
@@ -183,7 +188,6 @@ public class BoosterPage extends MasterPage{
 	}
 	
 	protected void save() {
-		User u = mongo.getUser(getUserName());
 		booster = (ArrayList<ShowingCard>) boosterPanel.getChoices();
 		using = (ArrayList<ShowingCard>) goodChoice.getChoices();
 		using.addAll(u.getSubfolders().getAllCards());
@@ -258,16 +262,15 @@ public class BoosterPage extends MasterPage{
 	}
 
 	private void getShowingCards() {
-		User u =mongo.getUser(getUserName());
-		booster=Lc2Lsc(u.getBoosterCards());
-		using= (ArrayList<ShowingCard>) usingListWithoutSubfolders();
-		trading=Lc2Lsc(u.getTradingCards());
+		booster= (ArrayList<ShowingCard>) u.getBoosterShowingCards();
+		using= (ArrayList<ShowingCard>) u.getSubfolders().getFreeCards();
+		trading= (ArrayList<ShowingCard>) u.getTradingShowingCards();
 	}
 
 	private List<ShowingCard> usingListWithoutSubfolders() {
 		List<ShowingCard> ret = new ArrayList<ShowingCard>();
-		for(ShowingCard sc: mongo.getUser(getUserName()).getUsingShowingCards()){
-			if(!sc.isInSubfolder())
+		for(ShowingCard sc: u.getUsingShowingCards()){
+			if(!sc.isInSubfolder(u))
 				ret.add(sc);
 		}
 		return ret;

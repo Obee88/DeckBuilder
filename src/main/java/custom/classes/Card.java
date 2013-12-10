@@ -14,11 +14,13 @@ import database.MongoHandler;
 import org.joda.time.DateTime;
 
 public class Card extends MongoObject{
-	Integer cardId;
+    DBObject cardInfo;
+    Integer cardId;
 	Integer cardInfoId;
 	String printed, owner, status;
 	String inProposal;
     public Date creationDate;
+    private DBObject info;
 
     public static Card generateCard(String owner) {
 		MongoHandler mongo;
@@ -32,7 +34,8 @@ public class Card extends MongoObject{
 			.append("owner", owner)
 			.append("cardInfoId", _cardInfoId)
 			.append("status", "booster")
-            .append("creationDate", new DateTime().toDate());
+            .append("creationDate", new DateTime().toDate())
+            .append("info",mongo.cardInfoCollection.findOne(new BasicDBObject("id",_cardInfoId)));
 		mongo.setExistance(_cardInfoId,true);
 		mongo.cardsCollection.insert(obj);
 		return new Card(obj);
@@ -42,7 +45,8 @@ public class Card extends MongoObject{
 		String rarity=CardGenerator.getRarity(new Random().nextInt(100));
 		Integer ret = null;
 		while(ret==null){
-			BasicDBObject basObj = new BasicDBObject("rarity",rarity).append("exist",false);
+			BasicDBObject basObj = new BasicDBObject("rarity",rarity);
+//            basObj.append("exist",false); //EVENT: Uncomment this line to set Unexisting cards event active
 			DBCursor cur = MongoHandler.getInstance().cardInfoCollection.find(
 				basObj
 				);
@@ -54,6 +58,7 @@ public class Card extends MongoObject{
 
 	public Card(DBObject obj)  {
 		cardId =obj.get("id")==null?null:Integer.parseInt(obj.get("id").toString());
+        this.cardInfo = (DBObject)obj.get("info");
 		printed = obj.get("printed").toString();
 		cardInfoId = Integer.parseInt(obj.get("cardInfoId").toString());
 		owner = obj.get("owner")==null?null:obj.get("owner").toString();
@@ -137,5 +142,9 @@ public class Card extends MongoObject{
 
     public Date getCreationDate() {
         return creationDate;
+    }
+
+    public DBObject getInfo() {
+        return cardInfo;
     }
 }

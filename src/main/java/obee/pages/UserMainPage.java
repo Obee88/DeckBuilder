@@ -30,7 +30,7 @@ public class UserMainPage extends MasterPage {
 	public UserMainPage(PageParameters parameters) {
 		super(parameters,"Home");
 		form = new Form<Object>("form");
-		final User currentUser = mongo.getUser(getUserName());
+		final User currentUser = session.getUser();
         String bs = parameters.get("box").toString();
         List<UserMessage> messages;
         if(bs!=null)

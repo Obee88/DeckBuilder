@@ -102,7 +102,7 @@ public class PrinterPage extends MasterPage {
 		addAllBtn = new AjaxLink("addAllBtn") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				for(ShowingCard sc: filteredList){
+    				for(ShowingCard sc: filteredList){
 					readyList.add(sc);
 					fullList.remove(sc);
 					cardPanel.removeChoice(sc);

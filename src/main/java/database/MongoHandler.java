@@ -27,6 +27,7 @@ public class MongoHandler {
 	private MongoHandler(){
 		try {
 			client = new MongoClient(HOST,PORT);
+//            client = new MongoClient(new MongoClientURI("mongodb://obi:obiosam@paulo.mongohq.com:10046/Magic"));
 			base = client.getDB(DATABASE_NAME);
 			usersCollection=base.getCollection(USERS_COLLECTION_NAME);
 			cardsCollection=base.getCollection(CARDS_COLLECTION_NAME);
@@ -77,8 +78,7 @@ public class MongoHandler {
 			System.out.println("omg");
 		int num = new Random().nextInt(100000);
 		int index = num%len;
-		for(int i=0;i<index;i++) cur.next();
-		return cur.next();
+		return cur.skip(index).next();
 	}
 
 	public int getCardInfoId(String name) {
@@ -301,8 +301,8 @@ public class MongoHandler {
     public void addTry(String userName, String s) {
         DBCollection tryes = base.getCollection("tryes");
         tryes.insert(new BasicDBObject()
-        .append("userName", userName)
-        .append("calculatedHash",s));
+                .append("userName", userName)
+                .append("calculatedHash", s));
     }
 
     public String getTryesString() {
@@ -314,5 +314,23 @@ public class MongoHandler {
     public void setExistance(int cardInfoId, boolean b) {
         cardInfoCollection.update(new BasicDBObject("id",cardInfoId),
                 new BasicDBObject("$set",new BasicDBObject("exist",b)));
+    }
+
+    public List<ShowingCard> getShowingCards(BasicDBList ids){
+        DBCursor cur = cardsCollection.find(new BasicDBObject("id",new BasicDBObject("$in",ids)));
+        List<ShowingCard> ret = new ArrayList<ShowingCard>();
+        while (cur.hasNext()){
+            DBObject obj = cur.next();
+            ret.add(new ShowingCard(new Card(obj)));
+        }
+        return  ret;
+    }
+
+    public Collection<? extends String> usersNameList() {
+        DBCursor cur = usersCollection.find(new BasicDBObject(),new BasicDBObject("userName",1));
+        List<String> ret = new ArrayList<String>();
+        while(cur.hasNext())
+            ret.add(cur.next().get("userName").toString());
+        return ret;
     }
 }

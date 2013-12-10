@@ -15,37 +15,60 @@ import custom.classes.abstractClasses.MongoObject;
 public class WishListItem extends MongoObject implements Serializable, Comparable<WishListItem> {
 
 	String name;
-	List<User> booster, using, trading;
+	List<String> booster, using, trading;
 	
-	public WishListItem(String name,List<User> allUsrs) {
+	public WishListItem(String name, BasicDBList cards) {
 		initLists();
-		List<Integer> CIids =new ArrayList<Integer>();
-		DBCursor cur = mongo.cardInfoCollection.find(new BasicDBObject("name",name));
-		while(cur.hasNext())
-			CIids.add((Integer)cur.next().get("id"));
-		List<Integer> Cids = new ArrayList<Integer>();
-		for(Integer id : CIids){
-			DBCursor c = mongo.cardsCollection.find(new BasicDBObject("cardInfoId",id));
-			while(c.hasNext())
-				Cids.add((Integer) c.next().get("id"));
-		}
-		for(Integer id : Cids){
-			for(User u: allUsrs){
-				if(u.hasCardIdInBoosters(id))
-					booster.add(u);
-				if(u.hasCardIdInTrading(id))
-					trading.add(u);
-				if(u.hasCardIdInUsing(id))
-					using.add(u);
-			}
-		}
+        for (Object o: match(name,cards)){
+            DBObject obj = (DBObject) o;
+            String status = obj.get("status").toString();
+            String owner = obj.get("owner").toString();
+            if(status.equals("boosters")|| status.equals("booster"))
+                booster.add(owner);
+            else if (status.equals("trading"))
+                trading.add(owner);
+            else if (status.equals("using"))
+                using.add(owner);
+        }
+//		List<Integer> CIids =new ArrayList<Integer>();
+//		DBCursor cur = mongo.cardInfoCollection.find(new BasicDBObject("name",name));
+//		while(cur.hasNext())
+//			CIids.add((Integer)cur.next().get("id"));
+//		List<Integer> Cids = new ArrayList<Integer>();
+//		for(Integer id : CIids){
+//			DBCursor c = mongo.cardsCollection.find(new BasicDBObject("cardInfoId",id));
+//			while(c.hasNext())
+//				Cids.add((Integer) c.next().get("id"));
+//		}
+//		for(Integer id : Cids){
+//			for(User u: allUsrs){
+//				if(u.hasCardIdInBoosters(id))
+//					booster.add(u);
+//				if(u.hasCardIdInTrading(id))
+//					trading.add(u);
+//				if(u.hasCardIdInUsing(id))
+//					using.add(u);
+//			}
+//		}
 		this.name=name;
 	}
-	
-	private void initLists() {
-		using = new ArrayList<User>();
-		trading= new ArrayList<User>();
-		booster= new ArrayList<User>();
+
+    private BasicDBList match(String name, BasicDBList cards) {
+        BasicDBList ret = new BasicDBList();
+        for (Object o : cards){
+            DBObject obj = (DBObject) o;
+            DBObject info = (DBObject) obj.get("info");
+            if(info.get("name").toString().equals(name))
+                ret.add(obj);
+        }
+        return ret;
+    }
+
+
+    private void initLists() {
+		using = new ArrayList<String>();
+		trading= new ArrayList<String>();
+		booster= new ArrayList<String>();
 	}
 
 	@Override
@@ -89,8 +112,8 @@ public class WishListItem extends MongoObject implements Serializable, Comparabl
 	public String getBoosterString(){
 		StringBuilder sb = new StringBuilder();
 		boolean isFirst =true;
-		for(User u : booster){
-			String s = u.userName;
+		for(String u : booster){
+			String s = u;
 			if(!isFirst)
 				sb.append(", ");
 			else 
@@ -103,8 +126,7 @@ public class WishListItem extends MongoObject implements Serializable, Comparabl
 	public String getUsingString(){
 		StringBuilder sb = new StringBuilder();
 		boolean isFirst =true;
-		for(User u : using){
-			String s = u.userName;
+		for(String s : using){
 			if(!isFirst)
 				sb.append(", ");
 			else 
@@ -117,8 +139,7 @@ public class WishListItem extends MongoObject implements Serializable, Comparabl
 	public String getTradingString(){
 		StringBuilder sb = new StringBuilder();
 		boolean isFirst =true;
-		for(User u : trading){
-			String s = u.userName;
+		for(String s : trading){
 			if(!isFirst)
 				sb.append(", ");
 			else 
@@ -140,4 +161,11 @@ public class WishListItem extends MongoObject implements Serializable, Comparabl
 	public int getQuantity(){
 		return 2*booster.size()+using.size()+3*trading.size();
 	}
+
+    public boolean containsUser(String uName){
+        if(uName.equals( "all")) return true;
+        return booster.contains(uName)
+                || using.contains(uName)
+                || trading.contains(uName);
+    }
 }

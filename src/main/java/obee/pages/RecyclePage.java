@@ -35,6 +35,7 @@ public class RecyclePage extends MasterPage {
 	private CardSelectionPanel sacCards;
 	private CardView cardView;
 	private List<ShowingCard> sacList;
+    User usr =  session.getUser();
 	@SuppressWarnings("unused")
 	private int recycledCardsNum;
 	private Label recycledCardsNumLbl;
@@ -52,7 +53,6 @@ public class RecyclePage extends MasterPage {
 	}
 
 	private void initLists() {
-		User usr =  mongo.getUser(userName);
 		tradeList = usr.getTradingShowingCards();
 		List<ShowingCard> tmpList = new ArrayList<ShowingCard>();
 		for(ShowingCard sc: tradeList)
@@ -74,7 +74,6 @@ public class RecyclePage extends MasterPage {
 					info("You must choose 6 cards!");
 					return;
 				}
-				User usr = mongo.getUser(userName);
 				for(ShowingCard sc : sacList){
 					usr.removeFromTrading(sc.cardId);
 					mongo.deleteCard(sc.cardId);
@@ -135,7 +134,7 @@ public class RecyclePage extends MasterPage {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 boolean ismore = weeksOldPanel.isMore();
                 int wo = weeksOldPanel.getNumber();
-                List<ShowingCard> filteredList = mongo.getUser(getUserName()).getTradingShowingCardsOlderThan(wo, ismore);
+                List<ShowingCard> filteredList = usr.getTradingShowingCardsOlderThan(wo, ismore);
                 filteredList.removeAll(sacList);
                 tradeList=filteredList;
                 cardsPanel.setChoices(tradeList);

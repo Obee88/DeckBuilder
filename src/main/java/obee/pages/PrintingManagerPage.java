@@ -41,7 +41,7 @@ public class PrintingManagerPage extends MasterPage {
 	
 	public PrintingManagerPage(PageParameters params) {
 		super(params,"Printing");
-		u= mongo.getUser(getUserName());
+		u= session.getUser();
 		initLists();
 		initForm();
 		initComponents();
@@ -170,7 +170,7 @@ public class PrintingManagerPage extends MasterPage {
 	}
 	
 	private void initLists() {
-		using= Lc2Lsc(u.getUsingCards());
+		using= (ArrayList<ShowingCard>) u.getUsingShowingCards();
 		printing = new ArrayList<ShowingCard>();
 	}
 

@@ -64,7 +64,7 @@ public class MasterPage extends WebPage{
 
 	@SuppressWarnings("rawtypes")
 	private void initNavgator() {
-		final User currentUser = mongo.getUser(userName);
+		final User currentUser = session.getUser();
 		List<Page> list = userName.equals("guest")?new ArrayList<Page>():getPagesList();
 		ListView listview = new ListView<Page>("listView",list) {
 		    protected void populateItem(ListItem item) {

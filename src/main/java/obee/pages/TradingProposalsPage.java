@@ -61,8 +61,7 @@ public class TradingProposalsPage extends MasterPage {
 		
 		userStringList = new ArrayList<String>();
 		userStringList.add("all");
-		for(User u : mongo.getAllUsers())
-			userStringList.add(u.getUserName());
+			userStringList.addAll(mongo.usersNameList());
 		msgSelectedUser=userStringList.get(0);
 		
 	}

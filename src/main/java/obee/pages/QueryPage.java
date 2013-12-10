@@ -3,6 +3,7 @@ package obee.pages;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import custom.classes.ShowingCard;
+import custom.classes.User;
 import custom.components.MyCheckGroup;
 import custom.components.panels.*;
 import database.MongoHandler;
@@ -57,6 +58,7 @@ public class QueryPage extends MasterPage{
     private HidingQueryPanel datetimePanel;
     private ArrayList<String> COLORS;
     private ArrayList<String> colorChoices;
+    private User user = session.getUser();
 
     public QueryPage(final PageParameters params) {
 		super(params,"Query[BETA]");
@@ -78,7 +80,7 @@ public class QueryPage extends MasterPage{
     }
 
     private void initComponents(PageParameters params) {
-        infoPanel=new InfoPanel("panel",mongo.getUser(getUserName()).getRoles().contains("ADMIN"));
+        infoPanel=new InfoPanel("panel",user.getRoles().contains("ADMIN"));
         cardView = new CardView("cardView");
         nameTbx= new TextField<String>("component",new Model<String>());
         nameTbx.setOutputMarkupId(true);
@@ -220,15 +222,15 @@ public class QueryPage extends MasterPage{
     }
 
     private ArrayList<ShowingCard> getList(PageParameters params) {
-        ArrayList<ShowingCard> ret = new ArrayList<ShowingCard>();
+        BasicDBList ret = new BasicDBList();
         String strL = params.get("idList").toString("");
         String[] strs = strL.split(",");
         for (int i = 0; i < strs.length; i++) {
             if(strs[i].equals("")) continue;
             int id = Integer.parseInt(strs[i]);
-            ret.add(new ShowingCard(mongo.getCard(id)));
+            ret.add(id);
         }
-        return ret;
+        return (ArrayList<ShowingCard>) mongo.getShowingCards(ret);
     }
 
     private void initForms() {
@@ -275,7 +277,7 @@ public class QueryPage extends MasterPage{
             }
         };
         unprintForm.add(unprintBtn);
-        if(!mongo.getUser(getUserName()).hasRole("PRINTER"))
+        if(!user.hasRole("PRINTER"))
             hide(unprintBtn);
 
     }

@@ -3,6 +3,8 @@ package custom.classes;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import database.MongoHandler;
 import org.joda.time.DateTime;
 
@@ -21,7 +23,12 @@ public class ShowingCard implements Serializable,Comparable<ShowingCard> {
 	public ShowingCard(Card c) {
 		cardId = c.cardId;
 		cardInfoId = c.cardInfoId;
-		cardInfo = MongoHandler.getInstance().getCardInfo(cardInfoId);
+        if(c.getInfo()==null){
+            DBObject cio = MongoHandler.getInstance().cardInfoCollection.findOne(new BasicDBObject("id",cardInfoId));
+            cardInfo = new CardInfo(cio);
+            MongoHandler.getInstance().cardsCollection.update(new BasicDBObject("id",cardId),new BasicDBObject("$set", new BasicDBObject("info",cio)));
+        } else
+            cardInfo = new CardInfo(c.getInfo());
 		name = cardInfo.name;
 		printed= c.printed;
 		owner=c.owner;
@@ -127,8 +134,7 @@ public class ShowingCard implements Serializable,Comparable<ShowingCard> {
 		return 0;
 	}
 
-	public boolean isInSubfolder() {
-		User owner = MongoHandler.getInstance().getUser(this.owner);
+	public boolean isInSubfolder(User owner) {
 		return owner.subfolders.contains(this);
 	}
 

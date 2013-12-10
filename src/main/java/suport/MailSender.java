@@ -1,6 +1,7 @@
 package suport;
 
 
+import com.mongodb.DBObject;
 import custom.classes.ShowingCard;
 import custom.classes.TradingProposal;
 import custom.classes.User;
@@ -61,6 +62,15 @@ public class MailSender {
         sb.append("<img src=\"").append(sc.cardInfo.downloadLink).append("\"/></br>");
         sb.append("<a href=\"https://obee.xfer.hr/DeckBuilder-1.1/wicket/bookmarkable/obee.pages.TradePage?6\">Go and offer him a trade!</a>");
         send(u.getEmail(),"Wishlist notification!", sb.toString());
+    }
+    public static void sendWishlistNotification(DBObject u, ShowingCard sc, String luckyOwner) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<h2>Good news!</h2>").append("</br>");
+        sb.append("<p>").append(luckyOwner).append(" just gethered ")
+                .append(sc.name).append(" card that is in your wishlist!").append("</p></br>");
+        sb.append("<img src=\"").append(sc.cardInfo.downloadLink).append("\"/></br>");
+        sb.append("<a href=\"https://obee.xfer.hr/DeckBuilder-1.1/wicket/bookmarkable/obee.pages.TradePage?6\">Go and offer him a trade!</a>");
+        send(u.get("eMail").toString(),"Wishlist notification!", sb.toString());
     }
 
     public enum ProposalNotificationType{

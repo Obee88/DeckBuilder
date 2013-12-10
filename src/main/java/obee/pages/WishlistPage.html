@@ -23,10 +23,24 @@
 			    						</div>
     								</td>
     								<td>
-   										<div class="input-append">
-										    <input type="text"  wicket:id="searchTbx"/>
-										    <button type="submit" class="btn btn-success" wicket:id="searchBtn">Search</button>
-										</div>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    Show users:
+                                                    <div class="input-append">
+                                                        <select wicket:id="filterCmbx"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="input-append">
+                                                        <input type="text"  wicket:id="searchTbx"/>
+                                                        <button type="submit" class="btn btn-success" wicket:id="searchBtn">Search</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
 									</td>
     							</tr>
     						</table>

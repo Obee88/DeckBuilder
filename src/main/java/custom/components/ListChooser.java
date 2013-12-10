@@ -188,4 +188,9 @@ public class ListChooser<T> extends ListChoice<T>{
         if(this.comparator!=null)
             Collections.sort(availableChoices, comparator);
     }
+
+    public T getFirsNextCard(T sc) {
+        int index  = getChoices().indexOf(sc);
+        return getChoices().get(index==0?0:index-1);
+    }
 }

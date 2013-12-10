@@ -7,11 +7,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
 import obee.pages.master.MasterPage;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.core.request.handler.BookmarkablePageRequestHandler;
@@ -27,6 +31,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.ListChoice;
 import org.apache.wicket.markup.html.form.TextField;
@@ -55,13 +60,16 @@ public class WishlistPage extends MasterPage {
 	private TextField<String> searchTbx;
 	private DataTable wishlistTable;
     String tbxValue="";
-	User usr = mongo.getUser(userName);
+	User usr = session.getUser();
 	List<WishListItem> wishList;
 	List<User> allUsrs;
     String focusCard;
 	private CardView image;
-	
-	public WishlistPage(PageParameters params) {
+    private DropDownChoice<User> filterCmbx;
+    List<String> usersStringList;
+    private ArrayList<WishListItem> fullWishList;
+
+    public WishlistPage(PageParameters params) {
 		super(params, "WishList");
         focusCard = params.get("focus")==null?null:params.get("focus").toString();
 		initWishlist();
@@ -72,14 +80,30 @@ public class WishlistPage extends MasterPage {
 	
 	private void initWishlist() {
 		wishList = new ArrayList<WishListItem>();
-		allUsrs  =mongo.getAllUsers();
+        fullWishList = new ArrayList<WishListItem>();
+        getUserStringList();
 		List<String> list = usr.getWishList();
-		for(String s:list)
-			wishList.add(new WishListItem(s, allUsrs));
+        DBCursor cur = mongo.cardsCollection.find(new BasicDBObject("info.name",new BasicDBObject("$in",strl2DBL(list))));
+        BasicDBList dbl = new BasicDBList();
+        while (cur.hasNext())
+            dbl.add(cur.next());
+		for(String s:list)  {
+            WishListItem w = new WishListItem(s, dbl);
+			wishList.add(w);
+            fullWishList.add(w);
+        }
 		Collections.sort(wishList);
 	}
 
-	private void initComponents() {
+    private BasicDBList strl2DBL(List<String> list) {
+        BasicDBList ret = new BasicDBList();
+        for (String s : list)
+            ret.add(s);
+        return ret;
+
+    }
+
+    private void initComponents() {
 		image = new CardView("image"){
 			@Override
 			public AjaxRequestTarget onEvent(AjaxRequestTarget target,
@@ -108,6 +132,7 @@ public class WishlistPage extends MasterPage {
 			    return rowItem;
 			}
 		};
+        wishlistTable.setOutputMarkupId(true);
 		wishlistTable.setCurrentPage(getIndex(focusCard)/wishlistTable.getItemsPerPage());
 		searchTbx = new DefaultCssAutoCompleteTextField<String>("searchTbx", new PropertyModel(this,"tbxValue")) {
 			@Override
@@ -134,6 +159,10 @@ public class WishlistPage extends MasterPage {
 			}
 			
 		};
+        filterCmbx = new DropDownChoice<User>("filterCmbx",
+                new Model(usersStringList.get(0)),
+                new Model((Serializable) usersStringList));
+        form.add(filterCmbx);
 		form.add(wishlistTable);
 		form.add(searchTbx);
 		form.add(searcbBtn);
@@ -181,9 +210,22 @@ public class WishlistPage extends MasterPage {
 	            {
 	            }
 	        });
+
+        filterCmbx.add(new OnChangeAjaxBehavior() {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                String selectedUser = filterCmbx.getDefaultModelObjectAsString();
+                wishList.clear();
+                for(WishListItem wli : fullWishList)
+                    if(wli.containsUser(selectedUser))
+                        wishList.add(wli);
+                Collections.sort(wishList);
+                target.add(wishlistTable);
+            }
+        });
 	}
 
-	private List initColumns() {
+    private List initColumns() {
 		List<IColumn> columns = new ArrayList<IColumn>();
 		PropertyColumn pr = new PropertyColumn(new Model<String>("Name"),"name");
 		columns.add(pr);
@@ -252,9 +294,11 @@ public class WishlistPage extends MasterPage {
 	public void setTbxValue(String tbxValue) {
 		this.tbxValue = tbxValue;
 	}
-	
-	
-	
+
+    private void getUserStringList() {
+        usersStringList = (List<String>) mongo.usersNameList();
+        usersStringList.add(0,"all");
+    }
 }
 
 

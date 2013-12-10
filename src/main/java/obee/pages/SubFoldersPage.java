@@ -13,6 +13,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -34,7 +35,7 @@ public class SubFoldersPage extends MasterPage {
 
 	private List<ShowingCard>[] subFolderList = new List[6];
 	private ArrayList<ShowingCard> usingList ;
-	private User user = mongo.getUser(getUserName());
+	private User user;
 	private CardSelectionPanel usingPanel;
 	private CardSelectionPanel[] subFolderPanel= new CardSelectionPanel[6];
 	private Form<Object> form;
@@ -42,7 +43,7 @@ public class SubFoldersPage extends MasterPage {
 	private OnChangeAjaxBehavior[] cbChecked= new OnChangeAjaxBehavior[6];
 	protected Integer selectedIndex;
 	@SuppressWarnings("rawtypes")
-	private AjaxLink printButton;
+	private AjaxLink printButton, pButton, uButton;
 	private DropDownChoice<String> sortDropDown;
 	private List<String> sortChoices;
 	private HashMap<String, Comparator<ShowingCard>> comparatorMap;
@@ -50,9 +51,9 @@ public class SubFoldersPage extends MasterPage {
 	
 	public SubFoldersPage(PageParameters params) {
 		super(params, "Folders");
-		user=mongo.getUser(getUserName());
-		user.getSubfolders().validate();
-		user=mongo.getUser(getUserName());
+		user=session.getUser();
+//		user.getSubfolders().validate();
+//		user=mongo.getUser(getUserName());
 		initLists();
 		initForm();
 		initComponents();
@@ -97,6 +98,32 @@ public class SubFoldersPage extends MasterPage {
 			
 		};
 		form.add(printButton);
+        pButton = new AjaxLink("pButton") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                CardSelectionPanel csp = subFolderPanel[selectedIndex];
+                ShowingCard sc = csp.listChooser.selectedChoice;
+                sc.printed = "true";
+                sc.UPDATE();
+                target.add(csp);
+            }
+        };
+        form.add(pButton);
+        uButton = new AjaxLink("uButton") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                CardSelectionPanel csp = subFolderPanel[selectedIndex];
+                ShowingCard sc = csp.listChooser.selectedChoice;
+                sc.printed = "false";
+                sc.UPDATE();
+                target.add(csp);
+            }
+        };
+        if(!user.isAdmin()){
+            pButton.add(new AttributeAppender("style",";display:none"));
+            uButton.add(new AttributeAppender("style",";display:none"));
+        }
+        form.add(uButton);
 		CardView image = new CardView("image");
 		image.setRarityLblVisible(true);
 		usingPanel = new CardSelectionPanel("usingPanel", usingList);
