@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+    <wicket:extend>
+        <table>
+            <tr style="height: 380px	">
+                <td>
+                    <span wicket:id = "cardsPane"></span>
+                </td>
+                <td>
+                    <span wicket:id = "infoPane"></span>
+                </td>
+                <td>
+                    <form wicket:id="deleteRangeForm">
+                        <input wicket:id="fromTbx">
+                        <input wicket:id="toTbx">
+                        <input type="submit" value="deleteRangeForm">
+                    </form>
+                </td>
+                <td>
+                    <form wicket:id="fixIdsInList">
+                        <input type="submit" value="fixIdsInList">
+                    </form>
+                </td>
+            </tr>
+        </table>
+        
+    </wicket:extend>
+</body>
+</html>

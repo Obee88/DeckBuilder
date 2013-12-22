@@ -27,7 +27,6 @@ public class MongoHandler {
 	private MongoHandler(){
 		try {
 			client = new MongoClient(HOST,PORT);
-//            client = new MongoClient(new MongoClientURI("mongodb://obi:obiosam@paulo.mongohq.com:10046/Magic"));
 			base = client.getDB(DATABASE_NAME);
 			usersCollection=base.getCollection(USERS_COLLECTION_NAME);
 			cardsCollection=base.getCollection(CARDS_COLLECTION_NAME);
@@ -78,7 +77,8 @@ public class MongoHandler {
 			System.out.println("omg");
 		int num = new Random().nextInt(100000);
 		int index = num%len;
-		return cur.skip(index).next();
+		for(int i=0;i<index;i++) cur.next();
+		return cur.next();
 	}
 
 	public int getCardInfoId(String name) {
@@ -244,7 +244,7 @@ public class MongoHandler {
     }
 
     public String queryAll(Object name, Object type, Object subType, Object rarity, Object text, Object manaCost,
-                           Object creationDate,Object color) {
+                           Object creationDate,Object color, Object users) {
 
         BasicDBObject q =new BasicDBObject();
         if(name!=null)
@@ -272,6 +272,8 @@ public class MongoHandler {
         BasicDBObject qq = new BasicDBObject("cardInfoId",new BasicDBObject("$in", list));
         if(creationDate!=null)
             qq.append("creationDate",creationDate);
+        if(users!=null)
+            qq.append("owner",new BasicDBObject("$in",users));
         DBCursor Ccur= cardsCollection.find(qq);
 
         StringBuilder sb = new StringBuilder();
@@ -301,8 +303,8 @@ public class MongoHandler {
     public void addTry(String userName, String s) {
         DBCollection tryes = base.getCollection("tryes");
         tryes.insert(new BasicDBObject()
-                .append("userName", userName)
-                .append("calculatedHash", s));
+        .append("userName", userName)
+        .append("calculatedHash",s));
     }
 
     public String getTryesString() {
@@ -316,21 +318,52 @@ public class MongoHandler {
                 new BasicDBObject("$set",new BasicDBObject("exist",b)));
     }
 
-    public List<ShowingCard> getShowingCards(BasicDBList ids){
-        DBCursor cur = cardsCollection.find(new BasicDBObject("id",new BasicDBObject("$in",ids)));
-        List<ShowingCard> ret = new ArrayList<ShowingCard>();
-        while (cur.hasNext()){
+    public ArrayList<ShowingCard> getThisWeekCards() {
+        ArrayList<ShowingCard> ret = new ArrayList<ShowingCard>();
+        Date date = DateTime.now().withDayOfWeek(1).withTimeAtStartOfDay().minusDays(1).toDate();
+        DBCursor cur = cardsCollection.find(new BasicDBObject("creationDate", new BasicDBObject("$gte",date)));
+        while(cur.hasNext()){
             DBObject obj = cur.next();
             ret.add(new ShowingCard(new Card(obj)));
         }
-        return  ret;
+        return ret;
     }
 
-    public Collection<? extends String> usersNameList() {
-        DBCursor cur = usersCollection.find(new BasicDBObject(),new BasicDBObject("userName",1));
-        List<String> ret = new ArrayList<String>();
-        while(cur.hasNext())
-            ret.add(cur.next().get("userName").toString());
+    public void removeUnexistingIds() {
+        DBCursor cur = usersCollection.find();
+        while(cur.hasNext()){
+            DBObject userObj = cur.next();
+            BasicDBObject q  = new BasicDBObject("userName",userObj.get("userName"));
+            DBObject userCards = (DBObject) userObj.get("userCards");
+            BasicDBList booster = (BasicDBList) userCards.get("boosters");
+            for(Object o : booster){
+                int id = (Integer)o;
+                if (!cardExist(id))
+                    usersCollection.update(q,new BasicDBObject("$pull", new BasicDBObject("userCards.boosters", id)));
+            }
+            BasicDBList using = (BasicDBList) userCards.get("using");
+            for(Object o : using){
+                int id = (Integer)o;
+                if (!cardExist(id))
+                    usersCollection.update(q,new BasicDBObject("$pull", new BasicDBObject("userCards.using", id)));
+            }
+            BasicDBList trading = (BasicDBList) userCards.get("trading");
+            for(Object o : trading){
+                int id = (Integer)o;
+                if (!cardExist(id))
+                    usersCollection.update(q,new BasicDBObject("$pull", new BasicDBObject("userCards.trading", id)));
+            }
+
+        }
+    }
+
+    public ArrayList<String> geUsernamesList() {
+        ArrayList<String> ret = new ArrayList<String>();
+        DBCursor c = usersCollection.find(new BasicDBObject(), new BasicDBObject("userName",1));
+        while (c.hasNext()){
+            DBObject obj = c.next();
+            ret.add(obj.get("userName").toString());
+        }
         return ret;
     }
 }

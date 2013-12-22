@@ -26,26 +26,26 @@ public class UserMainPage extends MasterPage {
     Form<Object> form;
 	ListView<UserMessage> messagesView;
     Box currentBox = Box.all;
+    User user = mongo.getUser(getUserName());
 
-	public UserMainPage(PageParameters parameters) {
+    public UserMainPage(PageParameters parameters) {
 		super(parameters,"Home");
 		form = new Form<Object>("form");
-		final User currentUser = session.getUser();
         String bs = parameters.get("box").toString();
         List<UserMessage> messages;
         if(bs!=null)
             if( bs.equals("system")){
                 currentBox=Box.system;
-                messages=currentUser.getSystemMessages();
+                messages=user.getSystemMessages();
             }
             else if(bs.equals("inbox")){
                 currentBox=Box.inbox;
-                messages=currentUser.getIngoingMessages();
+                messages=user.getIngoingMessages();
             }
             else
-                messages = currentUser.getMessages();
+                messages = user.getMessages();
         else
-            messages = currentUser.getMessages();
+            messages = user.getMessages();
 		messagesView = new ListView<UserMessage>("msgList",messages) {
 			@Override
 			protected void populateItem(ListItem<UserMessage> item) {
@@ -55,8 +55,8 @@ public class UserMainPage extends MasterPage {
                     @Override
                     public void onClick(AjaxRequestTarget target) {
                         int id = msg.getId();
-                        currentUser.removeMessage(id);
-                        currentUser.UPDATE();
+                        user.removeMessage(id);
+                        user.UPDATE();
                         setResponsePage(UserMainPage.class,new PageParameters().add("box",currentBox.toString()));
                     }
                 };
@@ -77,7 +77,7 @@ public class UserMainPage extends MasterPage {
         inboxBtn = new AjaxLink<Object>("inboxBtn") {
             @Override
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                messagesView.setList(currentUser.getIngoingMessages());
+                messagesView.setList(user.getIngoingMessages());
                 blue(outboxBtn);
                 green(inboxBtn);
                 blue(systemBtn);
@@ -95,7 +95,7 @@ public class UserMainPage extends MasterPage {
         outboxBtn = new AjaxLink<Object>("outboxBtn") {
             @Override
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                messagesView.setList(currentUser.getOutgoingMessages());
+                messagesView.setList(user.getOutgoingMessages());
                 green(outboxBtn);
                 blue(inboxBtn);
                 blue(systemBtn);
@@ -113,7 +113,7 @@ public class UserMainPage extends MasterPage {
         systemBtn = new AjaxLink<Object>("systemBtn") {
             @Override
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                messagesView.setList(currentUser.getSystemMessages());
+                messagesView.setList(user.getSystemMessages());
                 blue(outboxBtn);
                 blue(inboxBtn);
                 green(systemBtn);
@@ -131,7 +131,7 @@ public class UserMainPage extends MasterPage {
         allBtn = new AjaxLink<Object>("allBtn") {
             @Override
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                messagesView.setList(currentUser.getMessages());
+                messagesView.setList(user.getMessages());
                 blue(outboxBtn);
                 blue(inboxBtn);
                 blue(systemBtn);

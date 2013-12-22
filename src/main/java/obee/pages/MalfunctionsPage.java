@@ -44,8 +44,9 @@ public class MalfunctionsPage extends MasterPage {
 	private DropDownChoice<String> userChooser;
 	private ArrayList<String> usersStringList;
 	private Form<?> allForm;
-	private Form<Object> allToBoostersForm;
+	private Form<Object> setRightStatuses;
     private AjaxLink<Object> checkOwnerNotInListButton, checkInListNotOwnerButton;
+    private Form<Object> clearTradeList;
 
 
     public MalfunctionsPage(PageParameters params) {
@@ -218,34 +219,54 @@ public class MalfunctionsPage extends MasterPage {
 			}
 		};
 		add(checkDoublesForm);
-		allToBoostersForm = new Form<Object>("allToBoostersForm"){
+		setRightStatuses = new Form<Object>("setRightStatuses"){
 			@Override
 			protected void onSubmit() {
 				super.onSubmit();
+                int counter = 0;
 				for(User u: mongo.getAllUsers()){
-					u.getSubfolders().clearAll();
-					u.clearAllLists();
-					u.UPDATE();
+                    for(ShowingCard c : u.getBoosterShowingCards())
+                        if (!c.status.equals("booster")){
+                            counter++;
+                            c.status = "booster";
+                            c.UPDATE();
+                        }
+                    for(ShowingCard c : u.getUsingShowingCards())
+                        if (!c.status.equals("using")){
+                            counter++;
+                            c.status = "using";
+                            c.UPDATE();
+                        }
+                    for(ShowingCard c : u.getTradingShowingCards())
+                        if (!c.status.equals("trading")){
+                            counter++;
+                            c.status = "trading";
+                            c.UPDATE();
+                        }
 				}
-				for(int id=0; id<=Administration.getMaxCardId();id++){
-					if(mongo.cardExist(id)){
-						Card c = mongo.getCard(id);
-						ShowingCard sc = new ShowingCard(c);
-						if(sc.cardInfo.type.equals("land")) continue;
-						User owner = mongo.getUser(c.getOwner());
-						String status = sc.status;
-						if(status.equals("booster"))
-							owner.addToBooster(sc.cardId);
-						else if(status.equals("using"))
-							owner.addToUsing(sc.cardId);
-						else 
-							owner.addToTrading(sc.cardId);
-						owner.UPDATE();
-					}
-				}
+                info(counter +" cards changed!");
+                setResponsePage(MalfunctionsPage.class);
 			}
 		};
-		add(allToBoostersForm);
+		add(setRightStatuses);
+        clearTradeList = new Form<Object>("clearTradeList"){
+            @Override
+            protected void onSubmit() {
+                super.onSubmit();
+                int counter = 0;
+                List<ShowingCard> prList = Administration.getPrintingReadyList();
+                for(ShowingCard sc : prList){
+                    sc.printed  = "false";
+                    sc.UPDATE();
+                    counter++;
+                }
+                Administration.removeFromPrinter(prList);
+                info(counter +" cards changed!");
+                setResponsePage(MalfunctionsPage.class);
+
+            }
+        };
+        add(clearTradeList);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })

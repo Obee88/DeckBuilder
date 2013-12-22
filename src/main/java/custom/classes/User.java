@@ -224,7 +224,7 @@ public class User extends MongoObject implements Serializable{
 			ret+= 32;
 			deadline = deadline.minusDays(7);
 		}
-        if(ret>100) ret = 100;
+        if (ret>100) ret = 100;
 		return ret;
 	}
 	
@@ -274,7 +274,18 @@ public class User extends MongoObject implements Serializable{
 	}
 	
 	public List<ShowingCard> getTradingShowingCards() {
-		return mongo.getShowingCards(IntL2DBL(trading));
+		List<ShowingCard> cards = new ArrayList<ShowingCard>(); 
+		for(Integer id : trading)
+			try{
+				cards.add(new ShowingCard( mongo.getCard(id)));
+			} catch (NullPointerException ex){
+				ex.printStackTrace();
+                removeFromTrading(id);
+                UPDATE();
+				throw new NullPointerException("id: "+id);
+			}
+			
+		return cards;
 	}
 	
 	public List<Card> getUsingCards() {
@@ -327,7 +338,10 @@ public class User extends MongoObject implements Serializable{
 	}
 
 	public List<ShowingCard> getUsingShowingCards() {
-		return mongo.getShowingCards(IntL2DBL(using));
+		List<ShowingCard> cards = new ArrayList<ShowingCard>(); 
+		for(Integer id : using)
+			cards.add(new ShowingCard( mongo.getCard(id)));
+		return cards;
 	}
 
 	public List<Integer> getUsingCardIds() {
@@ -335,7 +349,10 @@ public class User extends MongoObject implements Serializable{
 	}
 
 	public List<ShowingCard> getBoosterShowingCards() {
-		return mongo.getShowingCards(IntL2DBL(booster));
+		List<ShowingCard> cards = new ArrayList<ShowingCard>(); 
+		for(Integer id : booster)
+			cards.add(new ShowingCard( mongo.getCard(id)));
+		return cards;
 	}
 
 	public boolean hasCardIdInBoosters(int id) {

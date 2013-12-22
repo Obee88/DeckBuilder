@@ -35,12 +35,12 @@ public class RecyclePage extends MasterPage {
 	private CardSelectionPanel sacCards;
 	private CardView cardView;
 	private List<ShowingCard> sacList;
-    User usr =  session.getUser();
 	@SuppressWarnings("unused")
 	private int recycledCardsNum;
 	private Label recycledCardsNumLbl;
     private PlusMinusPanel weeksOldPanel;
     private AjaxLink<Object> filterButton;
+    User usr =  mongo.getUser(userName);
 
 
     public RecyclePage(final PageParameters params) {
@@ -134,7 +134,7 @@ public class RecyclePage extends MasterPage {
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 boolean ismore = weeksOldPanel.isMore();
                 int wo = weeksOldPanel.getNumber();
-                List<ShowingCard> filteredList = usr.getTradingShowingCardsOlderThan(wo, ismore);
+                List<ShowingCard> filteredList = mongo.getUser(getUserName()).getTradingShowingCardsOlderThan(wo, ismore);
                 filteredList.removeAll(sacList);
                 tradeList=filteredList;
                 cardsPanel.setChoices(tradeList);

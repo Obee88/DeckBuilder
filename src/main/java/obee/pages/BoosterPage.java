@@ -46,7 +46,7 @@ public class BoosterPage extends MasterPage{
 	InfoPanel infoPanel;
 	Form<?> form;
 	CheckBox goodCheck, badCheck;
-	User u = session.getUser();
+	User u =mongo.getUser(getUserName());
 	int cardsAv = u.cardsAvailable();
 	CardSelectionPanel boosterPanel, goodChoice, badChoice;
 	CardView cardView;
@@ -91,15 +91,14 @@ public class BoosterPage extends MasterPage{
 					u.removeFromBooster(sc.cardId);
 					if(isGood){
 						goodChoice.addChoice(sc);
-                        sc.status = "using";
-                        sc.UPDATE();
 						u.addToUsing(sc.cardId);
+                        sc.status = "using";
 					} else{
 						badChoice.addChoice(sc);
-                        sc.status = "trading";
-                        sc.UPDATE();
 						u.addToTrading(sc.cardId);
+                        sc.status = "trading";
 					}
+                    sc.UPDATE();
 					u.UPDATE();
 					target.add(boosterPanel);
 					target.add(goodChoice);
@@ -123,8 +122,8 @@ public class BoosterPage extends MasterPage{
 						else
 							u.removeFromTrading(sc.cardId);
 						boosterPanel.addChoice(sc);
-						u.addToBooster(sc.cardId);
                         sc.status = "booster";
+						u.addToBooster(sc.cardId);
                         sc.UPDATE();
 						u.UPDATE();
 						target.add(boosterPanel);
@@ -262,15 +261,15 @@ public class BoosterPage extends MasterPage{
 	}
 
 	private void getShowingCards() {
-		booster= (ArrayList<ShowingCard>) u.getBoosterShowingCards();
+		booster=Lc2Lsc(u.getBoosterCards());
 		using= (ArrayList<ShowingCard>) u.getSubfolders().getFreeCards();
-		trading= (ArrayList<ShowingCard>) u.getTradingShowingCards();
+		trading=Lc2Lsc(u.getTradingCards());
 	}
 
 	private List<ShowingCard> usingListWithoutSubfolders() {
 		List<ShowingCard> ret = new ArrayList<ShowingCard>();
 		for(ShowingCard sc: u.getUsingShowingCards()){
-			if(!sc.isInSubfolder(u))
+			if(!sc.isInSubfolder(currentUser))
 				ret.add(sc);
 		}
 		return ret;

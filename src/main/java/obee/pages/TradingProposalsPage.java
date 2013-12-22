@@ -61,7 +61,8 @@ public class TradingProposalsPage extends MasterPage {
 		
 		userStringList = new ArrayList<String>();
 		userStringList.add("all");
-			userStringList.addAll(mongo.usersNameList());
+		for(User u : mongo.getAllUsers())
+			userStringList.add(u.getUserName());
 		msgSelectedUser=userStringList.get(0);
 		
 	}
@@ -133,7 +134,9 @@ public class TradingProposalsPage extends MasterPage {
 					from=mongo.getUser(tp.getFrom());
 					from.addMessage(new UserMessage(from.getNextMessageId(), "Trade sucessful!", tp.getTo()+" accepted your trade proposal."));
                     if(from.wantsProposalMail())
-                        MailSender.sendProposalNotification(tp, MailSender.ProposalNotificationType.Accept);
+                        try{
+                            MailSender.sendProposalNotification(tp, MailSender.ProposalNotificationType.Accept);
+                        } catch (Exception ignorable){}
 					from.UPDATE();
 					Administration.removeFromTradingProposalList(tp);
 				}

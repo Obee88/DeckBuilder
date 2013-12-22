@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import custom.classes.abstractClasses.MongoObject;
@@ -14,20 +13,22 @@ import custom.classes.abstractClasses.MongoObject;
 public class SubFolders extends MongoObject {
 
 	List<ShowingCard>[] subFolders = new List[6];
-    List<Integer>[] subFoldersIds = new List[6];
 	User parent ;
 	public SubFolders(DBObject obj, User parent){
 		if(obj!=null){
-            for(int i = 0;i<6; i++) {
-                DBObject o = (DBObject) obj.get("sf"+i);
-                subFolders[i] = o==null?new ArrayList<ShowingCard>():DBL2SCL(o);
-                subFoldersIds[i] = o==null?new ArrayList<Integer>():DBL2IntL((BasicDBList) o);
-            }
+			subFolders[0] = obj.get("sf0")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf0"));
+			subFolders[1] = obj.get("sf1")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf1"));
+			subFolders[2] = obj.get("sf2")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf2"));
+			subFolders[3] = obj.get("sf3")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf3"));
+			subFolders[4] = obj.get("sf4")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf4"));
+			subFolders[5] = obj.get("sf5")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf5"));
 		} else{
-            for(int i = 0;i<6; i++) {
-			    subFolders[i] = new ArrayList<ShowingCard>();
-                subFoldersIds[i] = new ArrayList<Integer>();
-            }
+			subFolders[0] = new ArrayList<ShowingCard>();
+			subFolders[1] = new ArrayList<ShowingCard>();
+			subFolders[2] = new ArrayList<ShowingCard>();
+			subFolders[3] = new ArrayList<ShowingCard>();
+			subFolders[4] = new ArrayList<ShowingCard>();
+			subFolders[5] = new ArrayList<ShowingCard>();
 		}
 		this.parent=parent;
 		//parent.UPDATE();
@@ -56,7 +57,13 @@ public class SubFolders extends MongoObject {
 	
 	private List<ShowingCard> DBL2SCL(Object object) {
 		BasicDBList dbl = (BasicDBList)object;
-		return mongo.getShowingCards(dbl);
+		List<ShowingCard> ret = new ArrayList<ShowingCard>();
+		for(Object o: dbl){
+			Integer id =(Integer)o;
+			ShowingCard sc =mongo.getShowingCard(id);
+			ret.add(sc);
+		}
+		return ret;
 	}
 	
 	private BasicDBList SCL2DBL(List<ShowingCard> list){
@@ -109,18 +116,18 @@ public class SubFolders extends MongoObject {
 	}
 	
 	public List<ShowingCard> getFreeCards(){
-		List<Integer> using = parent.getUsingCardIds();
-		BasicDBList free= new BasicDBList();
-		for(int sc : using){
-			if(subFoldersIds[0].contains(sc)) continue;
-			if(subFoldersIds[1].contains(sc)) continue;
-			if(subFoldersIds[2].contains(sc)) continue;
-			if(subFoldersIds[3].contains(sc)) continue;
-			if(subFoldersIds[4].contains(sc)) continue;
-			if(subFoldersIds[5].contains(sc)) continue;
+		List<ShowingCard> using = parent.getUsingShowingCards();
+		List<ShowingCard> free= new ArrayList<ShowingCard>();
+		for(ShowingCard sc : using){
+			if(subFolders[0].contains(sc)) continue;
+			if(subFolders[1].contains(sc)) continue;
+			if(subFolders[2].contains(sc)) continue;
+			if(subFolders[3].contains(sc)) continue;
+			if(subFolders[4].contains(sc)) continue;
+			if(subFolders[5].contains(sc)) continue;
 			free.add(sc);
 		}
-		return mongo.getShowingCards(free);
+		return free;
 	}
 	
 	public boolean contains(ShowingCard sc){

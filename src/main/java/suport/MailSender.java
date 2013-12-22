@@ -1,7 +1,6 @@
 package suport;
 
 
-import com.mongodb.DBObject;
 import custom.classes.ShowingCard;
 import custom.classes.TradingProposal;
 import custom.classes.User;
@@ -21,6 +20,7 @@ public class MailSender {
 
 
     public static void send(String email, String title, String body){
+        try{
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
@@ -52,6 +52,7 @@ public class MailSender {
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
+        }catch (Exception e){}
     }
 
     public static void sendWishlistNotification(User u, ShowingCard sc, String luckyOwner) {
@@ -63,15 +64,6 @@ public class MailSender {
         sb.append("<a href=\"https://obee.xfer.hr/DeckBuilder-1.1/wicket/bookmarkable/obee.pages.TradePage?6\">Go and offer him a trade!</a>");
         send(u.getEmail(),"Wishlist notification!", sb.toString());
     }
-    public static void sendWishlistNotification(DBObject u, ShowingCard sc, String luckyOwner) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<h2>Good news!</h2>").append("</br>");
-        sb.append("<p>").append(luckyOwner).append(" just gethered ")
-                .append(sc.name).append(" card that is in your wishlist!").append("</p></br>");
-        sb.append("<img src=\"").append(sc.cardInfo.downloadLink).append("\"/></br>");
-        sb.append("<a href=\"https://obee.xfer.hr/DeckBuilder-1.1/wicket/bookmarkable/obee.pages.TradePage?6\">Go and offer him a trade!</a>");
-        send(u.get("eMail").toString(),"Wishlist notification!", sb.toString());
-    }
 
     public enum ProposalNotificationType{
         Offer,
@@ -79,6 +71,7 @@ public class MailSender {
     };
 
     public static void sendProposalNotification(TradingProposal tp, ProposalNotificationType type){
+        try{
         StringBuilder sb = new StringBuilder();
         String[] fromImg  = new String[6];
         String[] toImg  = new String[6];
@@ -170,6 +163,6 @@ public class MailSender {
             sb.append("</br><h2>Check it out</h2>").append("</a>");
             send(MongoHandler.getInstance().getUser(tp.getFrom()).getEmail(),"Trade successfull!",sb.toString());
         }
-
+        }catch (Exception e)          {}
     }
 }

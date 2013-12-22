@@ -3,10 +3,6 @@ package obee.pages;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import obee.pages.master.MasterPage;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -43,7 +39,7 @@ public class TradePage extends MasterPage {
 	private AjaxLink<Object> tradeBtn;
 	private CardView cardView;
     private List<ShowingCard> trejdL;
-    User u =session.getUser();
+    User user = mongo.getUser(getUserName());
 
     public TradePage(PageParameters params) {
 		super(params, "Trade");
@@ -131,25 +127,19 @@ public class TradePage extends MasterPage {
 
         List<Integer> fromL = getList(params.get("from").toString(""));
         List<Integer> toL = getList(params.get("to").toString(""));
-		homeTradeList = notInProposal(u.getTradingShowingCards());
+		homeTradeList = notInProposal(user.getTradingShowingCards());
+		awayTradeList = new ArrayList<ShowingCard>();
 		usersStringList = new ArrayList<String>();
 		usersStringList.add("All users");
 		homeOfferList = new ArrayList<ShowingCard>();
 		awayOfferList = new ArrayList<ShowingCard>();
-        usersStringList = new ArrayList<String>();
-        BasicDBList tradingIds = new BasicDBList();
-        DBCursor cur = mongo.usersCollection.find(new BasicDBObject(),new BasicDBObject("userName",1).append("userCards",1));
-        while (cur.hasNext()){
-            DBObject obj =cur.next();
-            String userName =obj.get("userName").toString();
-            if (!userName.equals(u.getUserName())){
-                usersStringList.add(userName);
-                BasicDBList dbl = (BasicDBList) ((DBObject)(obj.get("userCards"))).get("trading");
-                for (Object o : dbl)
-                    tradingIds.add(o);
-            }
-        }
-        awayTradeList = mongo.getShowingCards(tradingIds);
+		List<User> usrs = mongo.getAllUsers();
+		for(User usr : usrs){
+			if(!usr.getUserName().equals(getUserName())){
+				usersStringList.add(usr.getUserName());
+				awayTradeList.addAll(usr.getTradingShowingCards());
+			}
+		}
         trejdL= new ArrayList();
         for(ShowingCard sc : homeTradeList)
             if (toL.contains(sc.cardId))

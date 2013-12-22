@@ -121,7 +121,6 @@ public class Administration  {
 	}
 
 	public static void removeFromPrinter(List<ShowingCard> prepared) {
-		
 		DBObject obj =  mongo.getAdminObject();
 		BasicDBList list = (BasicDBList)obj.get("printList");
 		if(list==null) return;

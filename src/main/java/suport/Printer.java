@@ -13,31 +13,30 @@ import custom.classes.ShowingCard;
 
 public class Printer {
 	private static Printer instance;
-	
-	private Printer() {
+
+	private Printer() throws Exception {
 	}
 	
-	public static Printer getInstance(){
+	public static Printer getInstance() throws Exception {
 		if(instance==null)
 			instance = new Printer();
 		return instance;
 	}
 	
-	public Slika[] generatePrintingPage(List<ShowingCard> list){
+	public Slika generatePrintingPage(List<ShowingCard> list) throws Exception {
 		List<Slika> prednje = new ArrayList<Slika>();
 		List<Slika> straznje = new ArrayList<Slika>();
 		for(int i=0; i<8; i++){
 			try{
 				ShowingCard sc = list.get(i);
 				prednje.add(getSlikaFromUrl(sc.cardInfo.downloadLink, sc.name));
-				straznje.add(getStraznja(sc));
+//				straznje.add(getStraznja(sc));
 			}catch(IndexOutOfBoundsException ex){
 				prednje.add(getBlank());
-				straznje.add(getBlank());
+//				straznje.add(getBlank());
 			}
 		}
-		return new Slika[]{spoji8prednjih(prednje.toArray(new Slika[0])),
-				spoji8straznjih(straznje.toArray(new Slika[0]))};
+		return spoji8prednjih(prednje.toArray(new Slika[0]));
 	}
 	
 	private Slika getBlank() {
@@ -107,24 +106,17 @@ public class Printer {
         return retS;
     }
     
-    private static Slika getSlikaFromUrl(String imageUrl, String name) {
+    private static Slika getSlikaFromUrl(String imageUrl, String name) throws Exception {
         BufferedImage bi = null;
         try {
             URL url = new URL(imageUrl);
             bi = ImageIO.read(url);
         } catch(Exception e){
-            e.printStackTrace();
+            throw new Exception(imageUrl +" ne valja!");
         }
         Slika ret = new Slika(bi);
         ret.setTitle(name);
         return ret;
-    }
-    Slika backSlika = getSlikaFromUrl("http://www.wizards.com/magic/images/mtgcom/fcpics/making/mr224_back.jpg", "back")
-    		.resize(312, 445, false);
-    private Slika getStraznja(ShowingCard k) {
-        if(!k.cardInfo.isTwoSided)
-            return backSlika;
-        return getSlikaFromUrl(flipLink(k.cardInfo.downloadLink),k.name);
     }
     
     public static String flipLink(String downloadLink) {

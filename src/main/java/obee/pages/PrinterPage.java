@@ -102,7 +102,7 @@ public class PrinterPage extends MasterPage {
 		addAllBtn = new AjaxLink("addAllBtn") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-    				for(ShowingCard sc: filteredList){
+				for(ShowingCard sc: filteredList){
 					readyList.add(sc);
 					fullList.remove(sc);
 					cardPanel.removeChoice(sc);
@@ -145,8 +145,13 @@ public class PrinterPage extends MasterPage {
 		prepareForm = new Form<Object>("prepareForm") {
 			@Override
 			protected void onSubmit() {
-				prepare();
-				if(pagesNum>0){
+
+                try {
+                    prepare();
+                } catch (Exception e) {
+                    info(e.getMessage());
+                }
+                if(pagesNum>0){
 					downloadForm.add(downloadBtn = new ResourceLink<Object>("downloadButton", downloadResource){
 						@Override
 						public void onClick() {
@@ -229,7 +234,7 @@ public class PrinterPage extends MasterPage {
         		filteredList.add(sc);
 	}
 	
-	protected void prepare() {
+	protected void prepare() throws Exception {
 		Integer counter=(Integer)takeNumTbx.getDefaultModelObject(), i=0;
 		if(counter<=0 || counter>posibleNum || counter==null ){
 			info("Illegal value!");
@@ -247,8 +252,8 @@ public class PrinterPage extends MasterPage {
 					prepared.add(sc);
 				} catch (IndexOutOfBoundsException ignorable) {}
 			}
-			Slika[] sl =Printer.getInstance().generatePrintingPage(pageList);
-			pages.addAll(Arrays.asList(sl));
+			Slika sl =Printer.getInstance().generatePrintingPage(pageList);
+			pages.add(sl);
 			pagesNum++;
 		}
 		generateZipSource(pages,ownerMap);

@@ -32,13 +32,14 @@ public class MasterPage extends WebPage{
 	protected String PAGE_NAME;
 	protected FeedbackPanel feedback;
 	protected SignInSession session;
+    protected User currentUser;
 	
 	public MasterPage(final PageParameters params, String name) {
 		PAGE_NAME=name;
 		session =(SignInSession)getSession();
 		if(session.isSignedIn())
 			userName = session.getUserName();
-		
+	    currentUser = session.getUser();
 		initNavgator();
 		initMasterComponents();
 	}
@@ -64,7 +65,6 @@ public class MasterPage extends WebPage{
 
 	@SuppressWarnings("rawtypes")
 	private void initNavgator() {
-		final User currentUser = session.getUser();
 		List<Page> list = userName.equals("guest")?new ArrayList<Page>():getPagesList();
 		ListView listview = new ListView<Page>("listView",list) {
 		    protected void populateItem(ListItem item) {
@@ -96,7 +96,8 @@ public class MasterPage extends WebPage{
 		list.add(new Page("Printer","PRINTER",PrinterPage.class));
 		list.add(new Page("Malfunctions","ADMIN",MalfunctionsPage.class));
 		list.add(new Page("Admin", "ADMIN", AdminPage.class));
-        list.add(new Page("Test", "ADMIN", Test.class));
+//        list.add(new Page("Test", "ADMIN", Test.class));
+        list.add(new Page("thisWeekFix", "ADMIN", CardsThisWeek.class));
         list.add(new Page("Profile","USER",ProfilePage.class));
 		return list;
 	}

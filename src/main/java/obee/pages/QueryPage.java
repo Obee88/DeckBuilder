@@ -3,7 +3,6 @@ package obee.pages;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import custom.classes.ShowingCard;
-import custom.classes.User;
 import custom.components.MyCheckGroup;
 import custom.components.panels.*;
 import database.MongoHandler;
@@ -56,9 +55,10 @@ public class QueryPage extends MasterPage{
     private PageParameters parameters;
     private AjaxButton querySubmitBtn;
     private HidingQueryPanel datetimePanel;
-    private ArrayList<String> COLORS;
-    private ArrayList<String> colorChoices;
-    private User user = session.getUser();
+    private ArrayList<String> COLORS, USERS;
+    private ArrayList<String> colorChoices, userchoices;
+    private MyCheckGroup<String> usersCheckGroup;
+    private HidingQueryPanel userPanel;
 
     public QueryPage(final PageParameters params) {
 		super(params,"Query[BETA]");
@@ -73,6 +73,8 @@ public class QueryPage extends MasterPage{
         typeChoices= new ArrayList<String>();
         RARITY = mongo.getAllCardRarityTypes();
         rarityChoices = new ArrayList<String>();
+        USERS = mongo.geUsernamesList();
+        userchoices = new ArrayList<String>();
         COLORS = new ArrayList<String>();
         COLORS.add("Blue");COLORS.add("Red");
         COLORS.add("White");COLORS.add("Green");COLORS.add("Black");
@@ -80,7 +82,7 @@ public class QueryPage extends MasterPage{
     }
 
     private void initComponents(PageParameters params) {
-        infoPanel=new InfoPanel("panel",user.getRoles().contains("ADMIN"));
+        infoPanel=new InfoPanel("panel",mongo.getUser(getUserName()).getRoles().contains("ADMIN"));
         cardView = new CardView("cardView");
         nameTbx= new TextField<String>("component",new Model<String>());
         nameTbx.setOutputMarkupId(true);
@@ -219,25 +221,39 @@ public class QueryPage extends MasterPage{
         };
         datetimePanel.setText("Weaks old:");
         form.add(datetimePanel);
+        usersCheckGroup =  new MyCheckGroup<String>("component",new Model(userchoices), USERS);
+        usersCheckGroup.setOutputMarkupId(true);
+        userPanel = new HidingQueryPanel("userPanel", usersCheckGroup) {
+            @Override
+            public Object getCondition() {
+                BasicDBList dbl = new BasicDBList();
+                for(String choice : (ArrayList<String>)getComponent().getDefaultModelObject()){
+                    dbl.add(choice);
+                }
+                return dbl;
+            }
+        };
+        userPanel.setText("Users: ");
+        form.add(userPanel);
     }
 
     private ArrayList<ShowingCard> getList(PageParameters params) {
-        BasicDBList ret = new BasicDBList();
+        ArrayList<ShowingCard> ret = new ArrayList<ShowingCard>();
         String strL = params.get("idList").toString("");
         String[] strs = strL.split(",");
         for (int i = 0; i < strs.length; i++) {
             if(strs[i].equals("")) continue;
             int id = Integer.parseInt(strs[i]);
-            ret.add(id);
+            ret.add(new ShowingCard(mongo.getCard(id)));
         }
-        return (ArrayList<ShowingCard>) mongo.getShowingCards(ret);
+        return ret;
     }
 
     private void initForms() {
         form = new Form<Object>("form"){
             @Override
             protected void onSubmit() {
-                Object color =null, type=null,subtype=null,rarity=null,text=null,manaCost=null,name=null, creationDate=null;
+                Object color =null, type=null,subtype=null,rarity=null,text=null,manaCost=null,name=null, creationDate=null, users=null;
                 if(colorPanel.isShown())
                     color = colorPanel.getCondition();
                 if(datetimePanel.isShown())
@@ -254,8 +270,11 @@ public class QueryPage extends MasterPage{
                     type = typePanel.getCondition();
                 if(manaCostPanel.isShown())
                     manaCost= manaCostPanel.getCondition();
+                if(userPanel.isShown())
+                    users = userPanel.getCondition();
+
                 PageParameters pageParameters = new PageParameters();
-                pageParameters.add("idList",mongo.queryAll(name,type, subtype, rarity, text,manaCost, creationDate,color));
+                pageParameters.add("idList",mongo.queryAll(name,type, subtype, rarity, text,manaCost, creationDate,color, users));
                 setResponsePage(QueryPage.class, pageParameters);
             }
         };
@@ -277,7 +296,7 @@ public class QueryPage extends MasterPage{
             }
         };
         unprintForm.add(unprintBtn);
-        if(!user.hasRole("PRINTER"))
+        if(!mongo.getUser(getUserName()).hasRole("PRINTER"))
             hide(unprintBtn);
 
     }

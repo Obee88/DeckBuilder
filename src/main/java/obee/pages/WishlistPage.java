@@ -7,9 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
 import obee.pages.master.MasterPage;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -60,14 +57,16 @@ public class WishlistPage extends MasterPage {
 	private TextField<String> searchTbx;
 	private DataTable wishlistTable;
     String tbxValue="";
-	User usr = session.getUser();
+	User usr = mongo.getUser(userName);
 	List<WishListItem> wishList;
 	List<User> allUsrs;
     String focusCard;
 	private CardView image;
-    private DropDownChoice<User> filterCmbx;
-    List<String> usersStringList;
-    private ArrayList<WishListItem> fullWishList;
+    private DropDownChoice<User> userChooser;
+    private List<String> userStringList;
+    private String selectedUserName;
+    private ArrayList<WishListItem> wishListItems;
+
 
     public WishlistPage(PageParameters params) {
 		super(params, "WishList");
@@ -79,28 +78,31 @@ public class WishlistPage extends MasterPage {
 	}
 	
 	private void initWishlist() {
-		wishList = new ArrayList<WishListItem>();
-        fullWishList = new ArrayList<WishListItem>();
-        getUserStringList();
-		List<String> list = usr.getWishList();
-        DBCursor cur = mongo.cardsCollection.find(new BasicDBObject("info.name",new BasicDBObject("$in",strl2DBL(list))));
-        BasicDBList dbl = new BasicDBList();
-        while (cur.hasNext())
-            dbl.add(cur.next());
-		for(String s:list)  {
-            WishListItem w = new WishListItem(s, dbl);
-			wishList.add(w);
-            fullWishList.add(w);
+		allUsrs  =mongo.getAllUsers();
+        userStringList = new ArrayList<String>();
+        userStringList.add( "all");
+        selectedUserName= "all";
+        for (User u : allUsrs)
+            userStringList.add(u.getUserName());
+        wishListItems = new ArrayList<WishListItem>();
+        List<String> list = usr.getWishList();
+        for(String s:list){
+            WishListItem wli = new WishListItem(s, allUsrs);
+            wishListItems.add(wli);
         }
-		Collections.sort(wishList);
+        refreshWishlist();
 	}
 
-    private BasicDBList strl2DBL(List<String> list) {
-        BasicDBList ret = new BasicDBList();
-        for (String s : list)
-            ret.add(s);
-        return ret;
-
+    private void refreshWishlist() {
+        if (selectedUserName.equals("all"))
+            wishList = wishListItems;
+        else {
+            wishList = new ArrayList<WishListItem>();
+            for (WishListItem wli : wishListItems)
+                if (wli.hasUser(selectedUserName))
+                    wishList.add(wli);
+        }
+        Collections.sort(wishList);
     }
 
     private void initComponents() {
@@ -132,7 +134,6 @@ public class WishlistPage extends MasterPage {
 			    return rowItem;
 			}
 		};
-        wishlistTable.setOutputMarkupId(true);
 		wishlistTable.setCurrentPage(getIndex(focusCard)/wishlistTable.getItemsPerPage());
 		searchTbx = new DefaultCssAutoCompleteTextField<String>("searchTbx", new PropertyModel(this,"tbxValue")) {
 			@Override
@@ -159,10 +160,21 @@ public class WishlistPage extends MasterPage {
 			}
 			
 		};
-        filterCmbx = new DropDownChoice<User>("filterCmbx",
-                new Model(usersStringList.get(0)),
-                new Model((Serializable) usersStringList));
-        form.add(filterCmbx);
+
+        userChooser = new  DropDownChoice <User>("userChooser",
+                new Model(selectedUserName),
+                new Model((Serializable) userStringList));
+        userChooser.add(new OnChangeAjaxBehavior(){
+
+            @Override
+            protected void onUpdate(AjaxRequestTarget target)
+            {
+                selectedUserName = userChooser.getDefaultModelObjectAsString();
+                refreshWishlist();
+                target.add(wishlistTable);
+            }
+        });
+        form.add(userChooser);
 		form.add(wishlistTable);
 		form.add(searchTbx);
 		form.add(searcbBtn);
@@ -210,45 +222,31 @@ public class WishlistPage extends MasterPage {
 	            {
 	            }
 	        });
-
-        filterCmbx.add(new OnChangeAjaxBehavior() {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                String selectedUser = filterCmbx.getDefaultModelObjectAsString();
-                wishList.clear();
-                for(WishListItem wli : fullWishList)
-                    if(wli.containsUser(selectedUser))
-                        wishList.add(wli);
-                Collections.sort(wishList);
-                target.add(wishlistTable);
-            }
-        });
 	}
 
-    private List initColumns() {
+	private List initColumns() {
 		List<IColumn> columns = new ArrayList<IColumn>();
 		PropertyColumn pr = new PropertyColumn(new Model<String>("Name"),"name");
 		columns.add(pr);
 		columns.add(new PropertyColumn(new Model<String>("Using"),"usingString"));
 		columns.add(new PropertyColumn(new Model<String>("Trading"),"tradingString"));
-		columns.add(new PropertyColumn(new Model<String>("Booster"),"boosterString"));
-		columns.add(new AbstractColumn(new Model<String>("Actions"))
-        {
-			@Override
-			public void populateItem(Item cellItem, String componentId, IModel model) {
-				//
-				WishListItem wli = (WishListItem)model.getObject();
-				cellItem.add(new DeleteRowPanel(componentId,wli.getName()) {
-					
-					@Override
-					public void doDelete() {
-						String name = getName();
-						usr.removeFromWishList(name);
-						usr.UPDATE();
-						setResponsePage(WishlistPage.class);
-					}
-				});
-			}
+		columns.add(new PropertyColumn(new Model<String>("Booster"), "boosterString"));
+		columns.add(new AbstractColumn(new Model<String>("Actions")) {
+            @Override
+            public void populateItem(Item cellItem, String componentId, IModel model) {
+                //
+                WishListItem wli = (WishListItem) model.getObject();
+                cellItem.add(new DeleteRowPanel(componentId, wli.getName()) {
+
+                    @Override
+                    public void doDelete() {
+                        String name = getName();
+                        usr.removeFromWishList(name);
+                        usr.UPDATE();
+                        setResponsePage(WishlistPage.class);
+                    }
+                });
+            }
         });
 		return columns;
 	}
@@ -294,11 +292,9 @@ public class WishlistPage extends MasterPage {
 	public void setTbxValue(String tbxValue) {
 		this.tbxValue = tbxValue;
 	}
-
-    private void getUserStringList() {
-        usersStringList = (List<String>) mongo.usersNameList();
-        usersStringList.add(0,"all");
-    }
+	
+	
+	
 }
 
 

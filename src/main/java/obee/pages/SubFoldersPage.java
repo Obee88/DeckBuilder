@@ -7,8 +7,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import custom.components.panels.puPanel;
 import obee.pages.master.MasterPage;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -17,6 +19,8 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.panel.IMarkupSourcingStrategy;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -35,7 +39,7 @@ public class SubFoldersPage extends MasterPage {
 
 	private List<ShowingCard>[] subFolderList = new List[6];
 	private ArrayList<ShowingCard> usingList ;
-	private User user;
+	private User user = mongo.getUser(getUserName());
 	private CardSelectionPanel usingPanel;
 	private CardSelectionPanel[] subFolderPanel= new CardSelectionPanel[6];
 	private Form<Object> form;
@@ -43,22 +47,25 @@ public class SubFoldersPage extends MasterPage {
 	private OnChangeAjaxBehavior[] cbChecked= new OnChangeAjaxBehavior[6];
 	protected Integer selectedIndex;
 	@SuppressWarnings("rawtypes")
-	private AjaxLink printButton, pButton, uButton;
+	private AjaxLink printButton;
 	private DropDownChoice<String> sortDropDown;
 	private List<String> sortChoices;
 	private HashMap<String, Comparator<ShowingCard>> comparatorMap;
+    private Panel printUnprintPanel;
+    private AjaxLink pButton,uButton;
+    private ShowingCard lastClickedCard =null;
+    CardSelectionPanel lastClickedFolder= null;
 
-	
-	public SubFoldersPage(PageParameters params) {
+
+    public SubFoldersPage(PageParameters params) {
 		super(params, "Folders");
-		user=session.getUser();
-//		user.getSubfolders().validate();
-//		user=mongo.getUser(getUserName());
+		user=mongo.getUser(getUserName());
+		user.getSubfolders().validate();
+		user=mongo.getUser(getUserName());
 		initLists();
 		initForm();
 		initComponents();
 		initBehaviours();
-	
 	}
 
 	private void initForm() {
@@ -78,6 +85,34 @@ public class SubFoldersPage extends MasterPage {
 
 	@SuppressWarnings("rawtypes")
 	private void initComponents() {
+        printUnprintPanel = new puPanel("printUnprintPanel");
+        form.add(printUnprintPanel);
+        boolean isPrinter = user.isPrinter();
+        printUnprintPanel.add(new AttributeAppender("style","display:"+(isPrinter?"inline":"none")));
+        pButton = new AjaxLink("pButton"){
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                if(lastClickedCard==null || lastClickedFolder==null) return;
+                ShowingCard selectedCard = lastClickedCard;
+                if (selectedCard==null) return;
+                selectedCard.printed = "true";
+                selectedCard.UPDATE();
+                target.add(lastClickedFolder);
+            }
+        };
+        printUnprintPanel.add(pButton);
+        uButton = new AjaxLink("uButton"){
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                if(lastClickedCard==null || lastClickedFolder==null) return;
+                ShowingCard selectedCard = lastClickedCard;
+                if (selectedCard==null) return;
+                selectedCard.printed = "false";
+                selectedCard.UPDATE();
+                target.add(lastClickedFolder);
+            }
+        };
+        printUnprintPanel.add(uButton);
 		sortDropDown = new DropDownChoice<String>("sortDropDown", 
 				new Model(sortChoices.get(0)),
 				new ListModel(sortChoices));
@@ -98,32 +133,6 @@ public class SubFoldersPage extends MasterPage {
 			
 		};
 		form.add(printButton);
-        pButton = new AjaxLink("pButton") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                CardSelectionPanel csp = subFolderPanel[selectedIndex];
-                ShowingCard sc = csp.listChooser.selectedChoice;
-                sc.printed = "true";
-                sc.UPDATE();
-                target.add(csp);
-            }
-        };
-        form.add(pButton);
-        uButton = new AjaxLink("uButton") {
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                CardSelectionPanel csp = subFolderPanel[selectedIndex];
-                ShowingCard sc = csp.listChooser.selectedChoice;
-                sc.printed = "false";
-                sc.UPDATE();
-                target.add(csp);
-            }
-        };
-        if(!user.isAdmin()){
-            pButton.add(new AttributeAppender("style",";display:none"));
-            uButton.add(new AttributeAppender("style",";display:none"));
-        }
-        form.add(uButton);
 		CardView image = new CardView("image");
 		image.setRarityLblVisible(true);
 		usingPanel = new CardSelectionPanel("usingPanel", usingList);
@@ -441,10 +450,6 @@ public class SubFoldersPage extends MasterPage {
 						return Integer.parseInt(id.substring(id.length()-1));
 					}
 			    };
-		usingPanel.listChooser.addEventListener(bigListener);
-		for (int i = 0; i < subFolderPanel.length; i++) {
-			subFolderPanel[i].listChooser.addEventListener(smallListener);
-		}
 		OnChangeAjaxBehavior printerChecked = new OnChangeAjaxBehavior() {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
@@ -456,6 +461,23 @@ public class SubFoldersPage extends MasterPage {
 			}
 		};
 		usingPanel.printIndicator.add(printerChecked);
+        IEventListener clicked = new IEventListener() {
+            @Override
+            public AjaxRequestTarget onEvent(AjaxRequestTarget target, Object sender, String eventType) {
+                if(eventType.equals("onClick")){
+                    lastClickedFolder = (CardSelectionPanel) ((ListChooser<ShowingCard>)sender).getParent();
+                    lastClickedCard = ((ListChooser<ShowingCard>)sender).getSelectedChoice();
+                }
+                return target;
+            }
+        };
+        usingPanel.listChooser.addEventListener(bigListener);
+        for (int i = 0; i < subFolderPanel.length; i++) {
+            subFolderPanel[i].listChooser.addEventListener(smallListener);
+            subFolderPanel[i].listChooser.addEventListener(clicked);
+        }
+        usingPanel.listChooser.addEventListener(clicked);
+
 	}
 	
 	protected void updateList() {

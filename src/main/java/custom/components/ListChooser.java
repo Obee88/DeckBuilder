@@ -67,6 +67,14 @@ public class ListChooser<T> extends ListChoice<T>{
 			}
        	};
        	add(dblClk);
+        AjaxEventBehavior clck =new AjaxEventBehavior("onclick"){
+            @Override
+            protected void onEvent(AjaxRequestTarget target) {
+                if(selectedChoice==null) return ;
+                target = informListeners(target, "onClick");
+            }
+        };
+        add(clck);
 	}
 
 	protected AjaxRequestTarget informListeners(AjaxRequestTarget target, String eventType) {
@@ -187,10 +195,5 @@ public class ListChooser<T> extends ListChoice<T>{
     public void sort(){
         if(this.comparator!=null)
             Collections.sort(availableChoices, comparator);
-    }
-
-    public T getFirsNextCard(T sc) {
-        int index  = getChoices().indexOf(sc);
-        return getChoices().get(index==0?0:index-1);
     }
 }

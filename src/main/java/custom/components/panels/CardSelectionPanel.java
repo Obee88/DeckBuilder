@@ -177,10 +177,9 @@ public class CardSelectionPanel extends Panel implements IEventListener{
 	@Override
 	public AjaxRequestTarget onEvent(AjaxRequestTarget target, Object sender,
 			String eventType) {
-		if(sender.equals(listChooser)&& eventType.equals("DblClk")){
+		if(sender.equals(listChooser)&& eventType.equals("DblClk"))
 			filterSize = filteredList.size();
-        }
-        target.add(numLbl);
+			target.add(numLbl);
 		return null;
 	}
 	
@@ -190,12 +189,8 @@ public class CardSelectionPanel extends Panel implements IEventListener{
 	}
 	
 	public void removeChoice(ShowingCard sc) {
-//        ShowingCard newChoice = null;
-//        if(listChooser.selectedChoice.equals(sc))
-//            newChoice = listChooser.getFirsNextCard(sc);
 		cardsList.remove(sc);
 		refreshFilterList();
-//        listChooser.selectedChoice = newChoice;
 	}
 	
 	public void setFilterVisible(Boolean visible){
