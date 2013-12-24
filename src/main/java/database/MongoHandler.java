@@ -23,8 +23,9 @@ public class MongoHandler {
 	private MongoClient client;
 	private DB base;
 	public DBCollection usersCollection, cardsCollection, cardInfoCollection, adminCollection;
-	
-	private MongoHandler(){
+    private ArrayList<ShowingCard> illegalCards;
+
+    private MongoHandler(){
 		try {
 			client = new MongoClient(HOST,PORT);
 			base = client.getDB(DATABASE_NAME);
@@ -363,6 +364,18 @@ public class MongoHandler {
         while (c.hasNext()){
             DBObject obj = c.next();
             ret.add(obj.get("userName").toString());
+        }
+        return ret;
+    }
+
+    public ArrayList<ShowingCard> getIllegalCards(String username) {
+        ArrayList<ShowingCard> ret = new ArrayList<ShowingCard>();
+        Pattern p = Pattern.compile(" ante | band");
+        DBCursor cur = cardsCollection.find(new BasicDBObject("owner",username).append("info.text",p));
+        while(cur.hasNext()){
+            DBObject obj = cur.next();
+            ShowingCard sc = new ShowingCard(new Card(obj));
+            ret.add(sc);
         }
         return ret;
     }

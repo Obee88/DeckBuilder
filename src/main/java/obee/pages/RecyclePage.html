@@ -8,7 +8,6 @@
     	<table>
     		<tr>
     			<td>
-    				<form wicket:id="form">
 			    		<div id="authDiv" class="well">
 				    		<table>
 				    			<tr>
@@ -16,12 +15,12 @@
 				    					<span wicket:id="userCards"></span>
 				    				</td>
 				    				<td>
+                                        <form wicket:id="form">
                                         <table>
                                             <tr>
                                                 <td>
                                                     <table style="width:100%"><tr>
                                                         <td>
-                                                            <button class="btn-small btn-info pull-right" wicket:id="keepButton">keep</button>
                                                         </td>
                                                         <td>
 
@@ -49,6 +48,7 @@
                                                 </td>
                                             </tr>
                                         </table>
+                                        </form>
 				    				</td>
 				    				<td>
 				    					<input class= "btn-small btn-danger" type="submit" value="Recycle"> </input>
@@ -57,21 +57,16 @@
 					    				<span wicket:id="cardView" style="vertical-align: top" />
 					    			</td>
 					    			<td>
-					    				<div class="well">
-					    					Recycle cards you're not using.<br/><br/>
-					    					Destroy 6 non printed cards from your trading list and new random card will appear in your booster page.
-					    					<br/>
-					    					<br/>
-					    					<p>
-					    					<span wicket:id="recycledCardsNumLbl"></span> cards recycled so far!
-					    					</p>
-					    				</div>
+					    				Illegal cards: (can be recycled for free)
+                                        <span wicket:id="illegalCardsPanel"></span>
+                                        <form wicket:id="recycleIllegalForm">
+                                            <input type="submit" value="recycle for free">
+                                        </form>
 					    			</td>
 				    			</tr>
 				    		</table>
 				    		
 			    		</div>
-					</form>
     			</td>
     		</tr>
     	</table>

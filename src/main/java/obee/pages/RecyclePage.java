@@ -30,17 +30,16 @@ import obee.pages.master.MasterPage;
 public class RecyclePage extends MasterPage {
 	private static final long serialVersionUID = 1L;
 	private Form form;
-	private CardSelectionPanel cardsPanel;
+	private CardSelectionPanel cardsPanel,illegalCardsPanel;
 	private List<ShowingCard> tradeList;
 	private CardSelectionPanel sacCards;
 	private CardView cardView;
 	private List<ShowingCard> sacList;
-	@SuppressWarnings("unused")
-	private int recycledCardsNum;
-	private Label recycledCardsNumLbl;
     private PlusMinusPanel weeksOldPanel;
     private AjaxLink<Object> filterButton;
     User usr =  mongo.getUser(userName);
+    private ArrayList<ShowingCard> illegalCardsList;
+    private Form recycleIllegalForm;
 
 
     public RecyclePage(final PageParameters params) {
@@ -53,6 +52,7 @@ public class RecyclePage extends MasterPage {
 	}
 
 	private void initLists() {
+        illegalCardsList = mongo.getIllegalCards(getUserName());
 		tradeList = usr.getTradingShowingCards();
 		List<ShowingCard> tmpList = new ArrayList<ShowingCard>();
 		for(ShowingCard sc: tradeList)
@@ -60,7 +60,6 @@ public class RecyclePage extends MasterPage {
 				tmpList.add(sc);
 		tradeList= tmpList;
 		sacList=new ArrayList<ShowingCard>();
-		recycledCardsNum = (int) (Administration.getMaxCardId()-mongo.cardsCollection.count()-Administration.getDeletedCardsNum());
 	}
 
 	private void initForms() {
@@ -84,18 +83,43 @@ public class RecyclePage extends MasterPage {
 				setResponsePage(RecyclePage.class);
 			}
 		};
-		form.add(cardsPanel);
+		add(cardsPanel);
 		form.add(sacCards);
-		form.add(cardView);
-		form.add(recycledCardsNumLbl);
+		add(cardView);
         form.add(weeksOldPanel);
         form.add(filterButton);
         add(form);
+        recycleIllegalForm = new Form("recycleIllegalForm"){
+            @Override
+            protected void onSubmit() {
+                super.onSubmit();
+                try{
+                    ShowingCard sc = illegalCardsPanel.listChooser.getSelectedChoice();
+                    if (sc==null) return;
+                    usr.removeFromTrading(sc.cardId);
+                    usr.removeFromBooster(sc.cardId);
+                    usr.removeFromUsing(sc.cardId);
+                    mongo.deleteCard(sc.cardId);
+                    usr.addToBooster(CardGenerator.generateBooster(1,getUserName()));
+                    info("One card added to boosters");
+                    usr.UPDATE();
+                }catch (Exception ignorable){
+                    info("nothing to recycle!");
+                    return;
+                }
+                setResponsePage(RecyclePage.class);
+            }
+        };
+        add(recycleIllegalForm);
 	}
 
-	private void initComponents() {		
-		recycledCardsNumLbl = new Label("recycledCardsNumLbl", new PropertyModel<Integer>(this, "recycledCardsNum"));
-		cardsPanel = new CardSelectionPanel("userCards", (ArrayList<ShowingCard>) tradeList);
+	private void initComponents() {
+        illegalCardsPanel = new CardSelectionPanel("illegalCardsPanel",illegalCardsList);
+        illegalCardsPanel.listChooser.setMaxRows(19);
+        illegalCardsPanel.setPrintCheckBoxVisible(false);
+        illegalCardsPanel.setFilterVisible(false);
+		add(illegalCardsPanel);
+        cardsPanel = new CardSelectionPanel("userCards", (ArrayList<ShowingCard>) tradeList);
 		cardsPanel.listChooser.setMaxRows(19);
 		cardsPanel.setPrintCheckBoxVisible(false);
 	    sacCards = new CardSelectionPanel("sacCards",(ArrayList<ShowingCard>) sacList);
@@ -106,6 +130,7 @@ public class RecyclePage extends MasterPage {
 		cardView.setRarityLblVisible(true);
 		cardsPanel.listChooser.addEventListener(cardView);
 		sacCards.listChooser.addEventListener(cardView);
+        illegalCardsPanel.listChooser.addEventListener(cardView);
         final List<String> rarity = new ArrayList<String>();
         rarity.add("common");rarity.add("uncommon");
         rarity.add("rare"); rarity.add("mythic");
