@@ -83,9 +83,9 @@ public class RecyclePage extends MasterPage {
 				setResponsePage(RecyclePage.class);
 			}
 		};
-		add(cardsPanel);
+		form.add(cardsPanel);
 		form.add(sacCards);
-		add(cardView);
+		form.add(cardView);
         form.add(weeksOldPanel);
         form.add(filterButton);
         add(form);

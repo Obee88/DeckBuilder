@@ -42,7 +42,8 @@ public class Card extends MongoObject{
 		String rarity=CardGenerator.getRarity(new Random().nextInt(100));
 		Integer ret = null;
 		while(ret==null){
-			BasicDBObject basObj = new BasicDBObject("rarity",rarity).append("exist",false);
+            BasicDBObject basObj = new BasicDBObject("rarity",rarity);
+//            BasicDBObject basObj = new BasicDBObject("rarity",rarity).append("exist",false);    event
 			DBCursor cur = MongoHandler.getInstance().cardInfoCollection.find(
 				basObj
 				);

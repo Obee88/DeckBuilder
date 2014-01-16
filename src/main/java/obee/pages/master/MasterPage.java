@@ -3,6 +3,7 @@ package obee.pages.master;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.Logger;
 import obee.SignInSession;
 import obee.WicketApplication;
 import obee.pages.*;
@@ -36,6 +37,7 @@ public class MasterPage extends WebPage{
 	
 	public MasterPage(final PageParameters params, String name) {
 		PAGE_NAME=name;
+        Logger.logPageView(name);
 		session =(SignInSession)getSession();
 		if(session.isSignedIn())
 			userName = session.getUserName();
@@ -97,8 +99,9 @@ public class MasterPage extends WebPage{
 		list.add(new Page("Malfunctions","ADMIN",MalfunctionsPage.class));
 		list.add(new Page("Admin", "ADMIN", AdminPage.class));
 //        list.add(new Page("Test", "ADMIN", Test.class));
-        list.add(new Page("thisWeekFix", "ADMIN", CardsThisWeek.class));
+//        list.add(new Page("thisWeekFix", "ADMIN", CardsThisWeek.class));
         list.add(new Page("Profile","USER",ProfilePage.class));
+        list.add(new Page("Stats", "ADMIN", StatsPage.class));
 		return list;
 	}
 

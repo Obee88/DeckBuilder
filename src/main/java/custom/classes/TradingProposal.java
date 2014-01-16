@@ -41,7 +41,7 @@ public class TradingProposal extends MongoObject implements Serializable{
 		this.id = Administration.getNextTradeProposalId();
 		this.from = from;
 		this.to = to;
-		this.expireDate = new DateTime().plusDays(5).toDate();
+		this.expireDate = new DateTime().plusDays(10).toDate();
 		this.fromList = new HashSet<Integer>();
 		this.toList = new HashSet<Integer>();
 		for(ShowingCard sc : fromList){
@@ -174,4 +174,13 @@ public class TradingProposal extends MongoObject implements Serializable{
 		}
 		return true;
 	}
+
+    public boolean hasUser(String username){
+        return (from.equals(username) || to.equals(username));
+    }
+
+
+    public boolean hasCardInFrom(Object id) {
+        return fromList.contains(id);
+    }
 }

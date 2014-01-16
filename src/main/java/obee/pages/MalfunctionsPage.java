@@ -47,6 +47,7 @@ public class MalfunctionsPage extends MasterPage {
 	private Form<Object> setRightStatuses;
     private AjaxLink<Object> checkOwnerNotInListButton, checkInListNotOwnerButton;
     private Form<Object> clearTradeList;
+    private Form<Object> chechInProposalForm;
 
 
     public MalfunctionsPage(PageParameters params) {
@@ -140,6 +141,14 @@ public class MalfunctionsPage extends MasterPage {
     }
 
     private void initForm() {
+        chechInProposalForm = new Form<Object>("checkInProposal"){
+            @Override
+            protected void onSubmit() {
+                int cnt = mongo.remFalseInProposalCards();
+                info(cnt + " false in proposal cards removed!");
+            }
+        };
+        add(chechInProposalForm);
 		form = new Form<Object>("form"){
 			@Override
 			protected void onSubmit() {

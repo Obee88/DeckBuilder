@@ -57,22 +57,33 @@
 	    			</td>
 	    		</tr>
 	    		<tr>
-	    			<td>
-	    				<form wicket:id="checkDoublesForm">
-	    					<INPUT type="submit" value="ThisJustRemoveAllDoubles"/>
-	    				</form>
-	    			</td>
-	    			<td>
-	    				<form wicket:id="setRightStatuses">
-	    					<INPUT type="submit" value="setRightStatuses"/>
-	    				</form>
-	    			</td>
                     <td>
-                        <form wicket:id="clearTradeList">
-                            <INPUT type="submit" value="clearTradeList"/>
-                        </form>
+                        <table>
+                            <tr>
+                                <td>
+                                    <form wicket:id="checkDoublesForm">
+                                        <INPUT type="submit" value="ThisJustRemoveAllDoubles"/>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form wicket:id="checkInProposal">
+                                        <INPUT type="submit" value="check in-proposal cards"/>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form wicket:id="setRightStatuses">
+                                        <INPUT type="submit" value="setRightStatuses"/>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form wicket:id="clearTradeList">
+                                        <INPUT type="submit" value="clearTradeList"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
-	    		</tr>
+                </tr>
 	    	</table>
 	</div>		   
     </wicket:extend>

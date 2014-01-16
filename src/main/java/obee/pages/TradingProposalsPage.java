@@ -3,6 +3,7 @@ package obee.pages;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.MongoHandler;
 import obee.pages.master.MasterPage;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -139,6 +140,7 @@ public class TradingProposalsPage extends MasterPage {
                         } catch (Exception ignorable){}
 					from.UPDATE();
 					Administration.removeFromTradingProposalList(tp);
+                    MongoHandler.getInstance().logSuccessfullTrade(tp);
 				}
 				setResponsePage(TradingProposalsPage.class);
 			}

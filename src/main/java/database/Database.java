@@ -1,16 +1,8 @@
 package database;
 
 import com.mongodb.BasicDBObject;
-
-import com.mongodb.DBCursor;
-import custom.classes.Card;
-import custom.classes.ShowingCard;
+import com.mongodb.DBObject;
 import custom.classes.User;
-import custom.classes.UserMessage;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Database {
 
 	private static MongoHandler mongo = MongoHandler.getInstance();
@@ -29,6 +21,9 @@ public class Database {
 	}
 
     public static void main(String[] args) {
+        DBObject thisMonthObject = MongoHandler.getInstance().statisticsCollection.findOne(new BasicDBObject("id","views"));
+        DBObject daily_stats = (DBObject) thisMonthObject.get("daily_stats");
+        System.out.println();
     }
 
 }

@@ -19,11 +19,12 @@ public class MongoHandler {
 	private final String CARDS_COLLECTION_NAME = "cards";
 	private final String CARDIFNO_COLLECTION_NAME = "cardInfo";
 	private final String ADMIN_COLLECTION_NAME = "administration";
+    private final String STATISTICS_COLLECTION_NAME = "statistics";
+    private final String SUCESSFULL_PROPOSALS_COLLECTION_NAME = "statistics";
 	
 	private MongoClient client;
 	private DB base;
-	public DBCollection usersCollection, cardsCollection, cardInfoCollection, adminCollection;
-    private ArrayList<ShowingCard> illegalCards;
+	public DBCollection usersCollection, cardsCollection, cardInfoCollection, adminCollection, statisticsCollection, sucessfullProposalsCollections;
 
     private MongoHandler(){
 		try {
@@ -33,6 +34,8 @@ public class MongoHandler {
 			cardsCollection=base.getCollection(CARDS_COLLECTION_NAME);
 			cardInfoCollection=base.getCollection(CARDIFNO_COLLECTION_NAME);
 			adminCollection=base.getCollection(ADMIN_COLLECTION_NAME);
+            statisticsCollection=base.getCollection(STATISTICS_COLLECTION_NAME);
+            sucessfullProposalsCollections = base.getCollection(SUCESSFULL_PROPOSALS_COLLECTION_NAME);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
@@ -370,13 +373,79 @@ public class MongoHandler {
 
     public ArrayList<ShowingCard> getIllegalCards(String username) {
         ArrayList<ShowingCard> ret = new ArrayList<ShowingCard>();
-        Pattern p = Pattern.compile(" ante | band");
-        DBCursor cur = cardsCollection.find(new BasicDBObject("owner",username).append("info.text",p));
-        while(cur.hasNext()){
-            DBObject obj = cur.next();
-            ShowingCard sc = new ShowingCard(new Card(obj));
-            ret.add(sc);
-        }
+//        BasicDBList cases = new BasicDBList();
+//        Pattern band = Pattern.compile(".*bands.*",Pattern.CASE_INSENSITIVE);
+//        Pattern banding = Pattern.compile(".*banding.*",Pattern.CASE_INSENSITIVE);
+//        Pattern banding1 = Pattern.compile("Banding.*",Pattern.CASE_INSENSITIVE);
+//        Pattern bands1 = Pattern.compile("Bands.*",Pattern.CASE_INSENSITIVE);
+//        Pattern ante = Pattern.compile(".* ante .*",Pattern.CASE_INSENSITIVE);
+//        cases.add(new BasicDBObject("info.text",banding1));
+//        cases.add(new BasicDBObject("info.text",bands1));
+//        cases.add(new BasicDBObject("info.text",band));
+//        cases.add(new BasicDBObject("info.text",banding));
+//        cases.add(new BasicDBObject("info.text",ante));
+//        DBCursor cur = cardsCollection.find(new BasicDBObject("owner",username).append("$or",cases));
+//        while(cur.hasNext()){
+//            DBObject obj = cur.next();
+//            ShowingCard sc = new ShowingCard(new Card(obj));
+//            ret.add(sc);
+//        }
         return ret;
+    }
+
+    public WriteResult updateStatistic(DBObject q, DBObject obj){
+        return statisticsCollection.update(q,obj,true,false);
+    }
+
+    public void logSuccessfullTrade(TradingProposal tp) {
+        sucessfullProposalsCollections.insert(tp.toDBObject());
+    }
+
+    public List getSuccessfullTrades(String username) {
+        boolean all = username.equals("all");
+        List<String> sucessfullTrades = new ArrayList<String>();
+        DBCursor cur = statisticsCollection.find();
+        while (cur.hasNext()){
+            DBObject obj = cur.next();
+            if (obj.get("id").equals("views")) continue;
+            TradingProposal tp = new TradingProposal(obj);
+            if (all || tp.hasUser(username))
+                sucessfullTrades.add(tp.toString());
+        }
+        return sucessfullTrades;
+    }
+
+    public List<String> getAllUserNames() {
+        List<String> ret = new ArrayList<String>();
+        DBCursor cur = usersCollection.find(new BasicDBObject(), new BasicDBObject("userName",1));
+        while(cur.hasNext())
+            ret.add((String) cur.next().get("userName"));
+        return ret;
+    }
+
+    public int remFalseInProposalCards() {
+        List<ShowingCard> remList = new ArrayList<ShowingCard>();
+        DBCursor cur = cardsCollection.find(new BasicDBObject("inProposal","true"));
+        while (cur.hasNext()){
+            DBObject obj = cur.next();
+            String userName = (String) obj.get("owner");
+            List<TradingProposal> tpl =Administration.getTradingProposalsListFrom(userName);
+            boolean found = false;
+            for(TradingProposal tp : tpl)
+                if (tp.hasCardInFrom(obj.get("id"))){
+                    found = true;
+                    break;
+                }
+            if(!found)
+                remList.add(new ShowingCard(new Card(obj)));
+        }
+        int cnt = 0;
+        for (int i = 0; i<remList.size(); i++){
+            ShowingCard sc = remList.get(i);
+            sc.inProposal = "false";
+            sc.UPDATE();
+            cnt++;
+        }
+        return cnt;
     }
 }
