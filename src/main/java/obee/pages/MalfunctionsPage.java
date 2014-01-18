@@ -103,6 +103,7 @@ public class MalfunctionsPage extends MasterPage {
         }
     }
 
+    List<String> basicLandNames = new ArrayList<String>(Arrays.asList(new String[]{"Island","Swamp","Plains","Forest","Mountain"}));
     private void fillOwnerNotInList(){
         BasicDBObject cardKeys =new BasicDBObject("id",1);
         cardKeys.append("owner",1);
@@ -120,7 +121,7 @@ public class MalfunctionsPage extends MasterPage {
                 listOwner = mongo.usersCollection.findOne(new BasicDBObject("userCards.boosters",id));
             if(listOwner==null || !listOwner.get("userName").toString().equals(owner))   {
                 ShowingCard sc =new ShowingCard(mongo.getCard(id));
-                if(!sc.cardInfo.type.equals("land"))
+                if(!basicLandNames.contains(sc.name))
                     ownerNotInListList.add(sc);
             }
         }
