@@ -91,8 +91,6 @@ public class CardSelectionPanel extends Panel implements IEventListener{
 		titleLbl.setOutputMarkupId(true);
 		titleTbx = new TextField<String>("titleTbx",Model.of(title));
 		titleTbx.setOutputMarkupId(true);
-		//titleTbx.setVisible(false);
-		//titleTbx.add(new AttributeModifier("style", "visibility:hidden;"));
 		titleTbx.add(new AttributeModifier("style", "display:none;"));
 		titleChangeForm.add(titleLbl);
 		titleChangeForm.add(titleTbx);
@@ -114,10 +112,6 @@ public class CardSelectionPanel extends Panel implements IEventListener{
 		AjaxEventBehavior titleLblDblClk =new AjaxEventBehavior("ondblclick"){
 			@Override
 			protected void onEvent(AjaxRequestTarget target) {
-//				titleLbl.setVisible(false);
-//				titleTbx.setVisible(true);
-//				titleLbl.add(new AttributeModifier("style", "visibility:hidden;"));
-//				titleTbx.add(new AttributeModifier("style", "visibility:visible;"));
 				titleLbl.add(new AttributeModifier("style", "display:none;"));
 				titleTbx.add(new AttributeModifier("style", "display:inline;"));
 				target.add(titleLbl);
@@ -227,4 +221,7 @@ public class CardSelectionPanel extends Panel implements IEventListener{
         listChooser.sort( comparator);
     }
 
+    public void unselect() {
+        listChooser.selectedChoice = null;
+    }
 }

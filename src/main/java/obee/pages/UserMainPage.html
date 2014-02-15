@@ -1,4 +1,8 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
     <wicket:extend>
     <br/>
             <table>
@@ -13,7 +17,7 @@
                         <button class="btn btn-small btn-primary" wicket:id="inboxBtn" value="inbox" style="margin-left:2px"><i style="padding:2px" class="icon-folder-open" ></i> inbox</button>
                     </td>
                     <td>
-                        <button class="btn btn-small btn-primary" wicket:id="outboxBtn" value="outbox"><i style="padding:2px" class="icon-folder-open"></i> outbox</button>
+                        <button class="btn btn-small btn-primary hidden" wicket:id="outboxBtn" value="outbox"><i style="padding:2px" class="icon-folder-open"></i> outbox</button>
                     </td>
                     <td>
                         <button class="btn btn-small btn-primary" wicket:id="systemBtn" value="outbox"><i style="padding:2px" class="icon-folder-open"></i> system</button>
@@ -26,12 +30,15 @@
 	    		<form wicket:id="form">
 		    		<div wicket:id="msgList" >
 			    		<div class="well" style="margin-top:5px;">
-			    			<legend wicket:id="subjectLbl"> </legend>
-			    			<p wicket:id="textLbl"></p>
+			    			<div wicket:id="subjectLbl"></div>
+			    			<div wicket:id="textLbl"></div>
 			    			<span wicket:id="dateLbl"/>
 			    			<input style="background-image:url(https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcT2DWfaRxpyh_6avtgUKpd-gWV6K2DMimAVPlbvBJnZwrKlpu4C);float: right;width: 50px;height: 50px;" type="submit" wicket:id="deleteBtn" value = ""/>
 			    		</div>
 		    		</div>
 	   			</form>
 	    	</div>
+        <img src="" style="display:none" id="imageView">
     </wicket:extend>
+</body>
+</html>

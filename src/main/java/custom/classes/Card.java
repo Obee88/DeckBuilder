@@ -14,7 +14,7 @@ import database.MongoHandler;
 import org.joda.time.DateTime;
 
 public class Card extends MongoObject{
-	Integer cardId;
+    Integer cardId;
 	Integer cardInfoId;
 	String printed, owner, status;
 	String inProposal;
@@ -32,7 +32,8 @@ public class Card extends MongoObject{
 			.append("owner", owner)
 			.append("cardInfoId", _cardInfoId)
 			.append("status", "booster")
-            .append("creationDate", new DateTime().toDate());
+            .append("creationDate", new DateTime().toDate())
+            .append("info", mongo.getCardInfo(_cardInfoId).toDBObject());
 		mongo.setExistance(_cardInfoId,true);
 		mongo.cardsCollection.insert(obj);
 		return new Card(obj);
@@ -61,6 +62,7 @@ public class Card extends MongoObject{
 		status = obj.get("status")==null?null:obj.get("status").toString();
 		inProposal = obj.get("inProposal")==null?"false":obj.get("inProposal").toString();
         creationDate = (Date)obj.get("creationDate");
+
 	}
 	
 	public Card(DBObject obj, String owner)  {

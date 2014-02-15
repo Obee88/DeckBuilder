@@ -23,8 +23,8 @@ import org.joda.time.format.DateTimeFormatter;
 public class InfoPanel extends Panel implements IEventListener{
 
     private final boolean isAdmin;
-    Label nameLabel, rarityLabel, ownerLabel, printedLabel, twoSidedLabel, dateLabel;
-	String name="", rarity="", owner="",printed="", isTwoSided="", idStr="", purpose="", date = "";
+    Label nameLabel, rarityLabel, ownerLabel, printedLabel, twoSidedLabel, dateLabel, manaCostlabel;
+	String name="", rarity="", owner="",printed="", isTwoSided="", idStr="", purpose="", date = "", manaCost="";
 	ShowingCard card;
 	List<Component> components = new ArrayList<Component>();
 	private Label idLabel;
@@ -53,6 +53,7 @@ public class InfoPanel extends Panel implements IEventListener{
         dateLabel = new Label("dateLabel", new PropertyModel<Object>(this,"date"));
         purposeLabel=new Label("purposeLabel", new PropertyModel<ShowingCard>(this, "purpose"));
         PURPOSELabel = new Label("PURPOSELabel", "In:");
+//        manaCostlabel = new Label("manaCostLabel", new PropertyModel<ShowingCard>(this,"manaCost"));
 		idLabel.setOutputMarkupId(true);
 		nameLabel.setOutputMarkupId(true);
 		rarityLabel.setOutputMarkupId(true);
@@ -60,6 +61,7 @@ public class InfoPanel extends Panel implements IEventListener{
 		printedLabel.setOutputMarkupId(true);
 		twoSidedLabel.setOutputMarkupId(true);
         purposeLabel.setOutputMarkupId(true);
+//        manaCostlabel.setOutputMarkupId(true);
         dateLabel.setOutputMarkupId(true);
         add(IDLabel); add(PURPOSELabel);
 		add(idLabel); components.add(idLabel);
@@ -70,6 +72,7 @@ public class InfoPanel extends Panel implements IEventListener{
 		add(twoSidedLabel); components.add(twoSidedLabel);
         add(purposeLabel);components.add(purposeLabel);
         add(dateLabel); components.add(dateLabel);
+//        add(manaCostlabel); components.add(manaCostlabel);
 
 	}
 
@@ -87,6 +90,7 @@ public class InfoPanel extends Panel implements IEventListener{
         DateTime dt = new DateTime(card.getCreationDate());
         date =  card==null? "":dt.toString(DateTimeFormat.forPattern("dd.MM.yyyy. 'at' HH:mm:ss"));
         purpose = MongoHandler.getInstance().getUser(owner).getPurpose(card);
+//        manaCost = card==null? "": card.cardInfo.manaCost;
 		for(Component c : this.components)
 			target.add(c);
 		return target;

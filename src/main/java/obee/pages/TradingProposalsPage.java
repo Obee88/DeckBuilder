@@ -120,7 +120,7 @@ public class TradingProposalsPage extends MasterPage {
 					User to = mongo.getUser(tp.getTo());
 					for(ShowingCard sc: tp.getFromList()){
 						mongo.setCardOwner(sc.cardId,to.getUserName());
-						mongo.removeFromTradingList(sc.cardId, from.getUserName());
+						mongo.removeCardFromUser(sc.cardId, from.getUserName());
 						mongo.setCardStatus(sc.cardId, "boosters");
 						mongo.addToBoosterList(sc.cardId, to.getUserName());
 						mongo.setCardInProposal(sc.cardId,"false");

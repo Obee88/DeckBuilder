@@ -90,4 +90,45 @@ public class UserMessage extends MongoObject {
     public static final UserMessage Welcome = new UserMessage(0,"Welcome","This is your first message. \nObee wish you welcome.");
 
 
+    public CharSequence getEscapedText() {
+        String text = getText()+".";
+        StringBuilder sb = new StringBuilder();
+        String[] parts = text.split("#");
+        for(int i=0 ;i<parts.length;i++){
+            sb.append(parts[i++]);
+            if(parts.length-1<=i) continue;
+            String cardName = parts[i];
+            String url = mongo.getUrlForCard(cardName);
+            if(url==null){
+                sb.append(parts[i]);
+            } else {
+                sb.append(" <a href='#' onmouseover=\"showImage('").append(url).append("',this)\"");
+                sb.append(" onmouseout=\"hideImage()\">");
+                sb.append(cardName).append("</a>");
+            }
+        }
+        String ret = sb.toString();
+        return ret.substring(0,ret.length()-1);
+    }
+
+    public CharSequence getEscapedSubject() {
+        String text = getSubject()+".";
+        StringBuilder sb = new StringBuilder();
+        sb.append("<legend>");
+        String[] parts = text.split("#");
+        for(int i=0 ;i<parts.length;i++){
+            sb.append(parts[i++]);
+            if(parts.length-1<=i) continue;
+            String cardName = parts[i];
+            String url = mongo.getUrlForCard(cardName);
+            if(url==null){
+                sb.append(parts[i]);
+            } else {
+                sb.append(" <span style=\"color:#6493D2\"  onmouseover=\"showImage('").append(url).append("',this)\"");
+                sb.append(" onmouseout=\"hideImage()\">");
+                sb.append(cardName).append("</span>");
+            }
+        }
+        return sb.toString().substring(0,sb.length()-1)+"</legend>";
+    }
 }

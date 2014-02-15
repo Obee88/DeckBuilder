@@ -6,7 +6,12 @@ import java.util.List;
 
 import obee.pages.master.MasterPage;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,6 +24,8 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import custom.classes.Card;
@@ -54,6 +61,54 @@ public class BoosterPage extends MasterPage{
 
 	public BoosterPage(final PageParameters params) {
 		super(params,"Boosters");
+
+        AjaxEventBehavior keypress =new AjaxEventBehavior("onkeypress"){
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes
+                                                        attributes) {
+                super.updateAjaxAttributes(attributes);
+
+                IAjaxCallListener listener = new AjaxCallListener(){
+                    @Override
+                    public CharSequence getPrecondition(Component component) {
+                        //this javascript code evaluates wether an
+                        //ajaxcall is necessary.
+                        //Here only by keyocdes for 1,2,3
+                        return  "var keycode ="+
+                                "Wicket.Event.keyCode(attrs.event);" +
+                                "if (keycode >=49 && keycode <= 51)" +
+                                "    return true;" +
+                                "else" +
+                                "    return false;";
+                    }
+                };
+                attributes.getAjaxCallListeners().add(listener);
+
+                //Append the pressed keycode to the ajaxrequest
+                attributes.getDynamicExtraParameters()
+                        .add("var eventKeycode = "+
+                                "Wicket.Event.keyCode(attrs.event);" +
+                                "return {keycode: eventKeycode};");
+            }
+            @Override
+            protected void onEvent(AjaxRequestTarget target) {
+
+                final Request request = RequestCycle.get().getRequest();
+                final String code =request.getRequestParameters()
+                        .getParameterValue("keycode").toString("");
+                String key = null;
+                if (code.equals("51"))
+                    key = "3";
+                if (code.equals("49"))
+                    key = "1";
+                if (code.equals("50"))
+                    key = "2";
+                if(boosterPanel.listChooser.selectedChoice==null || key==null) return ;
+                target = boosterPanel.listChooser.informListeners(target, "onKeyPress-"+key);
+            }
+        };
+        add(keypress);
+
 		getShowingCards();
 		initComponents();
         addBehaviors();
@@ -83,21 +138,28 @@ public class BoosterPage extends MasterPage{
 	    	@Override
 	    	public AjaxRequestTarget onEvent(AjaxRequestTarget target,
 	    			Object sender, String eventType) {
-	    		if(eventType.equals("onDblClk")){
+	    		if(eventType.equals("onDblClk")||eventType.startsWith("onKeyPress-")){
+                    String key = eventType.substring(eventType.length()-1);
 	    			CardSelectionPanel csp =(CardSelectionPanel)((ListChooser)sender).getParentPanel();
 					ShowingCard sc = (ShowingCard) csp.listChooser.getDefaultModelObject();
 					if(sc==null) return target;
 					csp.removeChoice(sc);
+                    csp.unselect();
 					u.removeFromBooster(sc.cardId);
-					if(isGood){
-						goodChoice.addChoice(sc);
-						u.addToUsing(sc.cardId);
-                        sc.status = "using";
-					} else{
-						badChoice.addChoice(sc);
-						u.addToTrading(sc.cardId);
-                        sc.status = "trading";
-					}
+                    if(!key.equals("3")){
+                        if((key.equals("k")&&isGood) || key.equals("1")){
+                            goodChoice.addChoice(sc);
+                            u.addToUsing(sc.cardId);
+                            sc.status = "using";
+                        } else if ((key.equals("k")&&isBad) || key.equals("2")){
+                            badChoice.addChoice(sc);
+                            u.addToTrading(sc.cardId);
+                            sc.status = "trading";
+                        }
+                    } else {
+                        u.addToRecycleShortlist(sc);
+                        sc.status = "removing";
+                    }
                     sc.UPDATE();
 					u.UPDATE();
 					target.add(boosterPanel);
@@ -138,12 +200,17 @@ public class BoosterPage extends MasterPage{
 		Form<?> getBoostersForm = new Form("getBoostersForm"){
 			@Override
 			protected void onSubmit() {
-				
-				u.addToBooster(CardGenerator.generateBooster(cardsAv,getUserName()));
-				u.setLastBoosterDate(new Date());
-				u.UPDATE();
-				info(cardsAv+" cards added!");
-				setResponsePage(BoosterPage.class);
+
+                if(u.isBoosterTakenThisWeek()) {
+                    info("Booster already taken.");
+                    setResponsePage(BoosterPage.class);
+                } else{
+                    u.addToBooster(CardGenerator.generateBooster(cardsAv,getUserName()));
+                    u.setLastBoosterDate(new Date());
+                    u.UPDATE();
+                    info(cardsAv+" cards added!");
+                    setResponsePage(BoosterPage.class);
+                }
 			}
 			@Override
 			public boolean isVisible() {

@@ -48,6 +48,7 @@ public class MalfunctionsPage extends MasterPage {
     private AjaxLink<Object> checkOwnerNotInListButton, checkInListNotOwnerButton;
     private Form<Object> clearTradeList;
     private Form<Object> chechInProposalForm;
+    private AjaxLink<Object> clearListUserNilBtn;
 
 
     public MalfunctionsPage(PageParameters params) {
@@ -109,6 +110,7 @@ public class MalfunctionsPage extends MasterPage {
         cardKeys.append("owner",1);
 //        cardKeys.append("rarity",1);
         cardKeys.append("_id",0);
+        BasicDBList basicLandNamesDBL = new BasicDBList();
         DBCursor allIdsCur = mongo.cardsCollection.find(new BasicDBObject(),cardKeys);
         while(allIdsCur.hasNext()){
             DBObject cardObj = allIdsCur.next();
@@ -119,6 +121,8 @@ public class MalfunctionsPage extends MasterPage {
                 listOwner = mongo.usersCollection.findOne(new BasicDBObject("userCards.using",id));
             if(listOwner==null)
                 listOwner = mongo.usersCollection.findOne(new BasicDBObject("userCards.boosters",id));
+            if(listOwner==null)
+                listOwner = mongo.usersCollection.findOne(new BasicDBObject("userCards.recycleShortlist",id));
             if(listOwner==null || !listOwner.get("userName").toString().equals(owner))   {
                 ShowingCard sc =new ShowingCard(mongo.getCard(id));
                 if(!basicLandNames.contains(sc.name))
@@ -179,7 +183,7 @@ public class MalfunctionsPage extends MasterPage {
 						o.addToUsing(sc.cardId);
 					else if (st.equals("trading")) {
 						o.addToTrading(sc.cardId);
-					} 
+					}
 					o.UPDATE();
 				}
                 info(ownerNotInListList.size()+ " cards repaired!");
@@ -192,38 +196,34 @@ public class MalfunctionsPage extends MasterPage {
 			protected void onSubmit() {
 				super.onSubmit();
                 int count=0;
+                BasicDBList basicLandsIds = mongo.getBasicLandsInfoIds();
 				for(User u: mongo.getAllUsers()){
-					List<Integer> tradeList = mongo.getTradeCardsIds(u.getUserName());
-					List<Integer> usingList = mongo.getUsingCardsIds(u.getUserName());
-					List<Integer> boostersList = mongo.getBoostersCardsIds(u.getUserName());
-                    int cardsnum= tradeList.size()+usingList.size()+boostersList.size();
-					List<ShowingCard> tradeCardsList = new ArrayList<ShowingCard>();
-					List<ShowingCard> usingCardsList = new ArrayList<ShowingCard>();
-					List<ShowingCard> boostersCardsList = new ArrayList<ShowingCard>();
-					Set<Integer> tradeSet = new TreeSet<Integer>();
-					Set<Integer> usingSet = new TreeSet<Integer>();
-					Set<Integer> boostersSet = new TreeSet<Integer>();
-					tradeSet.addAll(tradeList);
-					usingSet.addAll(usingList);
-					boostersSet.addAll(boostersList);
-					tradeList.clear();
-					usingList.clear();
-					boostersList.clear();
-					for(Integer id : tradeSet)
-						if(mongo.cardExist(id))
-							tradeCardsList.add(new ShowingCard(mongo.getCard(id)));
-					for(Integer id: usingSet)
-						if(mongo.cardExist(id))
-							usingCardsList.add(new ShowingCard(mongo.getCard(id)));
-					for(Integer id: boostersSet)
-						if(mongo.cardExist(id))
-							boostersCardsList.add(new ShowingCard(mongo.getCard(id)));
-					u.setBooster(boostersCardsList);
-					u.setTrading(tradeCardsList);
-					u.setUsing(usingCardsList);
-					u.UPDATE();
-                    int removed = cardsnum-tradeCardsList.size()-usingCardsList.size()-boostersCardsList.size();
-                    count+=removed;
+                    Set<ShowingCard> using = new TreeSet<ShowingCard>();
+                    Set<ShowingCard> trading = new TreeSet<ShowingCard>();
+                    Set<ShowingCard> boosters = new TreeSet<ShowingCard>();
+                    DBCursor cur = mongo.cardsCollection.find(new BasicDBObject("owner", u.getUserName())
+                            .append("cardInfoId", new BasicDBObject("$nin",basicLandsIds)));
+                    int cnt = 0;
+                    while(cur.hasNext()){
+                        DBObject obj = cur.next();
+                        ShowingCard sc = new ShowingCard(new Card(obj));
+                        if(!sc.status.equals("removing"))
+                            cnt++;
+                        else
+                            continue;
+                        String status = obj.get("status").toString();
+                        if(status.equals("using"))
+                            using.add(sc);
+                        if(status.equals("trading"))
+                            trading.add(sc);
+                        if(status.equals("booster"))
+                            boosters.add(sc);
+                    }
+                    u.setBooster(boosters);
+                    u.setUsing(using);
+                    u.setTrading(trading);
+                    u.UPDATE();
+                    count += cnt- boosters.size()-trading.size()-using.size();
 				}
                 info(count +" cards removed!");
 			}
@@ -319,6 +319,19 @@ public class MalfunctionsPage extends MasterPage {
             }
         };
         form.add(checkInListNotOwnerButton);
+
+        clearListUserNilBtn = new AjaxLink<Object>("clearListUserNilBtn"){
+            @Override
+            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                BasicDBList remList = new BasicDBList();
+                for(ShowingCard sc : ownerNotInListList){
+                    int id = sc.cardId;
+                    remList.add(id);
+                }
+                info(mongo.cardsCollection.remove(new BasicDBObject("id",new BasicDBObject("$in",remList))).toString());
+            }
+        };
+        form.add(clearListUserNilBtn);
 	}
 
 	private void initBehaviours() {

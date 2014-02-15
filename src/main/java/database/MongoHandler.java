@@ -53,6 +53,10 @@ public class MongoHandler {
 		if(obj==null) return null;
 		return new User(obj);
 	}
+
+    public void removeUser(String userName){
+        usersCollection.remove(new BasicDBObject("userName",userName));
+    }
 	
 	public boolean userExist(String userName){
 		return getUser(userName)!=null;
@@ -105,7 +109,8 @@ public class MongoHandler {
 	}
 
 	public ShowingCard getShowingCard(Integer scid) {
-		return new ShowingCard(getCard(scid));
+        Card c = getCard(scid);
+		return c==null?null:new ShowingCard(c);
 	}
 
 	public Set<String> getCardsThatStartsWith(String input, int limit) {
@@ -136,10 +141,28 @@ public class MongoHandler {
 	}
 
 	public void removeFromTradingList(Integer cardId, String userName) {
+        try{
 		BasicDBObject q = new BasicDBObject("userName",userName);
 		BasicDBObject o = new BasicDBObject("$pull", new BasicDBObject("userCards.trading",cardId));
 		usersCollection.update(q, o);
+        } catch (Exception e){}
 	}
+
+    public void removeFromUsingList(Integer cardId, String userName) {
+        try{
+            BasicDBObject q = new BasicDBObject("userName",userName);
+            BasicDBObject o = new BasicDBObject("$pull", new BasicDBObject("userCards.using",cardId));
+            usersCollection.update(q, o);
+        } catch (Exception e){}
+    }
+
+    public void removeFromBoostersList(Integer cardId, String userName) {
+        try{
+            BasicDBObject q = new BasicDBObject("userName",userName);
+            BasicDBObject o = new BasicDBObject("$pull", new BasicDBObject("userCards.boosters",cardId));
+            usersCollection.update(q, o);
+        } catch (Exception e){}
+    }
 
 	public void addToBoosterList(Integer cardId, String userName) {
 		BasicDBObject q = new BasicDBObject("userName",userName);
@@ -205,6 +228,7 @@ public class MongoHandler {
 		for(Object o : dbl)
 			ret.add((Integer)o);
 		return ret;
+
 	}
 	
 	public List<Integer> getBoostersCardsIds(String userName) {
@@ -250,6 +274,10 @@ public class MongoHandler {
     public String queryAll(Object name, Object type, Object subType, Object rarity, Object text, Object manaCost,
                            Object creationDate,Object color, Object users) {
 
+        BasicDBList landNames = new BasicDBList();
+        landNames.add("island"); landNames.add("plains"); landNames.add("swamp");
+        landNames.add("mountain"); landNames.add("forest");
+
         BasicDBObject q =new BasicDBObject();
         if(name!=null)
             q.append("name",name);
@@ -259,8 +287,12 @@ public class MongoHandler {
             q.append("subType", subType);
         if(rarity!=null)
             q.append("rarity",rarity);
-        if(type!=null)
+        boolean isEnchantment = false;
+        if(type!=null){
             q.append("type",type);
+            BasicDBList dbl = (BasicDBList) ((DBObject) type).get("$in");
+            isEnchantment = dbl.contains("enchantment");
+        }
         if(manaCost!=null)
             q.append("convertedManaCost",manaCost);
         if(color!=null)
@@ -270,7 +302,11 @@ public class MongoHandler {
 
         while(CIcur.hasNext()){
             DBObject obj = CIcur.next();
-            list.add(obj.get("id"));
+            String n = obj.get("name").toString().toLowerCase();
+            String t = obj.get("text").toString().toLowerCase();
+            if(!landNames.contains(n)
+                    && (!isEnchantment &&!t.startsWith("enchant")))
+                list.add(obj.get("id"));
         }
 
         BasicDBObject qq = new BasicDBObject("cardInfoId",new BasicDBObject("$in", list));
@@ -284,13 +320,15 @@ public class MongoHandler {
         boolean isempty =true;
         while (Ccur.hasNext()){
             DBObject obj = Ccur.next();
-
-            String id = obj.get("id").toString();
-            if(isempty){
-                sb.append(id);
-                isempty=false;
-            } else
-                sb.append(",").append(id);
+            String cardName= "";
+            if(!landNames.contains(cardName.toLowerCase())){
+                String id = obj.get("id").toString();
+                if(isempty){
+                    sb.append(id);
+                    isempty=false;
+                } else
+                    sb.append(",").append(id);
+            }
         }
         return sb.toString();
     }
@@ -373,23 +411,6 @@ public class MongoHandler {
 
     public ArrayList<ShowingCard> getIllegalCards(String username) {
         ArrayList<ShowingCard> ret = new ArrayList<ShowingCard>();
-//        BasicDBList cases = new BasicDBList();
-//        Pattern band = Pattern.compile(".*bands.*",Pattern.CASE_INSENSITIVE);
-//        Pattern banding = Pattern.compile(".*banding.*",Pattern.CASE_INSENSITIVE);
-//        Pattern banding1 = Pattern.compile("Banding.*",Pattern.CASE_INSENSITIVE);
-//        Pattern bands1 = Pattern.compile("Bands.*",Pattern.CASE_INSENSITIVE);
-//        Pattern ante = Pattern.compile(".* ante .*",Pattern.CASE_INSENSITIVE);
-//        cases.add(new BasicDBObject("info.text",banding1));
-//        cases.add(new BasicDBObject("info.text",bands1));
-//        cases.add(new BasicDBObject("info.text",band));
-//        cases.add(new BasicDBObject("info.text",banding));
-//        cases.add(new BasicDBObject("info.text",ante));
-//        DBCursor cur = cardsCollection.find(new BasicDBObject("owner",username).append("$or",cases));
-//        while(cur.hasNext()){
-//            DBObject obj = cur.next();
-//            ShowingCard sc = new ShowingCard(new Card(obj));
-//            ret.add(sc);
-//        }
         return ret;
     }
 
@@ -447,5 +468,42 @@ public class MongoHandler {
             cnt++;
         }
         return cnt;
+    }
+
+    public void removeCardFromUser(Integer cardId, String userName) {
+        removeFromTradingList(cardId,userName);
+        removeFromBoostersList(cardId, userName);
+        removeFromUsingList(cardId,userName);
+    }
+
+    public String cardStatus(Integer id) {
+        try{
+            return cardsCollection.findOne(new BasicDBObject("id",id)).get("status").toString();
+        } catch (Exception e){
+            return null;
+        }
+    }
+
+    public BasicDBList getBasicLandsInfoIds() {
+        BasicDBList ret = new BasicDBList();
+        BasicDBList basicLandNames = new BasicDBList();
+        basicLandNames.add("Island");
+        basicLandNames.add("Forest");
+        basicLandNames.add("Swamp");
+        basicLandNames.add("Mountain");
+        basicLandNames.add("Plains");
+        DBCursor cur = cardInfoCollection.find(new BasicDBObject("name", new BasicDBObject("$in",basicLandNames)),
+                new BasicDBObject("id",1));
+        while (cur.hasNext())
+            ret.add((Integer)cur.next().get("id"));
+        return ret;
+    }
+
+    public String getUrlForCard(String cardName) {
+        String pattern = "^"+cardName.trim()+"$";
+        DBObject obj = cardInfoCollection.findOne(new BasicDBObject("name",Pattern.compile(pattern , Pattern.CASE_INSENSITIVE)),new BasicDBObject("downloadLink",1));
+        if (obj == null) return null;
+        return obj.get("downloadLink").toString();
+
     }
 }

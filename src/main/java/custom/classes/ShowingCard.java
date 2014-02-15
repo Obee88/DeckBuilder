@@ -66,12 +66,7 @@ public class ShowingCard implements Serializable,Comparable<ShowingCard> {
 	}
 	
 	private boolean hasColor(String c) {
-		String manaCost = cardInfo.manaCost;
-		if(manaCost.equals("")){
-			String text = cardInfo.text;
-			return text.contains("{"+c+"}");
-		} else 
-			return manaCost.contains(c);
+        return cardInfo.hasColor(c);
 	}
 	
 	public boolean isBlack(){

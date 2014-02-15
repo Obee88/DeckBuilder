@@ -1,6 +1,7 @@
 package custom.classes.abstractClasses;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.mongodb.BasicDBList;
@@ -27,7 +28,7 @@ public abstract class MongoObject {
 		return ret;
 	}
 	
-	public BasicDBList IntL2DBL(List<Integer> list){
+	public BasicDBList IntL2DBL(Collection<Integer> list){
 		BasicDBList ret = new BasicDBList();
 		if(list==null) return ret;
 		for(Integer i: list)
@@ -52,4 +53,5 @@ public abstract class MongoObject {
 		}
 		return ret;
 	}
+
 }

@@ -1,27 +1,35 @@
 package obee.pages;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import custom.classes.User;
 import custom.classes.UserMessage;
 
 import obee.pages.master.MasterPage;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
+
 
 @SuppressWarnings("serial")
 @AuthorizeInstantiation("USER")
 public class UserMainPage extends MasterPage {
+
+    private static final JavaScriptResourceReference MYPAGE_JS = new JavaScriptResourceReference(UserMainPage.class, "UserMainPage.js");
+
     private final AjaxLink<Object> inboxBtn,outboxBtn,systemBtn,allBtn;
     Form<Object> form;
 	ListView<UserMessage> messagesView;
@@ -65,8 +73,28 @@ public class UserMainPage extends MasterPage {
                     subject="[to:"+mongo.getMessageOwner(msg)+subject;
                     delbtn.add(new AttributeModifier("style", "display:none;"));
                 }
-				item.add(new Label("subjectLbl",subject));
-				item.add(new Label("textLbl",msg.getText()));
+				////////////////////////////////////////////////////////////////////////////////////////
+                WebComponent messageComponent = new WebComponent("textLbl"){
+                    @Override
+                    protected void onComponentTag(ComponentTag tag) {
+                        Response response = getRequestCycle().getResponse();
+                        response.write("<p>");
+                        response.write(msg.getEscapedText());
+                        response.write("</p>");
+                    }
+                };
+                WebComponent subjectComponent = new WebComponent("subjectLbl"){
+                    @Override
+                    protected void onComponentTag(ComponentTag tag) {
+                        Response response = getRequestCycle().getResponse();
+                        response.write(msg.getEscapedSubject());
+                    }
+                };
+                ////////////////////////////////////////////////////////////////////////////////////////
+//                item.add(new Label("subjectLbl",subject));
+//				item.add(new Label("textLbl",msg.getText()));
+                item.add(subjectComponent);
+                item.add(messageComponent);
 				item.add(new Label("dateLbl",msg.getDateString()));
 				item.add(delbtn);
             }
@@ -172,5 +200,10 @@ public class UserMainPage extends MasterPage {
         outbox,
         system,
         all
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.render(JavaScriptReferenceHeaderItem.forReference(MYPAGE_JS));
     }
 }

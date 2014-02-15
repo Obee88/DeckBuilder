@@ -6,13 +6,19 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.markup.html.form.ListChoice;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.CollectionModel;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.util.string.AppendingStringBuffer;
 
 import custom.classes.ShowingCard;
@@ -52,7 +58,6 @@ public class ListChooser<T> extends ListChoice<T>{
 				Object obj = getDefaultModelObject();
 				selectedChoice  = (T) obj;
 				if(selectedChoice == null) {
-					//selectedChoice =(T)DEFAULT_OBJECT;
 					return;
 				}
 				target = informListeners(target, "onChange");
@@ -75,9 +80,10 @@ public class ListChooser<T> extends ListChoice<T>{
             }
         };
         add(clck);
+
 	}
 
-	protected AjaxRequestTarget informListeners(AjaxRequestTarget target, String eventType) {
+	public AjaxRequestTarget informListeners(AjaxRequestTarget target, String eventType) {
 		ShowingCard sc = (ShowingCard)getDefaultModelObject();
 		if(eventListeners==null || sc.cardId==null) return target;
 		for(IEventListener listener : eventListeners)

@@ -30,7 +30,7 @@ import obee.pages.master.MasterPage;
 public class RecyclePage extends MasterPage {
 	private static final long serialVersionUID = 1L;
 	private Form form;
-	private CardSelectionPanel cardsPanel,illegalCardsPanel;
+	private CardSelectionPanel cardsPanel,recycleShortlistPanel;
 	private List<ShowingCard> tradeList;
 	private CardSelectionPanel sacCards;
 	private CardView cardView;
@@ -38,8 +38,9 @@ public class RecyclePage extends MasterPage {
     private PlusMinusPanel weeksOldPanel;
     private AjaxLink<Object> filterButton;
     User usr =  mongo.getUser(userName);
-    private ArrayList<ShowingCard> illegalCardsList;
+    private ArrayList<ShowingCard> recycleShortlistList;
     private Form recycleIllegalForm;
+    private AjaxLink<Object> fillFromShortlist;
 
 
     public RecyclePage(final PageParameters params) {
@@ -52,7 +53,7 @@ public class RecyclePage extends MasterPage {
 	}
 
 	private void initLists() {
-        illegalCardsList = mongo.getIllegalCards(getUserName());
+        recycleShortlistList = (ArrayList<ShowingCard>) usr.getRecycleShortlistShowingCards();
 		tradeList = usr.getTradingShowingCards();
 		List<ShowingCard> tmpList = new ArrayList<ShowingCard>();
 		for(ShowingCard sc: tradeList)
@@ -75,6 +76,9 @@ public class RecyclePage extends MasterPage {
 				}
 				for(ShowingCard sc : sacList){
 					usr.removeFromTrading(sc.cardId);
+                    usr.removeFromUsing(sc.cardId);
+                    usr.removeFromBooster(sc.cardId);
+                    usr.removeFromRecycleShortlist(sc.cardId);
 					mongo.deleteCard(sc.cardId);
 				}
 				usr.addToBooster(CardGenerator.generateBooster(1,getUserName()));
@@ -89,36 +93,36 @@ public class RecyclePage extends MasterPage {
         form.add(weeksOldPanel);
         form.add(filterButton);
         add(form);
-        recycleIllegalForm = new Form("recycleIllegalForm"){
-            @Override
-            protected void onSubmit() {
-                super.onSubmit();
-                try{
-                    ShowingCard sc = illegalCardsPanel.listChooser.getSelectedChoice();
-                    if (sc==null) return;
-                    usr.removeFromTrading(sc.cardId);
-                    usr.removeFromBooster(sc.cardId);
-                    usr.removeFromUsing(sc.cardId);
-                    mongo.deleteCard(sc.cardId);
-                    usr.addToBooster(CardGenerator.generateBooster(1,getUserName()));
-                    info("One card added to boosters");
-                    usr.UPDATE();
-                }catch (Exception ignorable){
-                    info("nothing to recycle!");
-                    return;
-                }
-                setResponsePage(RecyclePage.class);
-            }
-        };
-        add(recycleIllegalForm);
+//        recycleIllegalForm = new Form("recycleIllegalForm"){
+//            @Override
+//            protected void onSubmit() {
+//            }
+//        };
+//        add(recycleIllegalForm);
 	}
 
 	private void initComponents() {
-        illegalCardsPanel = new CardSelectionPanel("illegalCardsPanel",illegalCardsList);
-        illegalCardsPanel.listChooser.setMaxRows(19);
-        illegalCardsPanel.setPrintCheckBoxVisible(false);
-        illegalCardsPanel.setFilterVisible(false);
-		add(illegalCardsPanel);
+        fillFromShortlist = new AjaxLink<Object>("fillFromShortlist"){
+
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                while (sacList.size()<6 && recycleShortlistList.size()>0){
+                    ShowingCard sc = recycleShortlistList.remove(0);
+                    recycleShortlistPanel.removeChoice(sc);
+                    sacCards.addChoice(sc);
+                    sacList.add(sc);
+                    target.add(recycleShortlistPanel);
+                    target.add(sacCards);
+                }
+            }
+        };
+        add(fillFromShortlist);
+        recycleShortlistPanel = new CardSelectionPanel("recycleShortlistPanel",recycleShortlistList);
+        recycleShortlistPanel.listChooser.setMaxRows(19);
+        recycleShortlistPanel.setPrintCheckBoxVisible(false);
+        recycleShortlistPanel.setFilterVisible(false);
+        recycleShortlistPanel.setOutputMarkupId(true);
+		add(recycleShortlistPanel);
         cardsPanel = new CardSelectionPanel("userCards", (ArrayList<ShowingCard>) tradeList);
 		cardsPanel.listChooser.setMaxRows(19);
 		cardsPanel.setPrintCheckBoxVisible(false);
@@ -126,11 +130,12 @@ public class RecyclePage extends MasterPage {
 	    sacCards.listChooser.setMaxRows(6);
 	    sacCards.setPrintCheckBoxVisible(false);
 	    sacCards.setFilterVisible(false);
+        sacCards.setOutputMarkupId(true);
 		cardView = new CardView("cardView");
 		cardView.setRarityLblVisible(true);
 		cardsPanel.listChooser.addEventListener(cardView);
 		sacCards.listChooser.addEventListener(cardView);
-        illegalCardsPanel.listChooser.addEventListener(cardView);
+        recycleShortlistPanel.listChooser.addEventListener(cardView);
         final List<String> rarity = new ArrayList<String>();
         rarity.add("common");rarity.add("uncommon");
         rarity.add("rare"); rarity.add("mythic");
@@ -177,8 +182,10 @@ public class RecyclePage extends MasterPage {
 					CardSelectionPanel from, to;
 					List<ShowingCard> fromList, toList;
 					String senderId = ((ListChooser<ShowingCard>)sender).getParentPanel().getId();
+                    ShowingCard sc = null;
 					if(senderId.equals("userCards")){
 						from = cardsPanel;
+                        sc= (ShowingCard) from.listChooser.getDefaultModelObject();
 						to = sacCards;
 						fromList = tradeList;
 						toList = sacList;
@@ -190,10 +197,15 @@ public class RecyclePage extends MasterPage {
 					} else if(senderId.equals("sacCards")){
 						to = cardsPanel;
 						from = sacCards;
+                        sc = (ShowingCard) from.listChooser.getDefaultModelObject();
 						toList = tradeList;
 						fromList = sacList;
+                        usr.removeFromRecycleShortlist(sc.cardId);
+                        usr.addToTrading(sc.cardId);
+                        sc.status = "trading";
+                        usr.UPDATE();
+                        sc.UPDATE();
 					} else return target;
-					ShowingCard sc = (ShowingCard) from.listChooser.getDefaultModelObject();
 					if(sc==null) return target;
 					fromList.remove(sc);
 					from.setChoices(fromList);

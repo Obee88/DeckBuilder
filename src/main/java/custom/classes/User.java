@@ -1,7 +1,6 @@
 package custom.classes;
 
 import java.io.Serializable;
-import java.security.MessageDigest;
 import java.util.*;
 
 import blake.Digest.Blake256;
@@ -11,7 +10,6 @@ import org.joda.time.DateTimeConstants;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.mongodb.util.Base64Codec;
 
 import custom.classes.abstractClasses.MongoObject;
 
@@ -28,6 +26,7 @@ public class User extends MongoObject implements Serializable{
 	int maxMessageId;
 	SubFolders subfolders;
 	List<String> wishList;
+    Set<Integer> recycleShortlist;
 	public String[] subFolderNames = new String[]{"sf0","sf1","sf2","sf3","sf4","sf5"};
     private boolean wantsProposalMail, wantsWishlistMail;
 
@@ -50,6 +49,8 @@ public class User extends MongoObject implements Serializable{
 		booster = DBL2IntL((BasicDBList)cardsObj.get("boosters"));
 		using = DBL2IntL((BasicDBList)cardsObj.get("using"));
 		trading = DBL2IntL((BasicDBList)cardsObj.get("trading"));
+        BasicDBList recycleshortlistObj = (BasicDBList) cardsObj.get("recycleShortlist");
+        recycleShortlist = recycleshortlistObj==null?new TreeSet<Integer>():DBL2IntS(recycleshortlistObj);
 		roles = DBL2StrL((BasicDBList)obj.get("roles"));
 		lastBoosterDate = (Date) obj.get("lastBoosterDate");
 		starterDeck = obj.get("starterDeck")==null?null: obj.get("starterDeck").toString();
@@ -67,7 +68,14 @@ public class User extends MongoObject implements Serializable{
 
 	}
 
-	public static String makePasswordHash(String password, String salt) {
+    private Set<Integer> DBL2IntS(BasicDBList recycleshortlistObj) {
+        Set<Integer> ret = new TreeSet<Integer>();
+        for (Object id : recycleshortlistObj)
+            ret.add((Integer) id);
+        return ret;
+    }
+
+    public static String makePasswordHash(String password, String salt) {
         try {
 //            String saltedAndHashed = password + "," + salt;
 //            MessageDigest digest = MessageDigest.getInstance("MD5");
@@ -86,7 +94,8 @@ public class User extends MongoObject implements Serializable{
 		BasicDBObject cards = new BasicDBObject()
 			.append("boosters", IntL2DBL(booster))
 			.append("using", IntL2DBL(using))
-			.append("trading", IntL2DBL(trading));
+			.append("trading", IntL2DBL(trading))
+            .append("recycleShortlist", IntL2DBL(recycleShortlist));
 		BasicDBObject obj = new BasicDBObject("userName",userName)
 			.append("eMail", eMail)
 			.append("passwordHash", passwordHash)
@@ -228,19 +237,19 @@ public class User extends MongoObject implements Serializable{
 		return ret;
 	}
 	
-	public void setBooster(List<ShowingCard> b) {
+	public void setBooster(Collection<ShowingCard> b) {
 		booster.clear();
 		for(ShowingCard sc : b)
 			booster.add(sc.cardId);
 	}
 	
-	public void setUsing(List<ShowingCard> b) {
+	public void setUsing(Collection<ShowingCard> b) {
 		using.clear();
 		for(ShowingCard sc : b)
 			using.add(sc.cardId);
 	}
 	
-	public void setTrading(List<ShowingCard> b) {
+	public void setTrading(Collection<ShowingCard> b) {
 		trading.clear();
 		for(ShowingCard sc : b)
 			trading.add(sc.cardId);
@@ -481,5 +490,65 @@ public class User extends MongoObject implements Serializable{
                 ret.add(sc);
         }
         return ret;
+    }
+
+    public boolean isBoosterTakenThisWeek() {
+        DBObject usrObj = mongo.usersCollection.findOne(new BasicDBObject("userName",userName));
+        Date lbd = (Date) usrObj.get("lastBoosterDate");
+        DateTime now = new DateTime();
+        DateTime deadline = now.withDayOfWeek(DateTimeConstants.MONDAY)
+                .withHourOfDay(0)
+                .withMinuteOfHour(0)
+                .withSecondOfMinute(0)
+                .withMillisOfSecond(0);
+        DateTime lastPick = new DateTime(lbd);
+        return !lastPick.isBefore(deadline);
+    }
+
+    public void changeName(String newName, String newMail){
+        String oldName = userName.toString();
+        this.userName = newName;
+        this.eMail = newMail;
+        this.UPDATE();
+        List<ShowingCard> cards = getUsingShowingCards();
+        cards.addAll(getBoosterShowingCards());
+        cards.addAll(getTradingShowingCards());
+        for (ShowingCard sc : cards){
+            sc.owner = newName;
+            sc.printed = "false";
+            sc.UPDATE();
+        }
+        for(TradingProposal tp : Administration.getTradingProposalsListFrom(userName)){
+            Administration.removeFromTradingProposalList(tp);
+            for(ShowingCard sc : tp.getFromList())
+                mongo.setCardInProposal(sc.cardId, "false");
+        }
+        mongo.removeUser(oldName);
+    }
+
+    public Date getLastBoosterDate() {
+        return lastBoosterDate;
+    }
+
+    public void setEmail(String email) {
+        this.eMail = email;
+    }
+
+    public void addToRecycleShortlist(ShowingCard sc) {
+        recycleShortlist.add(sc.cardId);
+    }
+
+    public List<ShowingCard> getRecycleShortlistShowingCards(){
+        List<ShowingCard> ret = new ArrayList<ShowingCard>();
+        for (Integer id: recycleShortlist) {
+            ShowingCard sc =  mongo.getShowingCard(id);
+            if (sc!=null)
+                ret.add(sc);
+        }
+        return ret;
+    }
+
+    public boolean removeFromRecycleShortlist(Integer cardId) {
+        return recycleShortlist.remove(cardId);
     }
 }

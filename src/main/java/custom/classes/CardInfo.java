@@ -1,12 +1,16 @@
 package custom.classes;
 
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import database.MongoHandler;
 
 public class CardInfo {
 	public String downloadLink,text,name,type,manaCost,rarity,artist,edition,subType;
 	public boolean isTwoSided;
 	public int convertedManaCost, id;
-	
+	private MongoHandler mongo = MongoHandler.getInstance();
+
 	public CardInfo(DBObject obj) {
 		downloadLink = obj.get("downloadLink").toString();
 		text = obj.get("text").toString();
@@ -26,4 +30,37 @@ public class CardInfo {
 			return true;
 		return false;
 	}
+
+    public DBObject toDBObject(){
+        BasicDBObject obj = new BasicDBObject();
+        obj.append("downloadLink", downloadLink);
+        obj.append("text", text);
+        obj.append("name", name);
+        obj.append("type", type);
+        obj.append("manaCost", manaCost);
+        obj.append("rarity", rarity);
+        obj.append("artist", artist);
+        obj.append("edition", edition);
+        obj.append("convertedManaCost", convertedManaCost);
+        obj.append("id", id);
+        obj.append("isTwoSided", isTwoSided);
+        return obj;
+    }
+
+    public void UPDATE(){
+        mongo.cardInfoCollection.update(getQ(), toDBObject());
+    }
+
+    public DBObject getQ() {
+        return new BasicDBObject("id", id);
+    }
+
+    public boolean hasColor(String c) {
+        if(manaCost.equals("")){
+            return text.contains("{"+c+"}");
+        } else if (type.toLowerCase().contains("land")){
+            return text.contains("{"+c+"}") || manaCost.contains(c);
+        }
+        return manaCost.contains(c);
+    }
 }
