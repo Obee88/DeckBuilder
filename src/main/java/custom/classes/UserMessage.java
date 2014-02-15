@@ -92,33 +92,27 @@ public class UserMessage extends MongoObject {
 
     public CharSequence getEscapedText() {
         String text = getText()+".";
-        StringBuilder sb = new StringBuilder();
-        String[] parts = text.split("#");
-        for(int i=0 ;i<parts.length;i++){
-            sb.append(parts[i++]);
-            if(parts.length-1<=i) continue;
-            String cardName = parts[i];
-            String url = mongo.getUrlForCard(cardName);
-            if(url==null){
-                sb.append(parts[i]);
-            } else {
-                sb.append(" <a href='#' onmouseover=\"showImage('").append(url).append("',this)\"");
-                sb.append(" onmouseout=\"hideImage()\">");
-                sb.append(cardName).append("</a>");
-            }
-        }
-        String ret = sb.toString();
-        return ret.substring(0,ret.length()-1);
+        return escape(text);
     }
 
     public CharSequence getEscapedSubject() {
         String text = getSubject()+".";
+        return "<legend>"+escape(text)+"</legend>";
+    }
+
+    private String escape(String text) {
         StringBuilder sb = new StringBuilder();
-        sb.append("<legend>");
         String[] parts = text.split("#");
         for(int i=0 ;i<parts.length;i++){
             sb.append(parts[i++]);
-            if(parts.length-1<=i) continue;
+            if(parts.length-1<=i) {
+                try{
+                sb.append("#"+parts[i++]);
+                } catch (Exception ignorable){}
+                finally{
+                    continue;
+                }
+            }
             String cardName = parts[i];
             String url = mongo.getUrlForCard(cardName);
             if(url==null){
@@ -129,6 +123,8 @@ public class UserMessage extends MongoObject {
                 sb.append(cardName).append("</span>");
             }
         }
-        return sb.toString().substring(0,sb.length()-1)+"</legend>";
+        String ret = sb.toString();
+        return ret.substring(0,sb.length()-1);
     }
+
 }
