@@ -61,6 +61,7 @@ public class TradingProposalsPage extends MasterPage {
 			status = "You don't have any trading proposals at the moment.";
 		
 		userStringList = new ArrayList<String>();
+        userStringList.add("select user");
 		userStringList.add("all");
 		for(User u : mongo.getAllUsers())
 			userStringList.add(u.getUserName());
@@ -102,9 +103,11 @@ public class TradingProposalsPage extends MasterPage {
 			public void onDismiss(AjaxRequestTarget target) {
 				TradingProposal tp = proposalsPanel.getProposal();
 				if(tp.isValid()){
-					User from = mongo.getUser(tp.getFrom());
-					from.addMessage(new UserMessage(from.getNextMessageId(), "Rejected!", tp.getTo()+" rejected your trade proposal."));
-					from.UPDATE();
+                    if(!userName.equals(tp.getFrom())){
+                        User from = mongo.getUser(tp.getFrom());
+                        from.addMessage(new UserMessage(from.getNextMessageId(), "Rejected!", tp.getTo()+" rejected your trade proposal."));
+                        from.UPDATE();
+                    }
 					Administration.removeFromTradingProposalList(tp);
 					for(ShowingCard sc : tp.getFromList())
 						mongo.setCardInProposal(sc.cardId, "false");
@@ -133,12 +136,16 @@ public class TradingProposalsPage extends MasterPage {
 						mongo.setCardInProposal(sc.cardId,"false");
 					}
 					from=mongo.getUser(tp.getFrom());
+                    to = mongo.getUser(tp.getTo());
 					from.addMessage(new UserMessage(from.getNextMessageId(), "Trade sucessful!", tp.getTo()+" accepted your trade proposal."));
                     if(from.wantsProposalMail())
                         try{
                             MailSender.sendProposalNotification(tp, MailSender.ProposalNotificationType.Accept);
                         } catch (Exception ignorable){}
+                    from.decreaseJadBalance(tp.getJadOffer());
+                    to.increaseJad(tp.getJadOffer());
 					from.UPDATE();
+                    to.UPDATE();
 					Administration.removeFromTradingProposalList(tp);
                     MongoHandler.getInstance().logSuccessfullTrade(tp);
 				}
@@ -167,11 +174,13 @@ public class TradingProposalsPage extends MasterPage {
 		};
 		add(form);
 		msgForm = new Form<Object>("msgForm"){
-			@Override
+
+            @Override
 			protected void onSubmit() {
 				String subject = "[from:"+getUserName()+"] "+subjectField.getModelObject().toString();
 				String text = textField.getModelObject().toString();
 				String uName = msgUserSelector.getModelObject();
+                if (uName.equals("select user")) return;
 				if(uName.equals("all")){
 					for(User u: mongo.getAllUsers()){
 						UserMessage msg = new UserMessage(u.getNextMessageId(),subject,text);
@@ -186,7 +195,6 @@ public class TradingProposalsPage extends MasterPage {
 					u.UPDATE();
 					setResponsePage(TradingProposalsPage.class);
 				}
-				
 			}
 		};
 		add(msgForm);

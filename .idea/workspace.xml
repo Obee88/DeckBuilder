@@ -2,64 +2,109 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/StorePage.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/StorePage.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/StorePage.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/Statspage.html" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/StatsPage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/AdminPage.html" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/AdminPage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/AdminPage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/AdminPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/BoosterPage.html" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/BoosterPage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/BoosterPage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/BoosterPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/Card.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/Card.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/CardGenerator.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/CardGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/UserMessage.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/UserMessage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/components/panels/CardView.html" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/CardView.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/suport/MailSender.java" afterPath="$PROJECT_DIR$/src/main/java/suport/MailSender.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/MalfunctionsPage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/MalfunctionsPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.html" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/database/MongoHandler.java" afterPath="$PROJECT_DIR$/src/main/java/database/MongoHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/PrinterPage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/PrinterPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/QueryPage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/QueryPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.html" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/StatsPage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/StatsPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/SubFolders.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/SubFolders.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/SubFoldersPage.html" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/SubFoldersPage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/TradePage.html" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/TradePage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/TradePage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/TradePage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/TradingProposal.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/TradingProposal.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/components/panels/TradingProposalPanel.html" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/TradingProposalPanel.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/components/panels/TradingProposalPanel.java" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/TradingProposalPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/TradingProposalsPage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/TradingProposalsPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/User.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/User.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.js" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/bootstrap/css/style.css" afterPath="$PROJECT_DIR$/src/main/resources/bootstrap/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DeckBuilder.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392504692882" ignored="false" />
-    <file path="/Card.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392304848962" ignored="false" />
+    <file path="/Dummy.txt" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1399450764392" ignored="false" />
+    <file path="/Card.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1399394992490" ignored="false" />
     <file path="/WishlistPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386797359840" ignored="false" />
     <file path="/WishlistPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386798128097" ignored="false" />
     <file path="/WishListItem.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386797074939" ignored="false" />
-    <file path="/User.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392305086014" ignored="false" />
+    <file path="/User.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398156403755" ignored="false" />
     <file path="/CardSelectionPanel.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392303626606" ignored="false" />
     <file path="/BoosterManagerPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1385389140698" ignored="false" />
-    <file path="/BoosterPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392393329617" ignored="false" />
+    <file path="/BoosterPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398154659323" ignored="false" />
     <file path="/ListChooser.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392312216320" ignored="false" />
-    <file path="/SubFoldersPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386840287601" ignored="false" />
+    <file path="/SubFoldersPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1397043182698" ignored="false" />
     <file path="/SubFoldersPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1387460485845" ignored="false" />
-    <file path="/PrinterPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1387463414488" ignored="false" />
+    <file path="/PrinterPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398152110588" ignored="false" />
     <file path="/Database.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1389270543923" ignored="false" />
-    <file path="/fragment.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392485504447" ignored="false" />
-    <file path="/MongoHandler.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392486325114" ignored="false" />
-    <file path="/SubFolders.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386610059289" ignored="false" />
+    <file path="/fragment.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1399394972863" ignored="false" />
+    <file path="/MongoHandler.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398851543772" ignored="false" />
+    <file path="/SubFolders.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1397478134692" ignored="false" />
     <file path="/ShowingCard.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392241455373" ignored="false" />
-    <file path="/MasterPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1389362568815" ignored="false" />
+    <file path="/MasterPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398936723330" ignored="false" />
     <file path="/SignInSession.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1387380223256" ignored="false" />
-    <file path="/BoosterPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392312155138" ignored="false" />
-    <file path="/TradePage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386795152898" ignored="false" />
-    <file path="/RecyclePage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392305430178" ignored="false" />
-    <file path="/TradingProposalsPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392040013741" ignored="false" />
+    <file path="/BoosterPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1397043691137" ignored="false" />
+    <file path="/TradePage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398850254399" ignored="false" />
+    <file path="/RecyclePage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398163861401" ignored="false" />
+    <file path="/TradingProposalsPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398855833824" ignored="false" />
     <file path="/UserMainPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392485965762" ignored="false" />
     <file path="/QueryPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392132049932" ignored="false" />
     <file path="/PrintingManagerPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386626969925" ignored="false" />
-    <file path="/CardGenerator.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386711759218" ignored="false" />
-    <file path="/MailSender.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386935359323" ignored="false" />
-    <file path="/MalfunctionsPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392312769324" ignored="false" />
+    <file path="/CardGenerator.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398170044196" ignored="false" />
+    <file path="/MailSender.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1393761102088" ignored="false" />
+    <file path="/MalfunctionsPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1397151941812" ignored="false" />
     <file path="/puPanel.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386840775194" ignored="false" />
     <file path="/CardsThisWeek.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386932519341" ignored="false" />
     <file path="/CardsThisWeek.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386933825101" ignored="false" />
     <file path="/tmp.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1386930252887" ignored="false" />
     <file path="/Printer.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1387463308522" ignored="false" />
-    <file path="/RecyclePage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392302408038" ignored="false" />
+    <file path="/RecyclePage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398158829408" ignored="false" />
     <file path="/Logger.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1389272387685" ignored="false" />
-    <file path="/StatsPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1389557201491" ignored="false" />
-    <file path="/StatsPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1389602110618" ignored="false" />
-    <file path="/TradingProposal.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1389703388478" ignored="false" />
+    <file path="/StatsPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1395616009043" ignored="false" />
+    <file path="/StatsPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1395616097971" ignored="false" />
+    <file path="/TradingProposal.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1399450869396" ignored="false" />
     <file path="/SuccTradesPanel.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1389557136260" ignored="false" />
     <file path="/MalfunctionsPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1390220577707" ignored="false" />
     <file path="/MongoObject.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392303806537" ignored="false" />
-    <file path="/AdminPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392133161546" ignored="false" />
+    <file path="/AdminPage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1393177311427" ignored="false" />
     <file path="/CardInfo.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392134417008" ignored="false" />
     <file path="/InfoPanel.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392137866144" ignored="false" />
     <file path="/InfoPanel.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392137708114" ignored="false" />
-    <file path="/a.dummy" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392243256184" ignored="false" />
+    <file path="/a.dummy" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1393851022287" ignored="false" />
     <file path="/UserMainPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392486021603" ignored="false" />
-    <file path="/MasterPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392480191093" ignored="false" />
-    <file path="/UserMainPage.js" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392484206959" ignored="false" />
+    <file path="/MasterPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398164625369" ignored="false" />
+    <file path="/UserMainPage.js" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1397042187368" ignored="false" />
     <file path="/UserMessage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1392506100108" ignored="false" />
+    <file path="/ProxyPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1393965522427" ignored="false" />
+    <file path="/CardView.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1397042764624" ignored="false" />
+    <file path="/TradePage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398855431082" ignored="false" />
+    <file path="/style.css" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398152452579" ignored="false" />
+    <file path="/jadStorePage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398858661986" ignored="false" />
+    <file path="/jadStorePage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398166264629" ignored="false" />
+    <file path="/JadStorePage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398170771432" ignored="false" />
+    <file path="/dummy.xml" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398171324610" ignored="false" />
+    <file path="/TradingProposalPanel.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398850960216" ignored="false" />
+    <file path="/TradingProposalPanel.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398850769192" ignored="false" />
+    <file path="/JadStorePage.js" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398859492185" ignored="false" />
+    <file path="/JadStorePage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398861366982" ignored="false" />
+    <file path="/AdminPage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398861549361" ignored="false" />
+    <file path="/StorePage.java" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1398870998500" ignored="false" />
+    <file path="/StorePage.html" changelist="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" time="1399396025698" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +119,54 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint url="file://$PROJECT_DIR$/src/main/java/database/Database.java" line="26" class="database.Database" package="database">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/main/java/database/Database.java" line="25" class="database.Database" package="database">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.java" line="180" class="obee.pages.RecyclePage$5" package="obee.pages">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -110,54 +203,6 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/database/Database.java" line="26" class="database.Database" package="database">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/database/Database.java" line="25" class="database.Database" package="database">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.java" line="181" class="obee.pages.RecyclePage$5" package="obee.pages">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -167,44 +212,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="UserMainPage.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.html">
+      <file leaf-file-name="TradingProposal.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/TradingProposal.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="56" selection-start="1535" selection-end="1535" vertical-scroll-proportion="-16.25">
+            <state line="23" column="34" selection-start="519" selection-end="519" vertical-scroll-proportion="0.25037935">
               <folding>
-                <element signature="n#style#0;n#button#0;n#td#1;n#tr#0;n#table#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#i#0;n#button#0;n#td#1;n#tr#0;n#table#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#form#0;n#div#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#img#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="e#325#352#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserMainPage.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="95" column="43" selection-start="4232" selection-end="4232" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserMessage.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/UserMessage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="126" column="0" selection-start="3076" selection-end="3076" vertical-scroll-proportion="0.6143959">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MongoHandler.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/database/MongoHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="502" column="44" selection-start="17805" selection-end="17805" vertical-scroll-proportion="0.0">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -227,22 +241,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/custom/classes/User.java" />
+        <option value="$PROJECT_DIR$/src/main/java/obee/pages/TradePage.html" />
+        <option value="$PROJECT_DIR$/src/main/java/obee/pages/TradingProposalsPage.java" />
+        <option value="$PROJECT_DIR$/src/main/java/obee/pages/jadStorePage.html" />
+        <option value="$PROJECT_DIR$/src/main/resources/bootstrap/js/deckBuilder.js" />
+        <option value="$PROJECT_DIR$/src/main/java/obee/pages/JadStorePage.js" />
+        <option value="$PROJECT_DIR$/src/main/java/obee/pages/AdminPage.html" />
+        <option value="$PROJECT_DIR$/src/main/java/obee/pages/JadStorePage.html" />
+        <option value="$PROJECT_DIR$/src/main/java/obee/pages/StorePage.js" />
+        <option value="$PROJECT_DIR$/src/main/java/obee/pages/JadStorePage.java" />
+        <option value="$PROJECT_DIR$/src/main/java/obee/pages/StorePage.java" />
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.java" />
-        <option value="$PROJECT_DIR$/src/main/java/obee/pages/SubFoldersPage.html" />
-        <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/CardSelectionPanel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/obee/pages/MalfunctionsPage.java" />
-        <option value="$PROJECT_DIR$/src/main/java/custom/components/ListChooser.java" />
-        <option value="$PROJECT_DIR$/src/main/java/obee/pages/BoosterPage.java" />
-        <option value="$PROJECT_DIR$/src/main/java/obee/pages/BoosterPage.html" />
-        <option value="$PROJECT_DIR$/src/main/java/obee/scripts/messages.js" />
-        <option value="$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.html" />
-        <option value="$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.js" />
-        <option value="$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.java" />
-        <option value="$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.html" />
-        <option value="$PROJECT_DIR$/src/main/java/database/MongoHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/custom/classes/CardGenerator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/custom/classes/UserMessage.java" />
+        <option value="$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.java" />
+        <option value="$PROJECT_DIR$/src/main/java/suport/MailSender.java" />
+        <option value="$PROJECT_DIR$/src/main/java/custom/classes/Card.java" />
+        <option value="$PROJECT_DIR$/src/main/java/obee/pages/StorePage.html" />
+        <option value="$PROJECT_DIR$/src/main/java/custom/classes/TradingProposal.java" />
       </list>
     </option>
   </component>
@@ -256,7 +270,7 @@
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
     <option name="width" value="1440" />
-    <option name="height" value="790" />
+    <option name="height" value="805" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -284,6 +298,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -331,6 +346,118 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bootstrap" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bootstrap" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="img" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bootstrap" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -437,6 +564,44 @@
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="obee" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pages" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="master" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="database" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -494,9 +659,34 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="blake" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -509,25 +699,27 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="editor.preferences.appearance" />
+    <property name="DefaultHtmlFileTemplate" value="Html5" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="custom.components.panels" />
       <recent name="obee.pages" />
+      <recent name="custom.components.panels" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/obee/pages" />
+      <recent name="$PROJECT_DIR$/src/main/java/obee/pages/master" />
       <recent name="$PROJECT_DIR$/src/main/resources/bootstrap/js" />
       <recent name="$PROJECT_DIR$/src/main/java/custom/components/panels" />
-      <recent name="$PROJECT_DIR$/src/main/java/obee/pages" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/obee/pages" />
@@ -612,19 +804,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -650,6 +829,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -730,29 +922,29 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1440" height="790" extended-state="0" />
+    <frame x="0" y="22" width="1440" height="805" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37761194" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24817519" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32686567" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24605452" sideWeight="0.62238806" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2716418" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33070302" sideWeight="0.7518248" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27126655" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283582" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32738096" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32685184" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -820,120 +1012,113 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/SubFoldersPage.html">
+    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="54" selection-start="797" selection-end="807" vertical-scroll-proportion="-13.416667">
+        <state line="0" column="31" selection-start="30" selection-end="31" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/custom/components/panels/CardSelectionPanel.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="18" selection-start="3362" selection-end="3363" vertical-scroll-proportion="0.58126724" />
+        <state line="203" column="7" selection-start="7946" selection-end="8101" vertical-scroll-proportion="0.66292137">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/BoosterPage.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="101" selection-start="3106" selection-end="3106" vertical-scroll-proportion="0.32125205">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/AdminPage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="59" selection-start="259" selection-end="259" vertical-scroll-proportion="-6.25">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/AdminPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="7955" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="n#style#0;n#div#0;n#td#1;n#tr#0;n#table#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#i#0;n#div#0;n#td#1;n#tr#0;n#table#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#STYLE#0;n#ul#0;n#div#0;n#td#1;n#tr#0;n#table#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#ul#0;n#li#1;n#ul#0;n#div#0;n#td#1;n#tr#0;n#table#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#img#0;n#li#2;n#ul#0;n#li#1;n#ul#0;n#div#0;n#td#1;n#tr#0;n#table#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="tag#form#1;tag#td#1;tag#tr#0;tag#table#0;tag#wicket:extend#0;tag#body#0;tag#html#0" expanded="false" />
+            <element signature="method#AdminPage#0;class#AdminPage#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/MalfunctionsPage.java">
+    <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar!/java/io/FileInputStream.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="125" column="104" selection-start="5203" selection-end="5203" vertical-scroll-proportion="0.023291925">
+        <state line="29" column="15" selection-start="1165" selection-end="1165" vertical-scroll-proportion="0.33264887" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="32" selection-start="1730" selection-end="1730" vertical-scroll-proportion="0.023219815">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/custom/components/ListChooser.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/StorePage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="86" column="0" selection-start="2930" selection-end="2930" vertical-scroll-proportion="0.023291925" />
+        <state line="37" column="1" selection-start="1279" selection-end="1279" vertical-scroll-proportion="0.84218514" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/TradingProposalsPage.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="10" selection-start="1770" selection-end="1778" vertical-scroll-proportion="0.7123288">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/bootstrap/js/bootstrap.min.js">
+    <entry file="file://$PROJECT_DIR$/procfile">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.js">
+    <entry file="file://$PROJECT_DIR$/src/main/java/suport/MailSender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="23" selection-start="259" selection-end="259" vertical-scroll-proportion="0.26992288" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="22" selection-start="733" selection-end="733" vertical-scroll-proportion="0.55397725">
+        <state line="36" column="96" selection-start="1212" selection-end="1212" vertical-scroll-proportion="0.023219815">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/database/MongoHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/StorePage.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="502" column="44" selection-start="17805" selection-end="17805" vertical-scroll-proportion="0.0">
+        <state line="12" column="34" selection-start="315" selection-end="315" vertical-scroll-proportion="-0.5">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/Card.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="71" selection-start="1006" selection-end="1006" vertical-scroll-proportion="-0.3856041">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/BoosterPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="199" column="20" selection-start="7809" selection-end="7813" vertical-scroll-proportion="0.33333334">
+        <state line="71" column="57" selection-start="2564" selection-end="2564" vertical-scroll-proportion="0.45585215">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/CardGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="88" selection-start="1112" selection-end="1112" vertical-scroll-proportion="0.83776593">
+        <state line="30" column="29" selection-start="852" selection-end="852" vertical-scroll-proportion="0.8227848">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.html">
+    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/StorePage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="56" selection-start="1535" selection-end="1535" vertical-scroll-proportion="-16.25">
+        <state line="112" column="41" selection-start="5152" selection-end="5152" vertical-scroll-proportion="1.7383966">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="117" column="41" selection-start="4431" selection-end="4431" vertical-scroll-proportion="0.3983573">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/TradingProposal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="34" selection-start="519" selection-end="519" vertical-scroll-proportion="0.25037935">
           <folding>
-            <element signature="n#style#0;n#button#0;n#td#1;n#tr#0;n#table#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#button#0;n#td#1;n#tr#0;n#table#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#0;n#div#0;n#div#0;n#form#0;n#div#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#wicket:extend#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="e#325#352#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="43" selection-start="4232" selection-end="4232" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/UserMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="126" column="0" selection-start="3076" selection-end="3076" vertical-scroll-proportion="0.6143959">
-          <folding />
         </state>
       </provider>
     </entry>

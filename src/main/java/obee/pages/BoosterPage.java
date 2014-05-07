@@ -289,7 +289,7 @@ public class BoosterPage extends MasterPage{
 		goodChoice.setPrintCheckBoxVisible(false);
 		badChoice = new CardSelectionPanel("badList", trading);
 		badChoice.listChooser.setMaxRows(8);
-		badChoice.setFilterVisible(false);
+		badChoice.setFilterVisible(true);
 		badChoice.setPrintCheckBoxVisible(false);
 		goodCheck = new CheckBox("goodCheck", new PropertyModel(this, "isGood"));
 		goodCheck.setOutputMarkupId(true);

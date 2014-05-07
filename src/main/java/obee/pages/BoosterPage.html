@@ -16,7 +16,7 @@
                             		<span wicket:id="boosterPanel"/>
                                 </td>
                                     
-                                <td style="width: 220px">
+                                <td style="width: 220px; height: 380px">
                                 	<span wicket:id = "cardView"/>
                                 </td>
                                 <td>
@@ -62,7 +62,7 @@
                                 <ul style="{list-style-type:square">
                                     <li> (1) - to send selected card to using</li>
                                     <li> (2) - to send selected card to trading</li>
-                                    <li> (3) - to send selected card to recycle shortlist<img style="height:20px; width30px" src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQgGoD0n8-1ypRs02_4RY4WAa_A0RxCZ_B55G-ABIqcFGXtnrF4_A"></li>
+                                    <li> (3) - to send selected card to recycle shortlist</li>
                                 </ul>
                             </li>
                         </ul>
@@ -70,7 +70,7 @@
                     <form wicket:id="getBoostersForm">
                     	<div class="well" style="padding:5px">
 	                    	Na raspolaganju imate <wicket:container wicket:id="cardsAv"/> karata.
-					        <input type="submit" value="Get Booster" class="btn btn-small btn-success"/>
+					        <input type="submit" value="Get Booster" class="btn btn-small btn-success" onclick="hideGetBoosterBtn(this)"/>
 			        	</div>
                     </form>
                		<form wicket:id="starterDeckForm" style="margin: 5px">
@@ -107,7 +107,12 @@
                 </td>
             </tr>
         </table>
-        
+        <script type="text/javascript">
+            function hideGetBoosterBtn(btn){
+                btn.className='hidden';
+                return true;
+            }
+        </script>
     </wicket:extend>
 </body>
 </html>

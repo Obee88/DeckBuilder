@@ -219,7 +219,7 @@ public class QueryPage extends MasterPage{
                 return obj;
             }
         };
-        datetimePanel.setText("Weaks old:");
+        datetimePanel.setText("Weeks old:");
         form.add(datetimePanel);
         usersCheckGroup =  new MyCheckGroup<String>("component",new Model(userchoices), USERS);
         usersCheckGroup.setOutputMarkupId(true);
@@ -296,7 +296,7 @@ public class QueryPage extends MasterPage{
             }
         };
         unprintForm.add(unprintBtn);
-        if(!mongo.getUser(getUserName()).hasRole("PRINTER"))
+        if(!mongo.getUser(getUserName()).hasRole("USER"))
             hide(unprintBtn);
 
     }

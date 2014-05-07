@@ -69,6 +69,7 @@ public class SubFolders extends MongoObject {
 	private BasicDBList SCL2DBL(List<ShowingCard> list){
 		BasicDBList ret = new BasicDBList();
 		for(ShowingCard sc : list){
+            if (sc==null) continue;
 			ret.add(sc.cardId);
 		}
 		return ret;

@@ -21,18 +21,30 @@ public class TradingProposal extends MongoObject implements Serializable{
 	String from, to;
 	Date expireDate;
 	Set<Integer> fromList, toList;
-	
-	
-	
+	int jadOffer;
+    int ttl = 30;
+
+    public TradingProposal(String from, String to,
+                           Set<Integer> fromList, Set<Integer> toList) {
+        super();
+        this.id = Administration.getNextTradeProposalId();
+        this.from = from;
+        this.to = to;
+        this.expireDate = new DateTime().plusDays(ttl).toDate();
+        this.fromList = fromList;
+        this.toList = toList;
+        this.jadOffer=0;
+    }
 	public TradingProposal(String from, String to,
-			Set<Integer> fromList, Set<Integer> toList) {
+			Set<Integer> fromList, Set<Integer> toList, int jadOffer) {
 		super();
 		this.id = Administration.getNextTradeProposalId();
 		this.from = from;
 		this.to = to;
-		this.expireDate = new DateTime().plusDays(5).toDate();
+		this.expireDate = new DateTime().plusDays(ttl).toDate();
 		this.fromList = fromList;
 		this.toList = toList;
+        this.jadOffer=jadOffer;
 	}
 	
 	public TradingProposal(String from, String to,
@@ -41,7 +53,7 @@ public class TradingProposal extends MongoObject implements Serializable{
 		this.id = Administration.getNextTradeProposalId();
 		this.from = from;
 		this.to = to;
-		this.expireDate = new DateTime().plusDays(10).toDate();
+		this.expireDate = new DateTime().plusDays(ttl).toDate();
 		this.fromList = new HashSet<Integer>();
 		this.toList = new HashSet<Integer>();
 		for(ShowingCard sc : fromList){
@@ -50,7 +62,26 @@ public class TradingProposal extends MongoObject implements Serializable{
 		for(ShowingCard sc : toList){
 			this.toList.add(sc.cardId);
 		}
+        this.jadOffer = 0;
 	}
+
+    public TradingProposal(String from, String to,
+                           List<ShowingCard> fromList,List<ShowingCard> toList, int jadOffer) {
+        super();
+        this.id = Administration.getNextTradeProposalId();
+        this.from = from;
+        this.to = to;
+        this.expireDate = new DateTime().plusDays(ttl).toDate();
+        this.fromList = new HashSet<Integer>();
+        this.toList = new HashSet<Integer>();
+        for(ShowingCard sc : fromList){
+            this.fromList.add(sc.cardId);
+        }
+        for(ShowingCard sc : toList){
+            this.toList.add(sc.cardId);
+        }
+        this.jadOffer = jadOffer;
+    }
 
 	public TradingProposal(DBObject obj) {
 		id = (Integer)obj.get("id");
@@ -59,6 +90,7 @@ public class TradingProposal extends MongoObject implements Serializable{
 		expireDate = (Date) obj.get("expireDate");
 		fromList =  Administration.DBL2IntSet(obj.get("fromList"));
 		toList =  Administration.DBL2IntSet(obj.get("toList"));
+        jadOffer = obj.get("jadOffer")==null?0:(Integer)obj.get("jadOffer");
 	}
 
 	@Override
@@ -69,7 +101,8 @@ public class TradingProposal extends MongoObject implements Serializable{
 		 	.append("to", to)
 		 	.append("expireDate", expireDate)
 		 	.append("fromList", Administration.IntSet2DBL(fromList))
-		 	.append("toList", Administration.IntSet2DBL(toList));
+		 	.append("toList", Administration.IntSet2DBL(toList))
+            .append("jadOffer",jadOffer);
 		return obj;
 	}
 
@@ -92,6 +125,8 @@ public class TradingProposal extends MongoObject implements Serializable{
 		if (expire.isBefore(now)) 
 			return false;
 		User fromU = mongo.getUser(this.from);
+        if(fromU.getJadBalance()<jadOffer)
+            return false;
 		if(!stillGot(fromU,fromList))
 			return false;
 		User toU = mongo.getUser(this.to);
@@ -104,7 +139,7 @@ public class TradingProposal extends MongoObject implements Serializable{
 		for(Integer id: list){
 			Card c =mongo.getCard(id);
             if(c==null){
-                Administration.addProblematicId(id);
+//                Administration.addProblematicId(id);
                 return false;
             }
 			if(!c.owner.equals(u.userName))
@@ -182,5 +217,9 @@ public class TradingProposal extends MongoObject implements Serializable{
 
     public boolean hasCardInFrom(Object id) {
         return fromList.contains(id);
+    }
+
+    public int getJadOffer() {
+        return jadOffer;
     }
 }

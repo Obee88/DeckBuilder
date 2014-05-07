@@ -32,7 +32,7 @@ public class MailSender {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("deckbuildermailsender","mailSender");
+                        return new PasswordAuthentication("deck.builder.fr","obiosam1");
                     }
                 });
 

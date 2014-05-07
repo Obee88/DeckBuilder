@@ -175,16 +175,14 @@ public class MalfunctionsPage extends MasterPage {
 			protected void onSubmit() {
 				super.onSubmit();
 				for(ShowingCard sc: ownerNotInListList){
-					User o = mongo.getUser(sc.owner);
-					String st = sc.status;
-					if(st.equals("booster"))
-						o.addToBooster(sc.cardId);
-					else if(st.equals("using"))
-						o.addToUsing(sc.cardId);
-					else if (st.equals("trading")) {
-						o.addToTrading(sc.cardId);
-					}
-					o.UPDATE();
+					User targetUser = mongo.getUser(sc.owner);
+                    mongo.removeFromAllUserLists(sc.cardId);
+                    targetUser.addToBooster(sc.cardId);
+                    targetUser.UPDATE();
+                    sc.setOwner(targetUser.getUserName());
+                    sc.setStatus("booster");
+                    sc.UPDATE();
+					targetUser.UPDATE();
 				}
                 info(ownerNotInListList.size()+ " cards repaired!");
                 setResponsePage(MalfunctionsPage.class);

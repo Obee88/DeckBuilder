@@ -8,7 +8,7 @@
 				<link href="../../../bootstrap/css/style.css" rel='stylesheet' type='text/css' />
 			    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 			    <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
-                <link rel="shortcut icon" href="http://t1.gstatic.com/images?q=tbn:ANd9GcSg-WyoWs-g1O83Yz96fhOaMYCFKi3DTrCblScA-DW2fpuLAowTHH9zbw" />
+                <link rel="shortcut icon" href = "graph.facebook.com/MagicDeckBuilder/picture"/>
                 <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 		    </wicket:link>
 		</wicket:head>
@@ -20,12 +20,27 @@
 			<table width="100%">
 				<tr>
 					<td  width="90%" style="text-align: center;">
+                        <div class="pull-right">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <h2>
+                                            <span style="color:gold" wicket:id="jadBalance" id="jadBalanceLabel">0</span>
+                                        </h2>
+                                    </td>
+                                    <td>
+                                        <img src="http://i.imgur.com/x7wSe5y.gif" style="width:30px;height:30px;">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
 						<div id="logo">
 							<h1>Welcome <span wicket:id="userName"></span></h1>
 						</div>
 			       	</td>
 			       	<td>
 		       			<input class="btn btn-inverse" style="right:12px;" type="button" wicket:id="logOffButton" value="Sign out" />
+
 			       	</td>
 				</tr>
 			</table>

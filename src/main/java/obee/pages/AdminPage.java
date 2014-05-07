@@ -1,14 +1,7 @@
 package obee.pages;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.regex.Pattern;
+import java.util.*;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import custom.classes.*;
 import obee.pages.master.MasterPage;
 
@@ -25,7 +18,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 import suport.MailSender;
 
 @AuthorizeInstantiation("ADMIN")
@@ -69,7 +61,7 @@ public class AdminPage extends MasterPage {
 					selectedUsers.remove(user);
 					pendingUsers.remove(user);
 				}
-				setResponsePage(AdminPage.class);
+				setResponsePage(StorePage.class);
 			}
 			
 		};
@@ -93,7 +85,7 @@ public class AdminPage extends MasterPage {
 				boolean isPrinter = (Boolean)isPrinterBox.getDefaultModelObject();
 				roleSelectedUser.setRoles(isAdmin,isUser,isPrinter);
 				roleSelectedUser.UPDATE();
-		        setResponsePage(AdminPage.class);
+		        setResponsePage(StorePage.class);
 			}
 			
 		};
@@ -141,14 +133,14 @@ public class AdminPage extends MasterPage {
 						UserMessage msg = new UserMessage(u.getNextMessageId(),subject,text);
 						u.addMessage(msg);
 						u.UPDATE();
-						setResponsePage(AdminPage.class);
+						setResponsePage(StorePage.class);
 					}
 				} else{
 					User u = mongo.getUser(uName);
 					UserMessage msg = new UserMessage(u.getNextMessageId(),subject,text);
 					u.addMessage(msg);
 					u.UPDATE();
-					setResponsePage(AdminPage.class);
+					setResponsePage(StorePage.class);
 				}
 				
 			}
@@ -177,7 +169,7 @@ public class AdminPage extends MasterPage {
 				for(int id =startId; id<=endId;id++){
 					mongo.removeCard(id);
 				}
-				setResponsePage(AdminPage.class);
+				setResponsePage(StorePage.class);
 			}
 		};
 		add(deleteForm);
@@ -222,59 +214,15 @@ public class AdminPage extends MasterPage {
         fixForm = new Form<Object>("fixForm"){
             @Override
             protected void onSubmit() {
-//                User ivan = mongo.getUser("ivan.obilinovic");
-//                DateTime monday = new DateTime();
-//                monday= monday.withDayOfWeek(DateTimeConstants.MONDAY)
-//                        .withHourOfDay(0)
-//                        .withMinuteOfHour(0)
-//                        .withSecondOfMinute(0)
-//                        .withMillisOfSecond(0);
-//                User rens = mongo.getUser("rens");
-//                BasicDBObject q  = new BasicDBObject("owner","ivan.obilinovic");
-//                q.append("creationDate",new BasicDBObject("$gte",monday.toDate()));
-//                DBCursor cur  = mongo.cardsCollection.find(q);
-//                while(cur.hasNext()){
-//                    DBObject obj = cur.next();
-//                    ShowingCard sc = new ShowingCard(new Card(obj));
-//                    sc.owner = "rens";
-//                    sc.UPDATE();
-//                    rens.addToBooster(sc.cardId);
-//                }
-//                rens.setLastBoosterDate(ivan.getLastBoosterDate());
-//                rens.setEmail("renato1988@net.hr");
-//                rens.UPDATE();
-//                mongo.removeUser(ivan.getUserName());
-//
-//                User u = mongo.getUser("brki");
-//                u.changeName("Alan", "alankolic@gmail.com");
-//
-//                u = mongo.getUser("Hrco");
-//                u.changeName("Rene","filipovicrene@gmail.com");
-//                setResponsePage(AdminPage.class);
-                DBCursor cur = mongo.cardInfoCollection.find(new BasicDBObject("type", Pattern.compile("land", Pattern.CASE_INSENSITIVE)));
-                while(cur.hasNext()){
-                    DBObject obj = cur.next();
-                    CardInfo ci = new CardInfo(obj);
-                    String finalCost = ci.manaCost;
-                    if(ci.hasColor("W"))
-                        if (!ci.manaCost.contains("W"))
-                            finalCost = finalCost+"W";
-                    if(ci.hasColor("B"))
-                        if (!ci.manaCost.contains("B"))
-                            finalCost = finalCost+"B";
-                    if(ci.hasColor("U"))
-                        if (!ci.manaCost.contains("U"))
-                            finalCost = finalCost+"U";
-                    if(ci.hasColor("R"))
-                        if (!ci.manaCost.contains("R"))
-                            finalCost = finalCost+"R";
-                    if(ci.hasColor("G"))
-                        if (!ci.manaCost.contains("G"))
-                            finalCost = finalCost+"G";
-                    ci.manaCost = finalCost;
-                    ci.UPDATE();
+                for(User u : mongo.getAllUsers()){
+                    Date d = u.getLastBoosterDate();
+                    DateTime dt = new DateTime(d);
+                    u.setLastBoosterDate(dt.plusDays(1).toDate());
+                    u.UPDATE();
                 }
+                info("done");
             }
+
 
         };
         add(fixForm);

@@ -26,7 +26,7 @@ public abstract class TradingProposalPanel extends Panel implements IEventListen
 	List<ShowingCard> fromCards, toCards;
 	String expire = "";
 	TradingProposal proposal=null;
-	private Label fromLabel,expireLbl;
+	private Label fromLabel,expireLbl,jadLbl;
 	private CardView imgFrom1,imgFrom2,imgFrom3,imgFrom4,imgFrom5,imgFrom6;
 	private CardView imgTo1,imgTo2,imgTo3,imgTo4,imgTo5,imgTo6;
 	private CardView[] fromWindows, toWindows;
@@ -34,6 +34,7 @@ public abstract class TradingProposalPanel extends Panel implements IEventListen
 	private AjaxLink<Object> dismissButton;
 	private CardView zoom;
     private Form negotiateForm;
+    private int jadOffer;
 
     public TradingProposalPanel(String id) {
 		super(id);
@@ -70,6 +71,7 @@ public abstract class TradingProposalPanel extends Panel implements IEventListen
 		fromWindows = new CardView[]{imgFrom1,imgFrom2,imgFrom3,imgFrom4,imgFrom5,imgFrom6};
 		toWindows = new CardView[]{imgTo1,imgTo2,imgTo3,imgTo4,imgTo5,imgTo6};
 		expireLbl = new Label("expireLbl",new PropertyModel<String>(this, "expire"));
+        jadLbl = new Label("jadLbl",new PropertyModel<String>(this, "jadOffer"));
 		aceptButton = new AjaxLink<Object>("aceptButton") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
@@ -104,7 +106,7 @@ public abstract class TradingProposalPanel extends Panel implements IEventListen
             }
         } ;
         add(negotiateForm);
-		add(fromLabel); add(expireLbl);
+		add(fromLabel); add(expireLbl); add(jadLbl);
 		add(aceptButton); add(dismissButton);
 		for(int i = 0 ; i<6;i++){
 			add(fromWindows[i]);
@@ -156,6 +158,7 @@ public abstract class TradingProposalPanel extends Panel implements IEventListen
 		from = tp.getFrom();
 		fromCards = tp.getFromList();
 		toCards = tp.getToList();
+        jadOffer = tp.getJadOffer();
 		DateTime dt = new DateTime(tp.getExpireDate());
 		expire = dt.toString( DateTimeFormat.forPattern("dd. MM. YYYY : HH:mm"));
 		setCardsUrls();

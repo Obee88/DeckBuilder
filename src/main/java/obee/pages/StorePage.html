@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+<wicket:extend>
+    <table>
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            Random :
+                        </td>
+                        <td>
+                            <span wicket:id = "commonPriceLbl" id = "commonPriceLbl"></span>
+                            <img src="http://i.imgur.com/x7wSe5y.gif" style="width:15px;height:15px">
+                        </td>
+                        <td>
+                            <button class = "close" style="right:0px;" id = "commonPlusBtn" onclick="btnClicked(this,1,'common')" onsubmit="neSubmitaj()">&plus;</button>
+                        </td>
+                        <td>
+                            <span type="text" id = "commonCntLbl" >0</span>
+                        </td>
+                        <td>
+                            <button class = "close" style="right:0px;" id = "commonMinusBtn" onclick="btnClicked(this,-1,'common')">&minus;</button>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Uncommon+ :
+                        </td>
+                        <td>
+                            <span wicket:id = "uncommonPriceLbl" id = "uncommonPriceLbl"></span>
+                            <img src="http://i.imgur.com/x7wSe5y.gif" style="width:15px;height:15px">
+                        </td>
+                        <td>
+                            <button class = "close" style="right:0px;" id = "uncommonPlusBtn" onclick="btnClicked(this,1,'uncommon')">&plus;</button>
+                        </td>
+                        <td>
+                            <span type="text" id = "uncommonCntLbl">0</span>
+                        </td>
+                        <td>
+                            <button class = "close" style="right:0px;" id = "uncommonMinusBtn" onclick="btnClicked(this,-1,'uncommon')">&minus;</button>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Rare+ :
+                        </td>
+                        <td>
+                            <span wicket:id = "rarePriceLbl" id = "rarePriceLbl"></span>
+                            <img src="http://i.imgur.com/x7wSe5y.gif" style="width:15px;height:15px">
+                        </td>
+                        <td>
+                            <button class = "close" style="right:0px;" id = "rarePlusBtn" onclick="btnClicked(this,1,'rare')">&plus;</button>
+                        </td>
+                        <td>
+                            <span type="text" id = "rareCntLbl" >0</span>
+                        </td>
+                        <td>
+                            <button class = "close" style="right:0px;" id = "rareMinusBtn" onclick="btnClicked(this,-1,'rare')">&minus;</button>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Mythic :
+                        </td>
+                        <td>
+                            <span wicket:id = "mythicPriceLbl" id = "mythicPriceLbl"></span>
+                            <img src="http://i.imgur.com/x7wSe5y.gif" style="width:15px;height:15px">
+                        </td>
+                        <td>
+                            <button class = "close" style="right:0px;" id = "mythicPlusBtn" onclick="btnClicked(this,1,'mythic')">&plus;</button>
+                        </td>
+                        <td>
+                            <span type="text" id = "mythicCntLbl">0</span>
+                        </td>
+                        <td>
+                            <button class = "close" style="right:0px;" id = "mythicMinusBtn" onclick="btnClicked(this,-1,'mythic')">&minus;</button>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Total:
+                        </td>
+                        <td>
+                            <span id= "totalPrice">0</span>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            <button value="Buy" onclick="submitForm()"><i style="color:green" class="fa fa-money fa-2x"></i></button>
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+
+    <form wicket:id="buyForm" id="buyForm">
+        <input type="hidden" wicket:id = "commonCnt" id = "commonCnt" value="0"/>
+        <input type="hidden" wicket:id = "uncommonCnt" id = "uncommonCnt" value="0"/>
+        <input type="hidden" wicket:id = "rareCnt" id = "rareCnt" value="0"/>
+        <input type="hidden" wicket:id = "mythicCnt" id = "mythicCnt" value="0"/>
+    </form>
+
+</wicket:extend>
+</body>
+</html>

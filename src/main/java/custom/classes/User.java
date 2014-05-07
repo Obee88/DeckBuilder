@@ -18,6 +18,7 @@ import custom.classes.abstractClasses.MongoObject;
 public class User extends MongoObject implements Serializable{
 	
 	String userName,eMail,passwordHash;
+    Integer jadBalance;
 	List<String> roles;
 	List<UserMessage> messages;
 	List<Integer> booster,using, trading;
@@ -39,6 +40,7 @@ public class User extends MongoObject implements Serializable{
 		messages = new ArrayList<UserMessage>();
 		messages.add(UserMessage.Welcome);
 		maxMessageId=0;
+
 	}
 
 	public User(DBObject obj) {
@@ -65,7 +67,7 @@ public class User extends MongoObject implements Serializable{
 		}
         wantsProposalMail = (Boolean)obj.get("wantsProposalMail")==null?false:(Boolean)obj.get("wantsProposalMail");
         wantsWishlistMail = (Boolean)obj.get("wantsWishlistMail")==null?false:(Boolean)obj.get("wantsWishlistMail");
-
+        jadBalance =  obj.get("jadBalance")==null?0:(Integer)obj.get("jadBalance");
 	}
 
     private Set<Integer> DBL2IntS(BasicDBList recycleshortlistObj) {
@@ -117,6 +119,7 @@ public class User extends MongoObject implements Serializable{
 		obj.append("subFoldersNames", sfNamesObj);
         obj.append("wantsWishlistMail",wantsWishlistMail);
         obj.append("wantsProposalMail",wantsProposalMail);
+        obj.append("jadBalance",jadBalance);
 		return obj;
 	}
 
@@ -234,7 +237,7 @@ public class User extends MongoObject implements Serializable{
 			deadline = deadline.minusDays(7);
 		}
         if (ret>100) ret = 100;
-		return ret;
+        return ret;
 	}
 	
 	public void setBooster(Collection<ShowingCard> b) {
@@ -269,42 +272,72 @@ public class User extends MongoObject implements Serializable{
 	}
 
 	public List<Card> getBoosterCards() {
+        List<Integer> remList = new ArrayList<Integer>();
 		List<Card> cards = new ArrayList<Card>(); 
-		for(Integer id : booster)
-			cards.add(mongo.getCard(id));
+		for(Integer id : booster) {
+            Card c = mongo.getCard(id);
+            if (c!=null)
+			    cards.add(c);
+            else
+                remList.add(id);
+        }
+        if(!remList.isEmpty()){
+            booster.removeAll(remList);
+            UPDATE();
+        }
 		return cards;
 	}
 	
 	public List<Card> getTradingCards() {
+        List<Integer> remList = new ArrayList<Integer>();
 		List<Card> cards = new ArrayList<Card>(); 
-		for(Integer id : trading)
-			cards.add(mongo.getCard(id));
-		return cards;
-	}
-	
-	public List<ShowingCard> getTradingShowingCards() {
-		List<ShowingCard> cards = new ArrayList<ShowingCard>(); 
-		for(Integer id : trading)
-			try{
-				cards.add(new ShowingCard( mongo.getCard(id)));
-			} catch (NullPointerException ex){
-				ex.printStackTrace();
-                removeFromTrading(id);
-                UPDATE();
-				throw new NullPointerException("id: "+id);
-			}
-			
-		return cards;
-	}
-	
-	public List<Card> getUsingCards() {
-		List<Card> cards = new ArrayList<Card>(); 
-		for(Integer id : using)
-			cards.add(mongo.getCard(id));
+		for(Integer id : trading){
+            Card c = mongo.getCard(id);
+            if (c!=null)
+                cards.add(c);
+            else
+                remList.add(id);
+        }
+        if(!remList.isEmpty()){
+            trading.removeAll(remList);
+            UPDATE();
+        }
 		return cards;
 	}
 
-	private List<UserMessage> DBL2MsgL(BasicDBList list) {
+	public List<Card> getUsingCards() {
+        List<Integer> remList = new ArrayList<Integer>();
+		List<Card> cards = new ArrayList<Card>(); 
+		for(Integer id : using){
+            Card c = mongo.getCard(id);
+            if (c!=null)
+                cards.add(c);
+            else
+                remList.add(id);
+        }
+        if(!remList.isEmpty()){
+            using.removeAll(remList);
+            UPDATE();
+        }
+		return cards;
+	}
+
+    public List<ShowingCard> getTradingShowingCards() {
+        List<ShowingCard> cards = new ArrayList<ShowingCard>();
+        for(Integer id : trading)
+            try{
+                cards.add(new ShowingCard( mongo.getCard(id)));
+            } catch (NullPointerException ex){
+                ex.printStackTrace();
+                removeFromTrading(id);
+                UPDATE();
+                throw new NullPointerException("id: "+id);
+            }
+
+        return cards;
+    }
+
+    private List<UserMessage> DBL2MsgL(BasicDBList list) {
 		List<UserMessage> ret = new ArrayList<UserMessage>();
 		if(list==null) return ret;
 		for(Object mObj : list){
@@ -348,8 +381,12 @@ public class User extends MongoObject implements Serializable{
 
 	public List<ShowingCard> getUsingShowingCards() {
 		List<ShowingCard> cards = new ArrayList<ShowingCard>(); 
-		for(Integer id : using)
-			cards.add(new ShowingCard( mongo.getCard(id)));
+		for(Integer id : using){
+            Card c = mongo.getCard(id);
+            if (c!=null)
+			    cards.add(new ShowingCard(c));
+
+        }
 		return cards;
 	}
 
@@ -551,4 +588,17 @@ public class User extends MongoObject implements Serializable{
     public boolean removeFromRecycleShortlist(Integer cardId) {
         return recycleShortlist.remove(cardId);
     }
+
+    public Integer getJadBalance(){
+        return jadBalance;
+    }
+
+    public void increaseJad(int inc){
+        jadBalance+=inc;
+    }
+
+    public void decreaseJadBalance(int dec){
+        jadBalance-=dec;
+    }
+
 }

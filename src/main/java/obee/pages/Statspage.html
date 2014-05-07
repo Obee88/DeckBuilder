@@ -4,22 +4,32 @@
 </head>
 <body>
     <wicket:extend>
+        <label wicket:id="dateLabel"/>
     	<br/>
     	<table>
     		<tr>
     			<td>
-                    <img wicket:id="dailyGroupVisitsChart">
+                    <img wicket:id="dailyGroupVisitsChart" style="display:none">
+                    <span wicket:id="proposalsPanel"/>
     			</td>
                 <td>
                     <table>
                         <tr>
                             <td>
-                                <select wicket:id = "userChooser"></select>
+                                <!--<select wicket:id = "userChooser"></select>-->
+                            </td>
+                            <td>
+                                all trades       <br/>
+                                <select wicket:id="allTrades"/>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <span wicket:id="tradesPanel"></span>
+                                <!--<span wicket:id="tradesPanel"></span>-->
+                            </td>
+                            <td>
+                                screwd trades      <br/>
+                                <select wicket:id="screwdTrades"/>
                             </td>
                         </tr>
                     </table>

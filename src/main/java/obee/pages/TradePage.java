@@ -1,17 +1,20 @@
 package obee.pages;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import obee.pages.master.MasterPage;
 
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
@@ -24,6 +27,8 @@ import custom.components.IEventListener;
 import custom.components.ListChooser;
 import custom.components.panels.CardSelectionPanel;
 import custom.components.panels.CardView;
+import org.apache.wicket.validation.*;
+import org.apache.wicket.validation.validator.RangeValidator;
 import suport.MailSender;
 
 
@@ -40,6 +45,7 @@ public class TradePage extends MasterPage {
 	private CardView cardView;
     private List<ShowingCard> trejdL;
     User user = mongo.getUser(getUserName());
+    private NumberTextField<Integer> jadOfferTbx;
 
     public TradePage(PageParameters params) {
 		super(params, "Trade");
@@ -89,38 +95,41 @@ public class TradePage extends MasterPage {
 				new Model(usersStringList.get(0)),
 				new Model(usersStringList));
 		userChooser.setOutputMarkupId(true);
-		tradeBtn = new AjaxLink<Object>("tradeBtn") {
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				if(homeOfferList.isEmpty() && awayOfferList.isEmpty())
-					return ;
-				if(awayOfferList.isEmpty())
-					return ;
-				String toUserName =userChooser.getDefaultModelObjectAsString();
-				TradingProposal tp = new TradingProposal(getUserName(), 
-						toUserName, 
-						homeOfferList, 
-						awayOfferList);
-				User to = mongo.getUser(toUserName);
-				UserMessage msg = new UserMessage(
-						to.getNextMessageId(), 
-						getUserName()+" wish to trade with you!", 
-						"Hey! It's "+getUserName()+". I just sent you a trade proposal. Check it out.");
-				to.addMessage(msg);
-				to.UPDATE();
-				Administration.addToTradingProposalList(tp);
-                if(to.wantsProposalMail()){
-                    MailSender.sendProposalNotification(tp, MailSender.ProposalNotificationType.Offer);
+//		tradeBtn = new AjaxLink<Object>("tradeBtn") {
+//			@Override
+//			public void onClick(AjaxRequestTarget target) {
+//
+//
+//			}
+//		};
+        jadOfferTbx = new NumberTextField<Integer>("jadOfferTbx",new Model(0));
+        jadOfferTbx.add(new AbstractDefaultAjaxBehavior(){
+
+            @Override
+            protected void onComponentTag(ComponentTag tag) {
+                super.onComponentTag(tag);
+                String js = "{var k = event.which;if (k < 48 || k > 58 ) event.preventDefault();}";
+                tag.put("onkeypress", js);
+            }
+
+            @Override
+            protected void respond(AjaxRequestTarget target) {
+                FormComponent c = (FormComponent) this.getComponent();
+                c.processInput();
+                if (c.hasErrorMessage()) {
+                    Serializable msg = "moja poruka";
+                    // do something with the message
                 }
-				for(ShowingCard sc: homeOfferList)
-					mongo.setCardInProposal(sc.cardId, "true");
-				setResponsePage(TradePage.class);
-			}
-		};
+            }
+        });
+//        tradeBtn.setOutputMarkupId(true);
+        jadOfferTbx.setMinimum(0);
+        form.add(jadOfferTbx);
 		form.add(cardView);
 		form.add(homeTrade); form.add(homeOffer);
 		form.add(awayTrade); form.add(awayOffer);
-		form.add(userChooser); form.add(tradeBtn);
+		form.add(userChooser);
+		//form.add(tradeBtn);
 	}
 
 	private void initLists(PageParameters params) {
@@ -169,6 +178,35 @@ public class TradePage extends MasterPage {
 		form = new Form<Object>("form"){
 			@Override
 			protected void onSubmit() {
+                Integer jadOffer = jadOfferTbx.getDefaultModelObjectAsString().equals("")?0: Integer.parseInt(jadOfferTbx.getDefaultModelObjectAsString());
+                if(homeOfferList.isEmpty() && awayOfferList.isEmpty() && jadOffer==0)
+                    return ;
+                if(awayOfferList.isEmpty())
+                    return ;
+                String toUserName =userChooser.getDefaultModelObjectAsString();
+                if (jadOffer>user.getJadBalance()) {
+                    info("Not enough Jad!");
+                    return;
+                }
+                TradingProposal tp = new TradingProposal(getUserName(),
+                        toUserName,
+                        homeOfferList,
+                        awayOfferList,
+                        jadOffer);
+                User to = mongo.getUser(toUserName);
+                UserMessage msg = new UserMessage(
+                        to.getNextMessageId(),
+                        getUserName()+" wish to trade with you!",
+                        "Hey! It's "+getUserName()+". I just sent you a trade proposal. Check it out.");
+                to.addMessage(msg);
+                to.UPDATE();
+                Administration.addToTradingProposalList(tp);
+                if(to.wantsProposalMail()){
+                    MailSender.sendProposalNotification(tp, MailSender.ProposalNotificationType.Offer);
+                }
+                for(ShowingCard sc: homeOfferList)
+                    mongo.setCardInProposal(sc.cardId, "true");
+                setResponsePage(TradePage.class);
 			}
 		};
 		add(form);

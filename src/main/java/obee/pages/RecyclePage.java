@@ -24,6 +24,7 @@ import custom.components.panels.CardSelectionPanel;
 import custom.components.panels.CardView;
 
 import obee.pages.master.MasterPage;
+import org.apache.wicket.util.string.*;
 
 @AuthorizeInstantiation("USER")
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -55,11 +56,11 @@ public class RecyclePage extends MasterPage {
 	private void initLists() {
         recycleShortlistList = (ArrayList<ShowingCard>) usr.getRecycleShortlistShowingCards();
 		tradeList = usr.getTradingShowingCards();
-		List<ShowingCard> tmpList = new ArrayList<ShowingCard>();
-		for(ShowingCard sc: tradeList)
-			if(sc.printed.toLowerCase().equals("false")) 
-				tmpList.add(sc);
-		tradeList= tmpList;
+//		List<ShowingCard> tmpList = new ArrayList<ShowingCard>();
+//		for(ShowingCard sc: tradeList)
+//			if(sc.printed.toLowerCase().equals("false"))
+//				tmpList.add(sc);
+//		tradeList= tmpList;
 		sacList=new ArrayList<ShowingCard>();
 	}
 
@@ -70,21 +71,25 @@ public class RecyclePage extends MasterPage {
 			@Override
 			protected void onSubmit() {
 				super.onSubmit();
-				if(sacList.size()!=6 ){
-					info("You must choose 6 cards!");
-					return;
-				}
+                int jad = 0;
 				for(ShowingCard sc : sacList){
-					usr.removeFromTrading(sc.cardId);
-                    usr.removeFromUsing(sc.cardId);
-                    usr.removeFromBooster(sc.cardId);
-                    usr.removeFromRecycleShortlist(sc.cardId);
-					mongo.deleteCard(sc.cardId);
+                    try{
+                        usr.removeFromTrading(sc.cardId);
+                        usr.removeFromUsing(sc.cardId);
+                        usr.removeFromBooster(sc.cardId);
+                        usr.removeFromRecycleShortlist(sc.cardId);
+                        mongo.deleteCard(sc.cardId);
+                        jad++;
+                    } catch (Exception ignorable){}
 				}
-				usr.addToBooster(CardGenerator.generateBooster(1,getUserName()));
-				info("One card added to boosters");
-				usr.UPDATE();
-				setResponsePage(RecyclePage.class);
+				usr.increaseJad(jad);
+                usr.UPDATE();
+                String msg ="";
+                if(jad==1)
+				    msg = jad + " jad added to your balance!";
+                else
+                    msg = jad + " jada added to your balance!";
+				setResponsePage(RecyclePage.class,new PageParameters().add("infoMsg",msg));
 			}
 		};
 		form.add(cardsPanel);
@@ -93,12 +98,6 @@ public class RecyclePage extends MasterPage {
         form.add(weeksOldPanel);
         form.add(filterButton);
         add(form);
-//        recycleIllegalForm = new Form("recycleIllegalForm"){
-//            @Override
-//            protected void onSubmit() {
-//            }
-//        };
-//        add(recycleIllegalForm);
 	}
 
 	private void initComponents() {

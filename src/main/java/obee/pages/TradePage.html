@@ -12,15 +12,15 @@
     					<form wicket:id="form">
     						<table>
     							<tr>
-    								<td>
+    								<td style="height:500px">
     									<span wicket:id = "homeTrade"/>
     								</td>
-    								<td>
+    								<td style="height:600px">
     									<div id="tradeCart" style="border: dotted red 2px">
     										<table>
     											<tr>
 		    										<td style="width: 100%; text-align: center;">
-    													<input type="submit" wicket:id="tradeBtn" value=""
+    													<input type="submit" value=""
     														style="width:79px; height:79px; ;background-image: url('http://t3.gstatic.com/images?q=tbn:ANd9GcS1uLh90gY2ikrL5B1Fj0tW6Lq4ARphjgewBkdjT-_AM3_O2VZU');"/>
     												</td>
     											</tr>
@@ -35,17 +35,25 @@
 			    													<span wicket:id = "awayOffer"/>
 			    												</td>
 			    											</tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Add some Jad:
+                                                                    <input type="number" wicket:id = "jadOfferTbx" style="width:40px" value="0"/>
+                                                                    <img src="http://i.imgur.com/x7wSe5y.gif" width="25" height="25" style="width:25 px; height:25 px">
+                                                                </td>
+                                                                <td></td>
+                                                            </tr>
 			    										</table>
 			    									</td>
     											</tr>
     										</table>
     									</div>
     								</td>
-    								<td>
+    								<td style="height:500px">
     									<select wicket:id = "userChooser" />
     									<span wicket:id = "awayTrade"/>
     								</td>
-    								<td>
+    								<td style="height:500px">
     									<span wicket:id = "cardView"/>
     								</td>
     							</tr>

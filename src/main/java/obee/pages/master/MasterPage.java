@@ -11,6 +11,8 @@ import obee.pages.*;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -24,6 +26,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import custom.classes.Page;
 import custom.classes.User;
 import database.MongoHandler;
+import org.apache.wicket.util.string.*;
 
 @SuppressWarnings("serial")
 public class MasterPage extends WebPage{
@@ -34,14 +37,21 @@ public class MasterPage extends WebPage{
 	protected FeedbackPanel feedback;
 	protected SignInSession session;
     protected User currentUser;
+    protected Integer jadBalance;
 	
 	public MasterPage(final PageParameters params, String name) {
+        Object msgObj = params.get("infoMsg");
+        StringValue msg = (StringValue) msgObj;
+        if (!msg.isNull())
+            info(msg.toString());
 		PAGE_NAME=name;
         Logger.logPageView(name);
 		session =(SignInSession)getSession();
 		if(session.isSignedIn())
 			userName = session.getUserName();
 	    currentUser = session.getUser();
+        if(currentUser!=null)
+            jadBalance = mongo.getUser(userName).getJadBalance();
 		initNavgator();
 		initMasterComponents();
 	}
@@ -51,6 +61,12 @@ public class MasterPage extends WebPage{
 		add(feedback = new FeedbackPanel("feedback"));
 		feedback.setOutputMarkupId(true);
 		add(new Label("userName",new PropertyModel<String>(this, "userName")));
+        add(new Label("jadBalance",new PropertyModel<String>(this, "jadBalance")){
+            @Override
+            public boolean isVisible() {
+                return jadBalance!=null;
+            }
+        });
 		add(new Label("versionLabel",((WicketApplication)getApplication()).CURRENT_VERSION));
 		add(new Label("pageTitle",PAGE_NAME));
 		add(logOffButton=new Link<Object>("logOffButton")
@@ -95,13 +111,12 @@ public class MasterPage extends WebPage{
 		list.add(new Page("WishList","USER",WishlistPage.class));
         list.add(new Page("Query[BETA]","USER",QueryPage.class));
 		list.add(new Page("Printing","USER",PrintingManagerPage.class));
-		list.add(new Page("Printer","PRINTER",PrinterPage.class));
+		list.add(new Page("Printer","USER",PrinterPage.class));
 		list.add(new Page("Malfunctions","ADMIN",MalfunctionsPage.class));
 		list.add(new Page("Admin", "ADMIN", AdminPage.class));
-//        list.add(new Page("Test", "ADMIN", Test.class));
-//        list.add(new Page("thisWeekFix", "ADMIN", CardsThisWeek.class));
         list.add(new Page("Profile","USER",ProfilePage.class));
         list.add(new Page("Stats", "ADMIN", StatsPage.class));
+        list.add(new Page("Store","ADMIN",StorePage.class));
 		return list;
 	}
 
@@ -115,5 +130,13 @@ public class MasterPage extends WebPage{
     }
     protected void hide(Component c){
         c.add(new AttributeModifier("style", "display:none;"));
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+
+        response.render(JavaScriptHeaderItem.forReference(getApplication().getJavaScriptLibrarySettings()
+                .getJQueryReference()));
     }
 }

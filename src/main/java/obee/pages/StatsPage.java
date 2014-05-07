@@ -2,7 +2,10 @@ package obee.pages;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import custom.classes.*;
+import custom.components.panels.CardSelectionPanel;
 import custom.components.panels.SuccTradesPanel;
+import custom.components.panels.TradingProposalPanel;
 import database.MongoHandler;
 import obee.pages.master.MasterPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -10,12 +13,14 @@ import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.ListChoice;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.IMarkupSourcingStrategy;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.DynamicImageResource;
@@ -32,6 +37,7 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 import org.joda.time.DateTime;
+import suport.MailSender;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,8 +47,12 @@ import java.util.List;
 @AuthorizeInstantiation("ADMIN")
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class StatsPage extends MasterPage {
-    private final SuccTradesPanel panel;
-    DropDownChoice<String> userChooser;
+    private final List allTradesChoices, screwdTradesChoices;
+    private final TradingProposalPanel proposalsPanel;
+    private final Label dateLabel;
+    //    private final SuccTradesPanel panel;
+    private ListChoice<TradingProposal> allTrades, screwdTrades;
+//    DropDownChoice<String> userChooser;
     ListView listview;
 
     @SuppressWarnings("serial")
@@ -67,22 +77,83 @@ public class StatsPage extends MasterPage {
         }
 
 
-        List<String> USERS = new ArrayList<String>();
-        USERS.add("all"); USERS.addAll(mongo.getAllUserNames());
-        userChooser = new DropDownChoice<String>("userChooser", new Model("all"),USERS);
-        OnChangeAjaxBehavior onUserchanged = new OnChangeAjaxBehavior() {
+//        List<String> USERS = new ArrayList<String>();
+//        USERS.add("all"); USERS.addAll(mongo.getAllUserNames()); USERS.add("boosterDates");
+//        userChooser = new DropDownChoice<String>("userChooser", new Model("all"),USERS);
+//        OnChangeAjaxBehavior onUserchanged = new OnChangeAjaxBehavior() {
+//            @Override
+//            protected void onUpdate(AjaxRequestTarget target) {
+//                String choice = userChooser.getDefaultModelObjectAsString();
+//                if(choice.equals("boosterDates"))
+//                    panel.setList(mongo.getBoosterDatesStrings());
+//                else
+//                    panel.setList(mongo.getSuccessfullTrades(choice));
+//                target.add(panel);
+//            }
+//        };
+//        userChooser.add(onUserchanged);
+//        add(userChooser);
+
+//        panel = new SuccTradesPanel("tradesPanel");
+//        panel.setOutputMarkupId(true);
+//        add(panel);
+
+        allTradesChoices = mongo.getSuccessfullTrades("all");
+        allTrades = new ListChoice<TradingProposal>("allTrades",
+                new Model(allTradesChoices.isEmpty()?null: (Serializable) allTradesChoices.get(0)),
+                new PropertyModel(this, "allTradesChoices"));
+        allTrades.setOutputMarkupId(true);
+        add(allTrades);
+
+        screwdTradesChoices = mongo.getScrewdTrades("all");
+        screwdTrades = new ListChoice<TradingProposal>("screwdTrades",
+                new Model(screwdTradesChoices.isEmpty()?null: (Serializable) screwdTradesChoices.get(0)),
+                new PropertyModel(this, "screwdTradesChoices"));
+        screwdTrades.setOutputMarkupId(true);
+        add(screwdTrades);
+
+        proposalsPanel = new TradingProposalPanel("proposalsPanel") {
+
             @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                panel.setList(mongo.getSuccessfullTrades(userChooser.getDefaultModelObjectAsString()));
-                target.add(panel);
+            public void onDismiss(AjaxRequestTarget target) {
+
+            }
+
+            @Override
+            public void onAcept(AjaxRequestTarget target) {
+
             }
         };
-        userChooser.add(onUserchanged);
-        add(userChooser);
 
-        panel = new SuccTradesPanel("tradesPanel");
-        panel.setOutputMarkupId(true);
-        add(panel);
+        if(!allTradesChoices.isEmpty()){
+            proposalsPanel.setProposal((TradingProposal) allTradesChoices.get(0));
+            proposalsPanel.setAcceptButtonVisible(false);
+        }
+
+        OnChangeAjaxBehavior onChangeAll = new OnChangeAjaxBehavior() {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                TradingProposal tp = (TradingProposal) allTrades.getDefaultModelObject();
+                proposalsPanel.setProposal(tp);
+                target.add(proposalsPanel);
+                proposalsPanel.setAcceptButtonVisible(false);
+            }
+        };
+        allTrades.add(onChangeAll);
+
+        OnChangeAjaxBehavior onChangeScrewd = new OnChangeAjaxBehavior() {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                TradingProposal tp = (TradingProposal) screwdTrades.getDefaultModelObject();
+                proposalsPanel.setProposal(tp);
+                target.add(proposalsPanel);
+                proposalsPanel.setAcceptButtonVisible(false);
+            }
+        };
+        screwdTrades.add(onChangeScrewd);
+        add(proposalsPanel);
+        dateLabel = new Label(("dateLabel"),new DateTime().toString());
+        add(dateLabel);
 	}
 
     public XYDataset getDailyStats(DBObject dailyStatsObj){

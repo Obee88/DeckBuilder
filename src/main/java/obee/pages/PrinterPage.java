@@ -40,7 +40,7 @@ import custom.components.IEventListener;
 import custom.components.ListChooser;
 import custom.components.panels.CardSelectionPanel;
 
-@AuthorizeInstantiation("PRINTER")
+@AuthorizeInstantiation("USER")
 
 @SuppressWarnings({ "unchecked", "rawtypes","serial" })
 public class PrinterPage extends MasterPage {
@@ -81,11 +81,18 @@ public class PrinterPage extends MasterPage {
 		for(ShowingCard sc: fullList)
 			_usersChoices.add(sc.owner);
 		usersChoices = new ArrayList<String>();
-		usersChoices.add("All users");
-		for(String ch : _usersChoices)
-			usersChoices.add(ch);
-		filteredList = new ArrayList<ShowingCard>();
-		filteredList.addAll(fullList);
+        filteredList = new ArrayList<ShowingCard>();
+        if(currentUser.hasRole(("PRINTER"))){
+            usersChoices.add("All users");
+            for(String ch : _usersChoices)
+                usersChoices.add(ch);
+            filteredList.addAll(fullList);
+        } else {
+            usersChoices.add(currentUser.getUserName());
+            for(ShowingCard sc: fullList)
+                if(sc.owner.equals(currentUser.getUserName()))
+                    filteredList.add(sc);
+        }
 		readyList = new ArrayList<ShowingCard>();
 	}
 	

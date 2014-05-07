@@ -134,9 +134,11 @@ public class MongoHandler {
 	}
 
 	public void setCardOwner(Integer cardId, String userName) {
-        BasicDBObject q = new BasicDBObject("id",cardId);
-        BasicDBObject o = new BasicDBObject("$set",new BasicDBObject("owner",userName));
-        cardsCollection.update(q, o);
+        try {
+            BasicDBObject q = new BasicDBObject("id",cardId);
+            BasicDBObject o = new BasicDBObject("$set",new BasicDBObject("owner",userName));
+            cardsCollection.update(q, o);
+        }  catch (Exception ignorable){}
 
 	}
 
@@ -165,21 +167,27 @@ public class MongoHandler {
     }
 
 	public void addToBoosterList(Integer cardId, String userName) {
-		BasicDBObject q = new BasicDBObject("userName",userName);
-		BasicDBObject o = new BasicDBObject("$push", new BasicDBObject("userCards.boosters",cardId));
-		usersCollection.update(q, o);
+        try{
+            BasicDBObject q = new BasicDBObject("userName",userName);
+            BasicDBObject o = new BasicDBObject("$push", new BasicDBObject("userCards.boosters",cardId));
+            usersCollection.update(q, o);
+        }  catch (Exception ignorable){}
 	}
 	
 	public void setCardStatus(Integer cardId, String status) {
-		BasicDBObject q = new BasicDBObject("id",cardId);
-		BasicDBObject o = new BasicDBObject("$set",new BasicDBObject("status",status));
-		cardsCollection.update(q, o);
+        try{
+		    BasicDBObject q = new BasicDBObject("id",cardId);
+            BasicDBObject o = new BasicDBObject("$set",new BasicDBObject("status",status));
+            cardsCollection.update(q, o);
+        }  catch (Exception ignorable){}
 	}
 
 	public void setCardInProposal(Integer cardId, String string) {
-		BasicDBObject q = new BasicDBObject("id",cardId);
-		BasicDBObject o = new BasicDBObject("$set",new BasicDBObject("inProposal",string));
-		cardsCollection.update(q, o);
+        try{
+            BasicDBObject q = new BasicDBObject("id",cardId);
+            BasicDBObject o = new BasicDBObject("$set",new BasicDBObject("inProposal",string));
+            cardsCollection.update(q, o);
+        }  catch (Exception ignorable){}
 	}
 
 	public void deleteCard(int cardId) {
@@ -422,7 +430,7 @@ public class MongoHandler {
         sucessfullProposalsCollections.insert(tp.toDBObject());
     }
 
-    public List getSuccessfullTrades(String username) {
+    public List getSuccessfullTradeStrings(String username) {
         boolean all = username.equals("all");
         List<String> sucessfullTrades = new ArrayList<String>();
         DBCursor cur = statisticsCollection.find();
@@ -432,6 +440,20 @@ public class MongoHandler {
             TradingProposal tp = new TradingProposal(obj);
             if (all || tp.hasUser(username))
                 sucessfullTrades.add(tp.toString());
+        }
+        return sucessfullTrades;
+    }
+
+    public List getSuccessfullTrades(String username) {
+        boolean all = username.equals("all");
+        List<TradingProposal> sucessfullTrades = new ArrayList<TradingProposal>();
+        DBCursor cur = statisticsCollection.find();
+        while (cur.hasNext()){
+            DBObject obj = cur.next();
+            if (obj.get("id").equals("views")) continue;
+            TradingProposal tp = new TradingProposal(obj);
+            if (all || tp.hasUser(username))
+                sucessfullTrades.add(tp);
         }
         return sucessfullTrades;
     }
@@ -471,9 +493,11 @@ public class MongoHandler {
     }
 
     public void removeCardFromUser(Integer cardId, String userName) {
-        removeFromTradingList(cardId,userName);
-        removeFromBoostersList(cardId, userName);
-        removeFromUsingList(cardId,userName);
+        try{
+            removeFromTradingList(cardId,userName);
+            removeFromBoostersList(cardId, userName);
+            removeFromUsingList(cardId,userName);
+        }  catch (Exception ignorable){}
     }
 
     public String cardStatus(Integer id) {
@@ -505,5 +529,31 @@ public class MongoHandler {
         if (obj == null) return null;
         return obj.get("downloadLink").toString();
 
+    }
+
+    public List getBoosterDatesStrings() {
+        List<String> dates = new ArrayList<String>();
+        DBObject q = new BasicDBObject();
+        DBObject f = new BasicDBObject("userName",1).append("lastBoosterDate",1);
+        DBCursor cur = usersCollection.find(q,f);
+        while(cur.hasNext()){
+            DBObject obj = cur.next();
+            String name = obj.get("userName").toString();
+            String date = obj.get("lastBoosterDate").toString();
+            dates.add(date+" - "+ name);
+        }
+        return  dates;
+    }
+
+    public List<TradingProposal> getScrewdTrades(String userName) {
+        List<TradingProposal> list = getSuccessfullTrades(userName);
+        List<TradingProposal> ret = new ArrayList<TradingProposal>();
+        for(TradingProposal tp : list){
+            try{
+            if (tp.getFromList().isEmpty())
+                ret.add(tp);
+            } catch (Exception ignorable){}
+        }
+        return ret;
     }
 }

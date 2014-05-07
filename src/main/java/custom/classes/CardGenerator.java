@@ -11,7 +11,7 @@ public class CardGenerator {
 		List<User> allUsrs =MongoHandler.getInstance().getAllUsers();
 		List<Card> ret = new ArrayList<Card>();
 		while(ret.size()<size){
-			Card c = Card.generateCard(owner);
+            Card c = Card.generateCard(owner);
 			ShowingCard sc = new ShowingCard(c);
 			checkWishlists(sc,allUsrs, owner);
 			ret.add(c);
@@ -25,6 +25,14 @@ public class CardGenerator {
 		if(rand<99) return "rare";
 		return "mythic";
 	}
+
+    public static Card generateOneCard(String owner, String rarity){
+        List<User> allUsrs =MongoHandler.getInstance().getAllUsers();
+        Card c = Card.generateCard(owner, rarity);
+        ShowingCard sc = new ShowingCard(c);
+        checkWishlists(sc, allUsrs, owner);
+        return c;
+    }
 
 	private static void checkWishlists(ShowingCard sc, List<User> allUsrs, String owner) {
 		for(User u: allUsrs){
