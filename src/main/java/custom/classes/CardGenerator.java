@@ -11,7 +11,7 @@ public class CardGenerator {
 		List<User> allUsrs =MongoHandler.getInstance().getAllUsers();
 		List<Card> ret = new ArrayList<Card>();
 		while(ret.size()<size){
-            Card c = Card.generateCard(owner);
+            Card c = Card.generateCard(owner, ret.size()==31);
 			ShowingCard sc = new ShowingCard(c);
 			checkWishlists(sc,allUsrs, owner);
 			ret.add(c);
@@ -28,7 +28,7 @@ public class CardGenerator {
 
     public static Card generateOneCard(String owner, String rarity){
         List<User> allUsrs =MongoHandler.getInstance().getAllUsers();
-        Card c = Card.generateCard(owner, rarity);
+        Card c = Card.generateCard(owner, rarity, false);
         ShowingCard sc = new ShowingCard(c);
         checkWishlists(sc, allUsrs, owner);
         return c;

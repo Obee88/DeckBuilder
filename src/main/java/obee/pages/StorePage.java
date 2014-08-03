@@ -16,7 +16,7 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 import java.util.HashMap;
 
-@AuthorizeInstantiation("ADMIN")
+@AuthorizeInstantiation("USER")
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class StorePage extends MasterPage {
     private static final long serialVersionUID = 1L;
@@ -67,7 +67,7 @@ public class StorePage extends MasterPage {
                 int rareCount = Integer.parseInt(rareCnt.getDefaultModelObjectAsString());
                 int mythicCount = Integer.parseInt(mythicCnt.getDefaultModelObjectAsString());
                 int cardsAdded = 0;
-                User u = mongo.getUser(userName);
+                User u = currentUser;
                 for (int i = 0 ; i<mythicCount;i++){
                     String rarity = "mythic";
                     int price = prices.get(rarity);

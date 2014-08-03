@@ -20,6 +20,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeZone;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class QueryPage extends MasterPage{
     private AjaxLink<Object> subtypeInclude, subtypeExclude;
     private AjaxLink<Object> rarityInclude,rarityExclude;
     private AjaxLink<Object> textInclude,textExclude;
-    private HidingQueryPanel manaCostPanel, colorPanel;
+    private HidingQueryPanel manaCostPanel, colorPanel, colorNumPanel;
     private HidingQueryTextPanel textPanel;
     private HidingQueryPanel rarityPanel;
     private HidingQueryPanel typePanel;
@@ -82,7 +83,7 @@ public class QueryPage extends MasterPage{
     }
 
     private void initComponents(PageParameters params) {
-        infoPanel=new InfoPanel("panel",mongo.getUser(getUserName()).getRoles().contains("ADMIN"));
+        infoPanel=new InfoPanel("panel",currentUser.getRoles().contains("ADMIN"));
         cardView = new CardView("cardView");
         nameTbx= new TextField<String>("component",new Model<String>());
         nameTbx.setOutputMarkupId(true);
@@ -168,6 +169,20 @@ public class QueryPage extends MasterPage{
         };
         manaCostPanel.setText("Mana cost:");
         form.add(manaCostPanel);
+        colorNumPanel = new HidingQueryPanel("colorNumPanel", new PlusMinusPanel("component")) {
+            @Override
+            public Object getCondition() {
+                PlusMinusPanel comp =(PlusMinusPanel)getComponent();
+                return comp.getCondition();
+            }
+
+            @Override
+            public boolean isVisible() {
+                return super.isVisible() && currentUser.isAdmin();
+            }
+        };
+        colorNumPanel.setText("Color num:");
+        form.add(colorNumPanel);
         MyCheckGroup clrCb = new MyCheckGroup<String>("component",new Model(colorChoices), COLORS);
         clrCb.setOutputMarkupId(true);
         colorPanel = new HidingQueryPanel("colorPanel", clrCb){
@@ -205,7 +220,7 @@ public class QueryPage extends MasterPage{
                 PlusMinusPanel comp =(PlusMinusPanel)getComponent();
                 int value = comp.getNumber();
                 boolean ismore = comp.isMore();
-                DateTime dt = new DateTime();
+                DateTime dt = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
                 if(value>0){
                     dt= dt.withDayOfWeek(DateTimeConstants.MONDAY)
                             .withHourOfDay(0)
@@ -253,7 +268,7 @@ public class QueryPage extends MasterPage{
         form = new Form<Object>("form"){
             @Override
             protected void onSubmit() {
-                Object color =null, type=null,subtype=null,rarity=null,text=null,manaCost=null,name=null, creationDate=null, users=null;
+                Object color =null, type=null,subtype=null,rarity=null,text=null,manaCost=null,name=null, creationDate=null, users=null, colorNum=null;
                 if(colorPanel.isShown())
                     color = colorPanel.getCondition();
                 if(datetimePanel.isShown())
@@ -270,11 +285,13 @@ public class QueryPage extends MasterPage{
                     type = typePanel.getCondition();
                 if(manaCostPanel.isShown())
                     manaCost= manaCostPanel.getCondition();
+                if(colorNumPanel.isVisible() && colorNumPanel.isShown())
+                    colorNum= colorNumPanel.getCondition();
                 if(userPanel.isShown())
                     users = userPanel.getCondition();
 
                 PageParameters pageParameters = new PageParameters();
-                pageParameters.add("idList",mongo.queryAll(name,type, subtype, rarity, text,manaCost, creationDate,color, users));
+                pageParameters.add("idList",mongo.queryAll(name,type, subtype, rarity, text,manaCost, creationDate,color, users, colorNum));
                 setResponsePage(QueryPage.class, pageParameters);
             }
         };
@@ -296,7 +313,7 @@ public class QueryPage extends MasterPage{
             }
         };
         unprintForm.add(unprintBtn);
-        if(!mongo.getUser(getUserName()).hasRole("USER"))
+        if(!currentUser.hasRole("USER"))
             hide(unprintBtn);
 
     }

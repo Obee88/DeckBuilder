@@ -10,6 +10,7 @@ import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.util.Date;
 
@@ -25,7 +26,7 @@ public class DatePickerPanel extends Panel implements IEventListener {
 		super(id);
 		initComponents();
 		setOutputMarkupId(true);
-        date = new DateTime().toDate();
+        date = new DateTime(DateTimeZone.forID("Asia/Tokyo")).toDate();
 	}
 
 	private void initComponents() {

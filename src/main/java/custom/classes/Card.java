@@ -13,6 +13,7 @@ import custom.classes.abstractClasses.MongoObject;
 
 import database.MongoHandler;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 public class Card extends MongoObject{
     Integer cardId;
@@ -21,40 +22,43 @@ public class Card extends MongoObject{
 	String inProposal;
     public Date creationDate;
 
-    public static Card generateCard(String owner) {
-		return generateCard(owner,null);
+    public static Card generateCard(String owner, boolean isNew) {
+		return generateCard(owner,null, isNew);
 	}
 
-    public static Card generateCard(String owner, String rarity) {
+    public static Card generateCard(String owner, String rarity, boolean isNew) {
         MongoHandler mongo;
         mongo = MongoHandler.getInstance();
         int _cardId=Administration.getNextCardId();
         boolean _printed=false;
-        int _cardInfoId = generateRandomCardInfo(_cardId, rarity);
+        int _cardInfoId = generateRandomCardInfo(_cardId, rarity, isNew);
         DBObject obj = new BasicDBObject()
                 .append("id", _cardId)
                 .append("printed", _printed)
                 .append("owner", owner)
                 .append("cardInfoId", _cardInfoId)
                 .append("status", "booster")
-                .append("creationDate", new DateTime().toDate())
+                .append("creationDate", new DateTime(DateTimeZone.forID("Asia/Tokyo")).toDate())
                 .append("info", mongo.getCardInfo(_cardInfoId).toDBObject());
         mongo.setExistance(_cardInfoId,true);
         mongo.cardsCollection.insert(obj);
         return new Card(obj);
     }
-	
-	private static Integer generateRandomCardInfo(int creatingCardId) {
-		return generateRandomCardInfo(creatingCardId,null);
-	}
 
-    private static Integer generateRandomCardInfo(int creatingCardId, String minRarity) {
-        if (minRarity==null)
-            minRarity=CardGenerator.getRarity(new Random().nextInt(100));
+    private static Integer generateRandomCardInfo(int creatingCardId, String minRarity, boolean isNew) {
+        DBObject minRarityQ;
+        if (minRarity==null){
+            BasicDBList dbl = new BasicDBList();
+            dbl.add(CardGenerator.getRarity(new Random().nextInt(100)));
+            minRarityQ=new BasicDBObject("$in",dbl);
+        }
+        else
+            minRarityQ = getSameOrBiggerRarityListQuery(minRarity);
         Integer ret = null;
         while(ret==null){
-            BasicDBObject basObj = new BasicDBObject("rarity",getSameOrBiggerRarityListQuery(minRarity));
-//            BasicDBObject basObj = new BasicDBObject("rarity",rarity).append("exist",false);    event
+            BasicDBObject basObj = new BasicDBObject("rarity",minRarityQ);
+            if (isNew) //only for one card in booster
+                basObj.append("exist",false);
             DBCursor cur = MongoHandler.getInstance().cardInfoCollection.find(
                     basObj
             );
@@ -138,7 +142,7 @@ public class Card extends MongoObject{
 			.append("owner", owner)
 			.append("cardInfoId", _cardInfoId)
 			.append("status", "booster")
-            .append("creationDate",new DateTime().toDate());
+            .append("creationDate",new DateTime(DateTimeZone.forID("Asia/Tokyo")).toDate());
 		mongo.cardsCollection.insert(obj);
 		return new Card(obj);
 	}

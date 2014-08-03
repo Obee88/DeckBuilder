@@ -6,7 +6,8 @@ import com.mongodb.DBObject;
 import database.MongoHandler;
 
 public class CardInfo {
-	public String downloadLink,text,name,type,manaCost,rarity,artist,edition,subType;
+    private int numOfColors;
+    public String downloadLink,text,name,type,manaCost,rarity,artist,edition,subType;
 	public boolean isTwoSided;
 	public int convertedManaCost, id;
 	private MongoHandler mongo = MongoHandler.getInstance();
@@ -23,6 +24,11 @@ public class CardInfo {
 		convertedManaCost = Integer.parseInt(obj.get("convertedManaCost").toString());
 		id = Integer.parseInt(obj.get("id").toString());
 		isTwoSided = getBool(obj.get("isTwoSided").toString());
+        try{
+            numOfColors = Integer.parseInt(obj.get("numOfColors").toString());
+        } catch (Exception ignorable){
+            numOfColors = 0;
+        }
 	}
 
 	private Boolean getBool(String string) {

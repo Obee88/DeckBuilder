@@ -49,9 +49,9 @@ public class MasterPage extends WebPage{
 		session =(SignInSession)getSession();
 		if(session.isSignedIn())
 			userName = session.getUserName();
-	    currentUser = session.getUser();
+	    currentUser = mongo.getUser(session.getUserName());
         if(currentUser!=null)
-            jadBalance = mongo.getUser(userName).getJadBalance();
+            jadBalance = currentUser.getJadBalance();
 		initNavgator();
 		initMasterComponents();
 	}
@@ -116,7 +116,7 @@ public class MasterPage extends WebPage{
 		list.add(new Page("Admin", "ADMIN", AdminPage.class));
         list.add(new Page("Profile","USER",ProfilePage.class));
         list.add(new Page("Stats", "ADMIN", StatsPage.class));
-        list.add(new Page("Store","ADMIN",StorePage.class));
+        list.add(new Page("Store","USER",StorePage.class));
 		return list;
 	}
 

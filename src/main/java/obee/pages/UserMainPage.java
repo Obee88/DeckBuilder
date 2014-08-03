@@ -34,10 +34,11 @@ public class UserMainPage extends MasterPage {
     Form<Object> form;
 	ListView<UserMessage> messagesView;
     Box currentBox = Box.all;
-    User user = mongo.getUser(getUserName());
+    User user = null;
 
     public UserMainPage(PageParameters parameters) {
 		super(parameters,"Home");
+        user = currentUser;
 		form = new Form<Object>("form");
         String bs = parameters.get("box").toString();
         List<UserMessage> messages;

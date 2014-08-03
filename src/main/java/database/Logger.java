@@ -3,6 +3,7 @@ package database;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.util.Date;
 
@@ -18,7 +19,7 @@ public class Logger {
         String dayString = getDayString();
         DBObject q = new BasicDBObject("id","views");
         processMonthlyStats(q);
-        DBObject obj = new BasicDBObject("$inc",new BasicDBObject("daily_stats."+page+"."+dayString,1)).append("$set",new BasicDBObject("daily_stats.month",new DateTime().getMonthOfYear()));
+        DBObject obj = new BasicDBObject("$inc",new BasicDBObject("daily_stats."+page+"."+dayString,1)).append("$set",new BasicDBObject("daily_stats.month",new DateTime(DateTimeZone.forID("Asia/Tokyo")).getMonthOfYear()));
         MongoHandler.getInstance().updateStatistic(q,obj);
     }
 
@@ -30,7 +31,7 @@ public class Logger {
         Object mo = thisMonthDailyStats.get("month");
         if (mo==null) return;
         int month = (Integer)mo;
-        DateTime now = new DateTime();
+        DateTime now = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
         if (now.getMonthOfYear()==month)
             return;
 
@@ -52,7 +53,7 @@ public class Logger {
     }
 
     private static String getDayString(){
-        DateTime now = new DateTime();
+        DateTime now = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
         StringBuilder sb = new StringBuilder();
         sb.append("d_");
         int d = now.getDayOfMonth();
@@ -61,7 +62,7 @@ public class Logger {
         return sb.toString();
     }
     private static String getMonthString(){
-        DateTime now = new DateTime();
+        DateTime now = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
         StringBuilder sb = new StringBuilder();
         sb.append("m_");
         int m = now.getMonthOfYear();

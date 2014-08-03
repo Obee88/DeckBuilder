@@ -57,7 +57,7 @@ public class WishlistPage extends MasterPage {
 	private TextField<String> searchTbx;
 	private DataTable wishlistTable;
     String tbxValue="";
-	User usr = mongo.getUser(userName);
+	User usr = null;
 	List<WishListItem> wishList;
 	List<User> allUsrs;
     String focusCard;
@@ -70,6 +70,8 @@ public class WishlistPage extends MasterPage {
 
     public WishlistPage(PageParameters params) {
 		super(params, "WishList");
+        usr = currentUser;
+        usr.setWishlists();
         focusCard = params.get("focus")==null?null:params.get("focus").toString();
 		initWishlist();
 		initForm();

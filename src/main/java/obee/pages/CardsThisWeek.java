@@ -27,7 +27,7 @@ public class CardsThisWeek extends MasterPage {
     private final TextField<String> toTbx,fromTbx;
     private InfoPanel infoPane;
     CardSelectionPanel cardsPane;
-    User u = mongo.getUser(getUserName());
+    User u = currentUser;
 
     public CardsThisWeek(PageParameters params) {
         super(params, "CardsThisWeek");

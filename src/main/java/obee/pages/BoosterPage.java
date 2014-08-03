@@ -53,7 +53,7 @@ public class BoosterPage extends MasterPage{
 	InfoPanel infoPanel;
 	Form<?> form;
 	CheckBox goodCheck, badCheck;
-	User u =mongo.getUser(getUserName());
+	User u =currentUser;
 	int cardsAv = u.cardsAvailable();
 	CardSelectionPanel boosterPanel, goodChoice, badChoice;
 	CardView cardView;
@@ -61,7 +61,7 @@ public class BoosterPage extends MasterPage{
 
 	public BoosterPage(final PageParameters params) {
 		super(params,"Boosters");
-
+        currentUser.setSubfolders();
         AjaxEventBehavior keypress =new AjaxEventBehavior("onkeypress"){
             @Override
             protected void updateAjaxAttributes(AjaxRequestAttributes

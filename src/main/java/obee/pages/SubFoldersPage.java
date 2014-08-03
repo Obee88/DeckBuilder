@@ -39,7 +39,7 @@ public class SubFoldersPage extends MasterPage {
 
 	private List<ShowingCard>[] subFolderList = new List[6];
 	private ArrayList<ShowingCard> usingList ;
-	private User user = mongo.getUser(getUserName());
+	private User user = null;
 	private CardSelectionPanel usingPanel;
 	private CardSelectionPanel[] subFolderPanel= new CardSelectionPanel[6];
 	private Form<Object> form;
@@ -59,9 +59,10 @@ public class SubFoldersPage extends MasterPage {
 
     public SubFoldersPage(PageParameters params) {
 		super(params, "Folders");
-		user=mongo.getUser(getUserName());
+//		user=mongo.getUser(getUserName());
+        user = currentUser;
+        user.setSubfolders();
 		user.getSubfolders().validate();
-		user=mongo.getUser(getUserName());
 		initLists();
 		initForm();
 		initComponents();

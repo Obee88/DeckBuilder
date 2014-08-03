@@ -13,6 +13,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 import custom.classes.abstractClasses.MongoObject;
+import org.joda.time.DateTimeZone;
 
 @SuppressWarnings("serial")
 public class TradingProposal extends MongoObject implements Serializable{
@@ -30,7 +31,7 @@ public class TradingProposal extends MongoObject implements Serializable{
         this.id = Administration.getNextTradeProposalId();
         this.from = from;
         this.to = to;
-        this.expireDate = new DateTime().plusDays(ttl).toDate();
+        this.expireDate = new DateTime(DateTimeZone.forID("Asia/Tokyo")).plusDays(ttl).toDate();
         this.fromList = fromList;
         this.toList = toList;
         this.jadOffer=0;
@@ -41,7 +42,7 @@ public class TradingProposal extends MongoObject implements Serializable{
 		this.id = Administration.getNextTradeProposalId();
 		this.from = from;
 		this.to = to;
-		this.expireDate = new DateTime().plusDays(ttl).toDate();
+		this.expireDate = new DateTime(DateTimeZone.forID("Asia/Tokyo")).plusDays(ttl).toDate();
 		this.fromList = fromList;
 		this.toList = toList;
         this.jadOffer=jadOffer;
@@ -53,7 +54,7 @@ public class TradingProposal extends MongoObject implements Serializable{
 		this.id = Administration.getNextTradeProposalId();
 		this.from = from;
 		this.to = to;
-		this.expireDate = new DateTime().plusDays(ttl).toDate();
+		this.expireDate = new DateTime(DateTimeZone.forID("Asia/Tokyo")).plusDays(ttl).toDate();
 		this.fromList = new HashSet<Integer>();
 		this.toList = new HashSet<Integer>();
 		for(ShowingCard sc : fromList){
@@ -71,7 +72,7 @@ public class TradingProposal extends MongoObject implements Serializable{
         this.id = Administration.getNextTradeProposalId();
         this.from = from;
         this.to = to;
-        this.expireDate = new DateTime().plusDays(ttl).toDate();
+        this.expireDate = new DateTime(DateTimeZone.forID("Asia/Tokyo")).plusDays(ttl).toDate();
         this.fromList = new HashSet<Integer>();
         this.toList = new HashSet<Integer>();
         for(ShowingCard sc : fromList){
@@ -117,7 +118,7 @@ public class TradingProposal extends MongoObject implements Serializable{
 	}
 	
 	public Boolean isValid(){
-		DateTime now = new DateTime();
+		DateTime now = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
 		DateTime expire = new DateTime(expireDate);
 		if(!Administration.getTradingProposalsListIds().contains(this.id)){
 			return false;

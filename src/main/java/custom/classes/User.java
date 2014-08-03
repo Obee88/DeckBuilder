@@ -12,12 +12,15 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 import custom.classes.abstractClasses.MongoObject;
+import org.joda.time.DateTimeZone;
 
 
 @SuppressWarnings("serial")
 public class User extends MongoObject implements Serializable{
-	
-	String userName,eMail,passwordHash;
+
+    private DBObject subfoldersDBobject= null;
+    private DBObject wishlistDBobject= null;
+    String userName,eMail,passwordHash;
     Integer jadBalance;
 	List<String> roles;
 	List<UserMessage> messages;
@@ -25,8 +28,8 @@ public class User extends MongoObject implements Serializable{
 	String starterDeck;
 	Date lastBoosterDate;
 	int maxMessageId;
-	SubFolders subfolders;
-	List<String> wishList;
+	SubFolders subfolders = null;
+	List<String> wishList = null;
     Set<Integer> recycleShortlist;
 	public String[] subFolderNames = new String[]{"sf0","sf1","sf2","sf3","sf4","sf5"};
     private boolean wantsProposalMail, wantsWishlistMail;
@@ -58,8 +61,8 @@ public class User extends MongoObject implements Serializable{
 		starterDeck = obj.get("starterDeck")==null?null: obj.get("starterDeck").toString();
 		maxMessageId = obj.get("maxMessageId")==null?0:(Integer) obj.get("maxMessageId");
 		messages = DBL2MsgL((BasicDBList)obj.get("messages"));
-		subfolders = new SubFolders((DBObject)obj.get("subFolders"),this);
-		wishList = obj.get("wishList")==null? new ArrayList<String>(): WishListItem.fromDBList((BasicDBList)obj.get("wishList"));
+        subfoldersDBobject = (DBObject)obj.get("subFolders");
+        wishlistDBobject = (DBObject)obj.get("wishList");
 		DBObject sfNamesObj= (DBObject) obj.get("subFoldersNames");
 		if(sfNamesObj!=null){
 			for(int i =0;i<6;i++)
@@ -111,7 +114,8 @@ public class User extends MongoObject implements Serializable{
 		if(lastBoosterDate!=null) 
 			obj.append("lastBoosterDate", lastBoosterDate);
 		obj.append("messages", MsgL2DBL(messages));
-		obj.append("wishList", WishListItem.toDBL(wishList));
+        if (wishList!=null)
+		    obj.append("wishList", WishListItem.toDBL(wishList));
 		BasicDBObject sfNamesObj = new BasicDBObject();
 		for(int i=0;i<6;i++){
 			sfNamesObj.append("sf"+i, subFolderNames[i]);
@@ -126,10 +130,18 @@ public class User extends MongoObject implements Serializable{
 	@Override
 	public void UPDATE() {
 		if(mongo.userExist(userName))
-			mongo.usersCollection.update(getQ(), toDBObject());
+			mongo.usersCollection.update(getQ(), new BasicDBObject("$set", toDBObject()));
 		else
 			mongo.usersCollection.insert(toDBObject());
 	}
+
+    public void setSubfolders() {
+        subfolders = new SubFolders(subfoldersDBobject,this);
+    }
+
+    public void setWishlists() {
+        wishList = wishlistDBobject==null? new ArrayList<String>(): WishListItem.fromDBList((BasicDBList) wishlistDBobject);
+    }
 
 	@Override
 	public BasicDBObject getQ() {
@@ -224,7 +236,7 @@ public class User extends MongoObject implements Serializable{
 	public int cardsAvailable(){
 		if(lastBoosterDate==null) 
 			return 48;
-		DateTime now = new DateTime();
+		DateTime now = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
 		DateTime deadline = now.withDayOfWeek(DateTimeConstants.MONDAY)
 				.withHourOfDay(0)
 				.withMinuteOfHour(0)
@@ -523,7 +535,7 @@ public class User extends MongoObject implements Serializable{
     public List<ShowingCard> getTradingShowingCardsOlderThan(int wo, boolean isOlder) {
         List<ShowingCard> ret = new ArrayList<ShowingCard>();
         for( ShowingCard sc : getTradingShowingCards()){
-            if (sc.isNewer(new DateTime().minusWeeks(wo)) ^ isOlder )
+            if (sc.isNewer(new DateTime(DateTimeZone.forID("Asia/Tokyo")).minusWeeks(wo)) ^ isOlder )
                 ret.add(sc);
         }
         return ret;
@@ -532,7 +544,7 @@ public class User extends MongoObject implements Serializable{
     public boolean isBoosterTakenThisWeek() {
         DBObject usrObj = mongo.usersCollection.findOne(new BasicDBObject("userName",userName));
         Date lbd = (Date) usrObj.get("lastBoosterDate");
-        DateTime now = new DateTime();
+        DateTime now = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
         DateTime deadline = now.withDayOfWeek(DateTimeConstants.MONDAY)
                 .withHourOfDay(0)
                 .withMinuteOfHour(0)
@@ -601,4 +613,28 @@ public class User extends MongoObject implements Serializable{
         jadBalance-=dec;
     }
 
+    public void clearUnexistingCards() {
+        List<Integer> remList = new ArrayList<Integer>();
+        for (int id : booster)
+            if(!mongo.cardExist(id))
+                remList.add(id);
+        booster.removeAll(remList);
+        remList.clear();
+        for (int id : using)
+            if(!mongo.cardExist(id))
+                remList.add(id);
+        using.removeAll(remList);
+        remList.clear();
+        for (int id : trading)
+            if(!mongo.cardExist(id))
+                remList.add(id);
+        trading.removeAll(remList);
+        remList.clear();
+        for (int id : recycleShortlist)
+            if(!mongo.cardExist(id))
+                remList.add(id);
+        recycleShortlist.removeAll(remList);
+        remList.clear();
+        UPDATE();
+    }
 }

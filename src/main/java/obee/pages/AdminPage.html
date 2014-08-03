@@ -82,6 +82,9 @@
 			    		</div>
 			   		</form>
     			</td>
+                <td>
+
+                </td>
     		</tr>
     		<tr>
     			<td>
@@ -118,6 +121,19 @@
 		    			</form>
 	    			</div>
     			</td>
+                <td>
+                     <div class="well">
+                         <form wicket:id = "renameUserForm">
+                             oldName:                                  <br/>
+                             <input type="text" wicket:id="oldNameTbx" value=""/> <br/>
+                             newName:                                       <br/>
+                             <input type="text" wicket:id="newNameTbx" value="" /><br/>
+                             newMail:                                           <br/>
+                             <input type="text" wicket:id="newMailTbx" value="" /><br/>
+                             <input type="submit"  value="rename" />
+                         </form>
+                     </div>
+                </td>
     		</tr>
             <tr>
                 <td>
@@ -137,7 +153,7 @@
                 <td>
                     <div class="well">
                         <form wicket:id="fixForm">
-                            <input type="submit"  value="fix" />
+                            <input type="submit"  value="Time" />
                         </form>
                     </div>
                 </td>

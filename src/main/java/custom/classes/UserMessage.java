@@ -8,6 +8,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 import custom.classes.abstractClasses.MongoObject;
+import org.joda.time.DateTimeZone;
 
 public class UserMessage extends MongoObject {
 	int id;
@@ -19,7 +20,7 @@ public class UserMessage extends MongoObject {
 		this.id = id;
 		this.subject = subject;
 		this.text = text;
-		this.date = new DateTime().plusHours(2).toDate();
+		this.date = new DateTime(DateTimeZone.forID("Asia/Tokyo")).toDate();
 	}
 	
 	public UserMessage(DBObject obj){

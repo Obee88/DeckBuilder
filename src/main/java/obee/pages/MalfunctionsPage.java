@@ -175,14 +175,14 @@ public class MalfunctionsPage extends MasterPage {
 			protected void onSubmit() {
 				super.onSubmit();
 				for(ShowingCard sc: ownerNotInListList){
-					User targetUser = mongo.getUser(sc.owner);
+					String targetUser = sc.owner;
                     mongo.removeFromAllUserLists(sc.cardId);
-                    targetUser.addToBooster(sc.cardId);
-                    targetUser.UPDATE();
-                    sc.setOwner(targetUser.getUserName());
+                    mongo.usersCollection.update(
+                            new BasicDBObject("userName", targetUser),
+                            new BasicDBObject("$push", new BasicDBObject("userCards.boosters", sc.cardId))
+                    );
                     sc.setStatus("booster");
                     sc.UPDATE();
-					targetUser.UPDATE();
 				}
                 info(ownerNotInListList.size()+ " cards repaired!");
                 setResponsePage(MalfunctionsPage.class);
@@ -291,7 +291,7 @@ public class MalfunctionsPage extends MasterPage {
 		form.add(ownerNotInListPanel);
 		inListNotOwnerPanel = new CardSelectionPanel("inListNotOwnerPanel", inListNotOwnerList);
 		form.add(inListNotOwnerPanel);
-		infoPanel = new InfoPanel("infoPanel",mongo.getUser(getUserName()).getRoles().contains("ADMIN"));
+		infoPanel = new InfoPanel("infoPanel",currentUser.getRoles().contains("ADMIN"));
 		form.add(infoPanel);
 		image = new CardView("image");
 		form.add(image);

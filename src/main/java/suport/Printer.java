@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import custom.classes.CardInfo;
 import custom.classes.ShowingCard;
 
 public class Printer {
@@ -38,6 +39,22 @@ public class Printer {
 		}
 		return spoji8prednjih(prednje.toArray(new Slika[0]));
 	}
+
+    public Slika generatePrintingPageFromInfos(List<CardInfo> list) throws Exception {
+        List<Slika> prednje = new ArrayList<Slika>();
+        List<Slika> straznje = new ArrayList<Slika>();
+        for(int i=0; i<8; i++){
+            try{
+                CardInfo sc = list.get(i);
+                prednje.add(getSlikaFromUrl(sc.downloadLink, sc.name));
+//				straznje.add(getStraznja(sc));
+            }catch(IndexOutOfBoundsException ex){
+                prednje.add(getBlank());
+//				straznje.add(getBlank());
+            }
+        }
+        return spoji8prednjih(prednje.toArray(new Slika[0]));
+    }
 	
 	private Slika getBlank() {
 		Slika s = new Slika(new BufferedImage(1, 1, 1));
@@ -46,7 +63,7 @@ public class Printer {
 	}
 
 	public static Slika spoji8prednjih(Slika[] s) {
-        int w=240,h =332, sp =10;
+        int w=240,h =332, sp =0;
         s=smanji(s);
         w=s[0].getWidth();
         h=s[0].getHeight();
@@ -70,7 +87,7 @@ public class Printer {
     }
 
     private static Slika[] smanji(Slika[] s) {
-    	int r = 7;
+    	int r = 0;
     	Slika[] slikeVece = new Slika[s.length];
     	for (int i = 0; i < slikeVece.length; i++) {
 			Slika mala = s[i];

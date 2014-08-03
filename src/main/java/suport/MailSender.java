@@ -1,10 +1,13 @@
 package suport;
 
 
+import com.mongodb.BasicDBObject;
 import custom.classes.ShowingCard;
 import custom.classes.TradingProposal;
 import custom.classes.User;
 import database.MongoHandler;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.util.Properties;
 import javax.mail.Message;
@@ -32,27 +35,33 @@ public class MailSender {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("deck.builder.fr","obiosam1");
+                        return new PasswordAuthentication("deck.builder.fr@gmail.com","obiosam1");
                     }
                 });
 
-        try {
+            try {
 
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("noreply@deckbuilder.com"));
-            message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(email));
-            message.setSubject(title);
-            message.setContent(body, "text/html");
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress("noreply@deckbuilder.com"));
+                message.setRecipients(Message.RecipientType.TO,
+                        InternetAddress.parse(email));
+                message.setSubject(title);
+                message.setContent(body, "text/html");
 
-            Transport.send(message);
+                Transport.send(message);
 
-            System.out.println("Done");
+                System.out.println("Done");
 
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            } catch (MessagingException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }catch (Exception e){
+            BasicDBObject dbo = new BasicDBObject();
+            dbo.append("sender","MailSener.send");
+            dbo.append("mail",email).append("timestamp",new DateTime(DateTimeZone.forID("Asia/Tokyo")).toDate());
+            dbo.append("title",title).append("errorMessage",e.getMessage());
+            MongoHandler.getInstance().log(dbo);
         }
-        }catch (Exception e){}
     }
 
     public static void sendWishlistNotification(User u, ShowingCard sc, String luckyOwner) {

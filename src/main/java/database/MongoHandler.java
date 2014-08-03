@@ -8,6 +8,7 @@ import com.mongodb.*;
 
 import custom.classes.*;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 public class MongoHandler {
 	private static MongoHandler instance;
@@ -30,6 +31,7 @@ public class MongoHandler {
 		try {
 			client = new MongoClient(HOST,PORT);
 			base = client.getDB(DATABASE_NAME);
+            base.authenticate("Deck","Builder".toCharArray());
 			usersCollection=base.getCollection(USERS_COLLECTION_NAME);
 			cardsCollection=base.getCollection(CARDS_COLLECTION_NAME);
 			cardInfoCollection=base.getCollection(CARDIFNO_COLLECTION_NAME);
@@ -90,11 +92,21 @@ public class MongoHandler {
 	}
 
 	public int getCardInfoId(String name) {
+
 		DBCursor cur = cardInfoCollection.find(
-				new BasicDBObject("name",name));
+                new BasicDBObject("name", Pattern.compile("^"+name.trim()+"$", Pattern.CASE_INSENSITIVE)));
 		DBObject obj = getRandomOne(cur);
 		return (Integer)obj.get("id");
 	}
+
+    public Integer getCardInfoIdByName(String name){
+        DBObject o = cardInfoCollection.findOne(new BasicDBObject("name",Pattern.compile("^"+name.trim()+"$", Pattern.CASE_INSENSITIVE)));
+        return (Integer)o.get("id");
+    }
+
+    public boolean isValidCardName(String name){
+        return cardInfoCollection.count(new BasicDBObject("name", Pattern.compile("^"+name.trim()+"$", Pattern.CASE_INSENSITIVE)))>0;
+    }
 
 	public CardInfo getCardInfo(int id) {
 		DBObject obj = cardInfoCollection.findOne(
@@ -201,14 +213,28 @@ public class MongoHandler {
 	}
 
 	public void removeFromAllUserLists(Integer id) {
-		for(User u: getAllUsers()){
-			u.removeFromBooster(id);
-			u.removeFromTrading(id);
-			u.removeFromUsing(id);
-			u.UPDATE();
-		}
-		
+		usersCollection.update(
+                new BasicDBObject(),
+                new BasicDBObject("$pull", new BasicDBObject("userCards.boosters",id)),
+                false,true
+        );
+        usersCollection.update(
+                new BasicDBObject(),
+                new BasicDBObject("$pull", new BasicDBObject("userCards.using",id)),
+                false,true
+        );
+        usersCollection.update(
+                new BasicDBObject(),
+                new BasicDBObject("$pull", new BasicDBObject("userCards.trading",id)),
+                false,true
+        );
+        usersCollection.update(
+                new BasicDBObject(),
+                new BasicDBObject("$pull", new BasicDBObject("userCards.recycleShortlist",id)),
+                false,true
+        );
 	}
+
 
 	public void removeCard(int id) {
 		removeFromAllUserLists(id);
@@ -280,7 +306,7 @@ public class MongoHandler {
     }
 
     public String queryAll(Object name, Object type, Object subType, Object rarity, Object text, Object manaCost,
-                           Object creationDate,Object color, Object users) {
+                           Object creationDate,Object color, Object users, Object colorNum) {
 
         BasicDBList landNames = new BasicDBList();
         landNames.add("island"); landNames.add("plains"); landNames.add("swamp");
@@ -303,6 +329,8 @@ public class MongoHandler {
         }
         if(manaCost!=null)
             q.append("convertedManaCost",manaCost);
+        if (colorNum!=null)
+            q.append("numOfColors",colorNum);
         if(color!=null)
             q.append("$and",color);
         DBCursor CIcur = cardInfoCollection.find(q);
@@ -555,5 +583,52 @@ public class MongoHandler {
             } catch (Exception ignorable){}
         }
         return ret;
+    }
+
+    public void log(String message){
+        BasicDBObject logObj = new BasicDBObject();
+        logObj.append("timestamp",new DateTime(DateTimeZone.forID("Asia/Tokyo")).toDate()).append("message",message);
+        log(logObj);
+    }
+
+    public void log(BasicDBObject logObj) {
+        base.getCollection("log").insert(logObj);
+    }
+
+
+    public DB getDB() {
+        return base;
+    }
+
+    public void renameUser(String oldName, String newName, String newMail){
+        WriteResult status = usersCollection.update(
+                new BasicDBObject("userName", oldName),
+                new BasicDBObject("$set",
+                        new BasicDBObject("eMail", newMail)
+                                .append("userName", newName.toString())
+                )
+
+        );
+        status = adminCollection.update(
+                new BasicDBObject("q", "q"),
+                new BasicDBObject("$pull",
+                        new BasicDBObject("tradingProposals", new BasicDBObject("from", oldName))
+                )
+        );
+        status = adminCollection.update(
+                new BasicDBObject("q", "q"),
+                new BasicDBObject("$pull",
+                        new BasicDBObject("tradingProposals", new BasicDBObject("to", oldName))
+                )
+        );
+        status = cardsCollection.update(
+                new BasicDBObject("owner", oldName),
+                new BasicDBObject("$set", new BasicDBObject("owner", newName)),false,true);
+    }
+
+    public int getHighestCardId(String username) {
+        DBCursor cur = cardsCollection.find(new BasicDBObject("owner", username)).sort(new BasicDBObject("id",-1)).limit(1);
+        DBObject cardObj = cur.next();
+        return (Integer)cardObj.get("id");
     }
 }

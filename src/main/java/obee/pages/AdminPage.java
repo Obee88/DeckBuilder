@@ -2,6 +2,9 @@ package obee.pages;
 
 import java.util.*;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import custom.classes.*;
 import obee.pages.master.MasterPage;
 
@@ -18,6 +21,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import suport.MailSender;
 
 @AuthorizeInstantiation("ADMIN")
@@ -27,6 +31,7 @@ public class AdminPage extends MasterPage {
     private final Form<Object> resetPasswordsForm;
     private final Form<Object> setDatesForm;
     private final Form<Object> fixForm;
+    private final TextField<String> oldNameTbx, newNameTbx, newMailTbx;
     ArrayList<User> selectedUsers = new ArrayList<User>();
 	ArrayList<User> pendingUsers;
 	ArrayList<User> userList; 
@@ -61,7 +66,7 @@ public class AdminPage extends MasterPage {
 					selectedUsers.remove(user);
 					pendingUsers.remove(user);
 				}
-				setResponsePage(StorePage.class);
+				setResponsePage(AdminPage.class);
 			}
 			
 		};
@@ -72,7 +77,21 @@ public class AdminPage extends MasterPage {
 				new Model(pendingUsers)).setMaxRows(5);
 		authForm.add(manyChoice);
 		add(authForm);
-		
+		//rename user form
+        Form<?> renameUserForm = new Form<Void>("renameUserForm") {
+
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected void onSubmit() {
+                String oldName = oldNameTbx.getDefaultModelObjectAsString();
+                String newName = newNameTbx.getDefaultModelObjectAsString();
+                String newMail = newMailTbx.getDefaultModelObjectAsString();
+                mongo.renameUser(oldName,newName,newMail);
+                setResponsePage(AdminPage.class);
+            }
+
+        };
 		//Roles
 		Form<?> rolesForm = new Form<Void>("rolesForm") {
 			
@@ -85,7 +104,7 @@ public class AdminPage extends MasterPage {
 				boolean isPrinter = (Boolean)isPrinterBox.getDefaultModelObject();
 				roleSelectedUser.setRoles(isAdmin,isUser,isPrinter);
 				roleSelectedUser.UPDATE();
-		        setResponsePage(StorePage.class);
+		        setResponsePage(AdminPage.class);
 			}
 			
 		};
@@ -96,6 +115,11 @@ public class AdminPage extends MasterPage {
 				new Model(userList));
 		
 		rolesForm.add(dropDown);
+        oldNameTbx = new TextField<String>("oldNameTbx", new Model<String>());
+        newNameTbx = new TextField<String>("newNameTbx", new Model<String>());
+        newMailTbx = new TextField<String>("newMailTbx", new Model<String>());
+        renameUserForm.add(oldNameTbx); renameUserForm.add(newNameTbx); renameUserForm.add(newMailTbx);
+        add(renameUserForm);
 		isAdminBox = new CheckBox("isAdmin", new Model(selectedUser.isAdmin()));
 		isUserBox = new CheckBox("isUser", new Model(selectedUser.isUser()));
 		isPrinterBox = new CheckBox("isPrinter", new Model(selectedUser.isPrinter()));
@@ -133,14 +157,14 @@ public class AdminPage extends MasterPage {
 						UserMessage msg = new UserMessage(u.getNextMessageId(),subject,text);
 						u.addMessage(msg);
 						u.UPDATE();
-						setResponsePage(StorePage.class);
+						setResponsePage(AdminPage.class);
 					}
 				} else{
 					User u = mongo.getUser(uName);
 					UserMessage msg = new UserMessage(u.getNextMessageId(),subject,text);
 					u.addMessage(msg);
 					u.UPDATE();
-					setResponsePage(StorePage.class);
+					setResponsePage(AdminPage.class);
 				}
 				
 			}
@@ -169,7 +193,7 @@ public class AdminPage extends MasterPage {
 				for(int id =startId; id<=endId;id++){
 					mongo.removeCard(id);
 				}
-				setResponsePage(StorePage.class);
+				setResponsePage(AdminPage.class);
 			}
 		};
 		add(deleteForm);
@@ -196,7 +220,7 @@ public class AdminPage extends MasterPage {
 
                 int wc = mongo.getNumberOfUsers()*32;
                 int twc = 0;
-                DateTime date = new DateTime().minusDays(5);
+                DateTime date = new DateTime(DateTimeZone.forID("Asia/Tokyo")).minusDays(5);
                 for(int cardId = Administration.getMaxCardId();cardId>0;cardId--,twc++){
                     if(twc==wc){
                         twc=0;
@@ -214,17 +238,26 @@ public class AdminPage extends MasterPage {
         fixForm = new Form<Object>("fixForm"){
             @Override
             protected void onSubmit() {
-                for(User u : mongo.getAllUsers()){
-                    Date d = u.getLastBoosterDate();
-                    DateTime dt = new DateTime(d);
-                    u.setLastBoosterDate(dt.plusDays(1).toDate());
-                    u.UPDATE();
-                }
-                info("done");
+//                setLastBoosterDates();
+//                for (User u : mongo.getAllUsers()){
+//                    u.clearUnexistingCards();
+//                }
+                info(new DateTime(DateTimeZone.forID("Asia/Tokyo")));
             }
-
 
         };
         add(fixForm);
 	}
+
+    private void setLastBoosterDates() {
+
+        DBCursor usersCur = mongo.usersCollection.find(new BasicDBObject(), new BasicDBObject("userName",1));
+        while(usersCur.hasNext()){
+            DBObject obj = usersCur.next();
+            String username = obj.get("userName").toString();
+            int id = mongo.getHighestCardId(username);
+            Card c = mongo.getCard(id);
+            mongo.usersCollection.update(new BasicDBObject("userName",username),new BasicDBObject("$set", new BasicDBObject("lastBoosterDate",c.getCreationDate())));
+        }
+    }
 }

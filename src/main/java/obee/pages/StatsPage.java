@@ -37,6 +37,7 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import suport.MailSender;
 
 import java.io.Serializable;
@@ -152,7 +153,7 @@ public class StatsPage extends MasterPage {
         };
         screwdTrades.add(onChangeScrewd);
         add(proposalsPanel);
-        dateLabel = new Label(("dateLabel"),new DateTime().toString());
+        dateLabel = new Label(("dateLabel"),new DateTime(DateTimeZone.forID("Asia/Tokyo")).toString());
         add(dateLabel);
 	}
 
@@ -161,7 +162,7 @@ public class StatsPage extends MasterPage {
         try{
             if (dailyStatsObj==null) return dataset;
 
-            DateTime now  = new DateTime();
+            DateTime now  = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
             int year = now.getYear();
             int month = now.getMonthOfYear();
 
