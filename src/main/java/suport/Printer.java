@@ -63,7 +63,7 @@ public class Printer {
 	}
 
 	public static Slika spoji8prednjih(Slika[] s) {
-        int w=240,h =332, sp =0;
+        int w=240,h =332, sp =1;
         s=smanji(s);
         w=s[0].getWidth();
         h=s[0].getHeight();
@@ -82,7 +82,7 @@ public class Printer {
         BufferedImage ret  = new BufferedImage(ukupna.getWidth()+40, ukupna.getHeight()+68, BufferedImage.SCALE_SMOOTH);
         Slika retS = new Slika(ret);
         retS.drawFilledRectangle(0, 0, retS.getWidth(), retS.getHeight(), Color.WHITE);
-        retS.insert(ukupna, 20,34);
+        retS.insert(ukupna, 20+(10-sp)*3/2,34);
         return retS;
     }
 

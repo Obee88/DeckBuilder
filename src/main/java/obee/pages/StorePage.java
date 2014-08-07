@@ -67,48 +67,47 @@ public class StorePage extends MasterPage {
                 int rareCount = Integer.parseInt(rareCnt.getDefaultModelObjectAsString());
                 int mythicCount = Integer.parseInt(mythicCnt.getDefaultModelObjectAsString());
                 int cardsAdded = 0;
-                User u = currentUser;
                 for (int i = 0 ; i<mythicCount;i++){
                     String rarity = "mythic";
                     int price = prices.get(rarity);
-                    if (u.getJadBalance()>=price){
-                        u.decreaseJadBalance(price);
-                        Card c = CardGenerator.generateOneCard(u.getUserName(), rarity);
-                        u.addToBooster(c.getCardId());
+                    if (currentUser.getJadBalance()>=price){
+                        currentUser.decreaseJadBalance(price);
+                        Card c = CardGenerator.generateOneCard(currentUser.getUserName(), rarity);
+                        currentUser.addToBooster(c.getCardId());
                         cardsAdded++;
                     }
                 }
                 for (int i = 0 ; i<rareCount;i++){
                     String rarity = "rare";
                     int price = prices.get(rarity);
-                    if (u.getJadBalance()>=price){
-                        u.decreaseJadBalance(price);
-                        Card c =CardGenerator.generateOneCard(u.getUserName(),rarity);
-                        u.addToBooster(c.getCardId());
+                    if (currentUser.getJadBalance()>=price){
+                        currentUser.decreaseJadBalance(price);
+                        Card c =CardGenerator.generateOneCard(currentUser.getUserName(),rarity);
+                        currentUser.addToBooster(c.getCardId());
                         cardsAdded++;
                     }
                 }
                 for (int i = 0 ; i<uncommonCount;i++){
                     String rarity = "uncommon";
                     int price = prices.get(rarity);
-                    if (u.getJadBalance()>=price){
-                        u.decreaseJadBalance(price);
-                        Card c =CardGenerator.generateOneCard(u.getUserName(),rarity);
-                        u.addToBooster(c.getCardId());
+                    if (currentUser.getJadBalance()>=price){
+                        currentUser.decreaseJadBalance(price);
+                        Card c =CardGenerator.generateOneCard(currentUser.getUserName(),rarity);
+                        currentUser.addToBooster(c.getCardId());
                         cardsAdded++;
                     }
                 }
                 for (int i = 0 ; i<commonCount;i++){
                     String rarity = "common";
                     int price = prices.get(rarity);
-                    if (u.getJadBalance()>=price){
-                        u.decreaseJadBalance(price);
-                        Card c =CardGenerator.generateOneCard(u.getUserName(),rarity);
-                        u.addToBooster(c.getCardId());
+                    if (currentUser.getJadBalance()>=price){
+                        currentUser.decreaseJadBalance(price);
+                        Card c =CardGenerator.generateOneCard(currentUser.getUserName(),rarity);
+                        currentUser.addToBooster(c.getCardId());
                         cardsAdded++;
                     }
                 }
-                u.UPDATE();
+                currentUser.UPDATE();
                 String msg = cardsAdded+" cards added to booster!";
                 setResponsePage(StorePage.class,new PageParameters().add("infoMsg",msg));
             }

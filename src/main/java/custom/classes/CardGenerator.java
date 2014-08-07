@@ -36,6 +36,7 @@ public class CardGenerator {
 
 	private static void checkWishlists(ShowingCard sc, List<User> allUsrs, String owner) {
 		for(User u: allUsrs){
+            u.setWishlists();
 			if(u.wishList.contains(sc.name)){
 				u.addMessage(new UserMessage(u.getNextMessageId(),"Wishlist message",owner + " just gathered #"+sc.name+ "# card that is in your wishlist."));
                 if(u.wantsWishlistMail())

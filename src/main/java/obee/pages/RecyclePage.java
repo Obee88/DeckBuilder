@@ -50,7 +50,6 @@ public class RecyclePage extends MasterPage {
 		initComponents();
 		initForms();
 		initBehaviours();
-		
 	}
 
 	private void initLists() {
@@ -79,9 +78,12 @@ public class RecyclePage extends MasterPage {
                         usr.removeFromBooster(sc.cardId);
                         usr.removeFromRecycleShortlist(sc.cardId);
                         mongo.deleteCard(sc.cardId);
+                    } catch (Exception ignorable){
+                    }
+                    finally {
                         jad++;
-                    } catch (Exception ignorable){}
-				}
+                    }
+                }
 				usr.increaseJad(jad);
                 usr.UPDATE();
                 String msg ="";
