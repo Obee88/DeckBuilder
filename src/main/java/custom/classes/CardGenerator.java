@@ -1,10 +1,10 @@
 package custom.classes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import database.MongoHandler;
 import suport.MailSender;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CardGenerator {
 	public static List<Card> generateBooster(int size, String owner){
@@ -20,8 +20,8 @@ public class CardGenerator {
 	}
 
 	public static String getRarity(int rand) {
-		if(rand<60) return "common";
-		if(rand<90) return "uncommon";
+		if(rand<55) return "common";
+		if(rand<85) return "uncommon";
 		if(rand<99) return "rare";
 		return "mythic";
 	}

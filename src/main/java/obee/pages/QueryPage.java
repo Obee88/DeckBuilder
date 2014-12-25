@@ -7,8 +7,6 @@ import custom.components.MyCheckGroup;
 import custom.components.panels.*;
 import database.MongoHandler;
 import obee.pages.master.MasterPage;
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -23,9 +21,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 @AuthorizeInstantiation("USER")
@@ -199,7 +195,7 @@ public class QueryPage extends MasterPage{
                     if(choice.equals("White"))
                         dbl.add(new BasicDBObject("manaCost",Pattern.compile("W", Pattern.CASE_INSENSITIVE)));
                     if(choice.equals("Green"))
-                        dbl.add(new BasicDBObject("manaCost", Pattern.compile("G", Pattern.CASE_INSENSITIVE)));
+                        dbl.add(new BasicDBObject("manaCost",Pattern.compile("G", Pattern.CASE_INSENSITIVE)));
                 }
                 return dbl;
             }

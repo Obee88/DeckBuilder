@@ -31,10 +31,8 @@ public class Printer {
 			try{
 				ShowingCard sc = list.get(i);
 				prednje.add(getSlikaFromUrl(sc.cardInfo.downloadLink, sc.name));
-//				straznje.add(getStraznja(sc));
 			}catch(IndexOutOfBoundsException ex){
 				prednje.add(getBlank());
-//				straznje.add(getBlank());
 			}
 		}
 		return spoji8prednjih(prednje.toArray(new Slika[0]));
@@ -47,10 +45,8 @@ public class Printer {
             try{
                 CardInfo sc = list.get(i);
                 prednje.add(getSlikaFromUrl(sc.downloadLink, sc.name));
-//				straznje.add(getStraznja(sc));
             }catch(IndexOutOfBoundsException ex){
                 prednje.add(getBlank());
-//				straznje.add(getBlank());
             }
         }
         return spoji8prednjih(prednje.toArray(new Slika[0]));
@@ -67,8 +63,7 @@ public class Printer {
         s=smanji(s);
         w=s[0].getWidth();
         h=s[0].getHeight();
-        //s = scaleAll(s,w,h);
-        BufferedImage bi = new BufferedImage(5*sp+4*w,3*sp+2*h,BufferedImage.SCALE_SMOOTH);
+        BufferedImage bi = new BufferedImage((int)(1.05*(5*sp+4*w)),(int)(1.05*(3*sp+2*h)),BufferedImage.SCALE_SMOOTH);
         Slika ukupna = new Slika(bi);
         ukupna.drawFilledRectangle(0, 0, ukupna.getWidth(), ukupna.getHeight(), Color.WHITE);
         ukupna.insert(s[0],sp,sp);
@@ -104,7 +99,6 @@ public class Printer {
         s=smanji(s);
         w=s[0].getWidth();
         h=s[0].getHeight();
-        //s = scaleAll(s,w,h);
         BufferedImage bi = new BufferedImage(5*sp+4*w,3*sp+2*h,BufferedImage.SCALE_SMOOTH);
         Slika ukupna = new Slika(bi);
         ukupna.drawFilledRectangle(0, 0, ukupna.getWidth(), ukupna.getHeight(), Color.white);

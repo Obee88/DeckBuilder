@@ -1,14 +1,13 @@
 package database;
 
-import java.net.UnknownHostException;
-import java.util.*;
-import java.util.regex.Pattern;
-
 import com.mongodb.*;
-
 import custom.classes.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+
+import java.net.UnknownHostException;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class MongoHandler {
 	private static MongoHandler instance;
@@ -318,7 +317,7 @@ public class MongoHandler {
         if(text!=null)
             q.append("text",text);
         if(subType!=null)
-            q.append("subType", subType);
+            q.append("subtype", subType);
         if(rarity!=null)
             q.append("rarity",rarity);
         boolean isEnchantment = false;

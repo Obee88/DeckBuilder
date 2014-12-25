@@ -220,7 +220,39 @@ public class RecyclePage extends MasterPage {
 		};
 		sacCards.listChooser.addEventListener(trejd);
 		cardsPanel.listChooser.addEventListener(trejd);
-	}
-	
-	
+
+        IEventListener recycle = new IEventListener() {
+            @Override
+            public AjaxRequestTarget onEvent(AjaxRequestTarget target, Object sender,
+                                             String eventType) {
+                if(eventType.equals("onDblClk")){
+                    CardSelectionPanel from, to;
+                    List<ShowingCard> fromList, toList;
+                    String senderId = ((ListChooser<ShowingCard>)sender).getParentPanel().getId();
+                    ShowingCard sc = null;
+                    if(senderId.equals("recycleShortlistPanel")){
+                        from = recycleShortlistPanel;
+                        sc= (ShowingCard) from.listChooser.getDefaultModelObject();
+                        to = sacCards;
+                        fromList = recycleShortlistList;
+                        toList = sacList;
+                        if(to.getChoices().size()>=6) {
+                            info("Can't sac more than 6 cards at once.");
+                            target.add(feedback);
+                            return target;
+                        }
+                    } else return target;
+                    if(sc==null) return target;
+                    fromList.remove(sc);
+                    from.setChoices(fromList);
+                    toList.add(sc);
+                    to.setChoices(toList);
+                    target.add(from);
+                    target.add(to);
+                }
+                return target;
+            }
+        };
+        recycleShortlistPanel.listChooser.addEventListener(recycle);
+    }
 }

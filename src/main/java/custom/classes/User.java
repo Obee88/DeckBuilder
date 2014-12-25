@@ -1,18 +1,16 @@
 package custom.classes;
 
-import java.io.Serializable;
-import java.util.*;
-
 import blake.Digest.Blake256;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-
 import custom.classes.abstractClasses.MongoObject;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
+
+import java.io.Serializable;
+import java.util.*;
 
 
 @SuppressWarnings("serial")
@@ -245,10 +243,10 @@ public class User extends MongoObject implements Serializable{
 		DateTime lastPick = new DateTime(lastBoosterDate);
 		int ret =0;
 		while(lastPick.isBefore(deadline)){
-			ret+= 32;
+			ret+= 50;
 			deadline = deadline.minusDays(7);
 		}
-        if (ret>100) ret = 100;
+        if (ret>350) ret = 350;
         return ret;
 	}
 	

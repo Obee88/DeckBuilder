@@ -1,19 +1,13 @@
 package custom.classes;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.joda.time.DateTime;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-
 import custom.classes.abstractClasses.MongoObject;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+
+import java.io.Serializable;
+import java.util.*;
 
 @SuppressWarnings("serial")
 public class TradingProposal extends MongoObject implements Serializable{
@@ -177,7 +171,10 @@ public class TradingProposal extends MongoObject implements Serializable{
 		List<ShowingCard> ret = new ArrayList<ShowingCard>();
 		for(Integer id: set ){
 			Card c = mongo.getCard(id);
-			ret.add(new ShowingCard(c));
+            if (c==null){
+                ret.add(new ShowingCard(mongo.getCard(7180)));
+            } else
+			    ret.add(new ShowingCard(c));
 		}
 		return ret;
 	}

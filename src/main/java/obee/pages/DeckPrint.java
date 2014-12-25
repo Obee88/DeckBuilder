@@ -1,9 +1,7 @@
 package obee.pages;
 
-import custom.classes.Administration;
 import custom.classes.CardInfo;
 import custom.classes.OwnerMap;
-import custom.classes.ShowingCard;
 import database.MongoHandler;
 import obee.pages.master.MasterPage;
 import org.apache.wicket.markup.html.form.Form;
@@ -80,6 +78,10 @@ public class DeckPrint extends MasterPage {
                 List<Slika> pages = new ArrayList<Slika>();
                 for (String line : lines){
                     String cardName = getNameFromLine(line);
+                    if (cardName.startsWith("#")) {
+                        int id = Integer.parseInt(cardName.substring(1));
+                        cardName = mongo.getCardInfo(id).name;
+                    }
                     int num = getNumFromLine(line);
                     while (num-->0){
                         CardInfo ci  = null;
@@ -109,13 +111,13 @@ public class DeckPrint extends MasterPage {
                     }
                 if(pages.size()>0)
                     generateZipSource(pages,new OwnerMap());
-                    downloadForm.add(downloadBtn = new ResourceLink<Object>("downloadButton", downloadResource){
-                        @Override
-                        public void onClick() {
-                            super.onClick();
-                        }
-                    });
-                    downloadForm.setVisible(true);
+                downloadForm.add(downloadBtn = new ResourceLink<Object>("downloadButton", downloadResource){
+                    @Override
+                    public void onClick() {
+                        super.onClick();
+                    }
+                });
+                downloadForm.setVisible(true);
 
                 System.out.println();
             }
@@ -176,7 +178,8 @@ public class DeckPrint extends MasterPage {
         public void validate(IValidatable<String> validatable) {
             String[] lines = validatable.getValue().split("\\r\\n");
             for (String line : lines){
-                boolean isvalid = mongo.isValidCardName(getNameFromLine(line.trim()));
+                String name = getNameFromLine(line.trim());
+                boolean isvalid = mongo.isValidCardName(name) || (name.startsWith("#") && isDigit(name.substring(1))) ;
                 if (!isvalid){
                     error("Unknown card: "+line);
                     errorCall(validatable, "Unknown card: "+line);
@@ -184,6 +187,15 @@ public class DeckPrint extends MasterPage {
                 }
             }
         }
+
+        private boolean isDigit(String substring) {
+            String digits  ="1234567890";
+            for (Character c : substring.toCharArray()){
+                if (!digits.contains(c.toString())) return false;
+            }
+            return true;
+        }
+
         private void errorCall(IValidatable<String> validatable, String errorKey) {
             ValidationError error = new ValidationError();
             error.addMessageKey(getClass().getSimpleName() + "." + errorKey);
@@ -193,8 +205,9 @@ public class DeckPrint extends MasterPage {
 
     private String getNameFromLine(String line){
         String[] parts = line.split("%");
-        if ( parts.length==2) return parts[1];
-        else return parts[0];
+        String name= parts.length==2 ? parts[1] : parts[0];
+        return name;
+
     }
     private Integer getNumFromLine(String line){
         try {

@@ -1,28 +1,24 @@
 package obee.pages;
 
-import java.util.*;
-
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import custom.classes.*;
 import obee.pages.master.MasterPage;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.ListMultipleChoice;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import suport.MailSender;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @AuthorizeInstantiation("ADMIN")
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -214,35 +210,30 @@ public class AdminPage extends MasterPage {
             }
         };
         add(resetPasswordsForm);
-        setDatesForm= new Form<Object>("setDatesForm"){
+        setDatesForm= new Form<Object>("quickfix"){
             @Override
             protected void onSubmit() {
 
-                int wc = mongo.getNumberOfUsers()*32;
-                int twc = 0;
-                DateTime date = new DateTime(DateTimeZone.forID("Asia/Tokyo")).minusDays(5);
-                for(int cardId = Administration.getMaxCardId();cardId>0;cardId--,twc++){
-                    if(twc==wc){
-                        twc=0;
-                        date=date.minusWeeks(1);
-                    }
-                    if(mongo.cardExist(cardId)){
-                        ShowingCard sc = mongo.getShowingCard(cardId);
-                        sc.setCreationDate(date.toDate());
-                        sc.UPDATE();
-                    }
+                User u = mongo.getUser("Bubi");
+                BasicDBList ids = new BasicDBList();
+                List<ShowingCard> boosterSC = u.getBoosterShowingCards();
+                for(ShowingCard sc:boosterSC){
+                    ids.add(sc.cardId);
+                    u.removeFromBooster(sc.cardId);
+                    u.UPDATE();
                 }
+                mongo.cardsCollection.remove(new BasicDBObject("id",new BasicDBObject("$in",ids)));
             }
         };
         add(setDatesForm);
         fixForm = new Form<Object>("fixForm"){
             @Override
             protected void onSubmit() {
-//                setLastBoosterDates();
-//                for (User u : mongo.getAllUsers()){
-//                    u.clearUnexistingCards();
-//                }
-                info(new DateTime(DateTimeZone.forID("Asia/Tokyo")));
+                for (User u : mongo.getAllUsers()){
+                    u.setLastBoosterDate(new DateTime(u.getLastBoosterDate()).minusWeeks(1).toDate());
+                    u.UPDATE();
+                }
+
             }
 
         };

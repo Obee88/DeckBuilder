@@ -165,7 +165,7 @@ public class MailSender {
         if(type==ProposalNotificationType.Offer){
             sb.append("<a href=\"https://obee.xfer.hr/DeckBuilder-1.1/wicket/bookmarkable/obee.pages.TradingProposalsPage\">");
             sb.append("</br><h2>Check it out</h2>").append("</a>");
-            send(MongoHandler.getInstance().getUser(tp.getTo()).getEmail(),"Trading proposal from "+tp.getFrom(),sb.toString());
+            send(MongoHandler.getInstance().getUser(tp.getTo()).getEmail(),"Trading proposal",sb.toString());
         }
         else if(type==ProposalNotificationType.Accept){
             sb.append("<a href=\"https://obee.xfer.hr/DeckBuilder-1.1/wicket/bookmarkable/obee.pages.BoosterPage\">");
