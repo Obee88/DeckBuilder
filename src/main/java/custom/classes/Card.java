@@ -1,19 +1,16 @@
 package custom.classes;
 
-import java.util.Date;
-import java.util.Random;
-
-
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-
 import custom.classes.abstractClasses.MongoObject;
-
 import database.MongoHandler;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+
+import java.util.Date;
+import java.util.Random;
 
 public class Card extends MongoObject{
     Integer cardId;
@@ -21,6 +18,7 @@ public class Card extends MongoObject{
 	String printed, owner, status;
 	String inProposal;
     public Date creationDate;
+    private boolean basicLand;
 
     public static Card generateCard(String owner, boolean isNew) {
 		return generateCard(owner,null, isNew);
@@ -32,6 +30,27 @@ public class Card extends MongoObject{
         int _cardId=Administration.getNextCardId();
         boolean _printed=false;
         int _cardInfoId = generateRandomCardInfo(_cardId, rarity, isNew);
+        DBObject obj = new BasicDBObject()
+                .append("id", _cardId)
+                .append("printed", _printed)
+                .append("owner", owner)
+                .append("cardInfoId", _cardInfoId)
+                .append("status", "booster")
+                .append("creationDate", new DateTime(DateTimeZone.forID("Asia/Tokyo")).toDate())
+                .append("info", mongo.getCardInfo(_cardInfoId).toDBObject());
+        mongo.setExistance(_cardInfoId,true);
+        mongo.cardsCollection.insert(obj);
+        return new Card(obj);
+    }
+
+    public static Card generateCard(String owner, String rarity, String type, boolean isNew) {
+        MongoHandler mongo;
+        mongo = MongoHandler.getInstance();
+        int _cardId=Administration.getNextCardId();
+        boolean _printed=false;
+        int _cardInfoId = type==null
+                ?generateRandomCardInfo(_cardId, rarity, isNew)
+                :generateRandomCardInfo(_cardId, rarity, type, isNew);
         DBObject obj = new BasicDBObject()
                 .append("id", _cardId)
                 .append("printed", _printed)
@@ -57,6 +76,33 @@ public class Card extends MongoObject{
         Integer ret = null;
         while(ret==null){
             BasicDBObject basObj = new BasicDBObject("rarity",minRarityQ);
+            if (isNew) //only for one card in booster
+                basObj.append("exist",false);
+            DBCursor cur = MongoHandler.getInstance().cardInfoCollection.find(
+                    basObj
+            );
+            DBObject retObj= mongo.getRandomOne(cur);
+            ret = (Integer) retObj.get("id");
+        }
+        return ret;
+    }
+
+    private static Integer generateRandomCardInfo(int creatingCardId, String minRarity,String type, boolean isNew) {
+        DBObject minRarityQ;
+        if (minRarity==null){
+            BasicDBList dbl = new BasicDBList();
+            dbl.add(CardGenerator.getRarity(new Random().nextInt(100)));
+            minRarityQ=new BasicDBObject("$in",dbl);
+        }
+        else
+            minRarityQ = getSameOrBiggerRarityListQuery(minRarity);
+        Integer ret = null;
+        while(ret==null){
+            BasicDBObject basObj;
+            if (type!=null)
+                basObj = new BasicDBObject("type",type);
+            else
+                basObj = new BasicDBObject("rarity",minRarityQ);
             if (isNew) //only for one card in booster
                 basObj.append("exist",false);
             DBCursor cur = MongoHandler.getInstance().cardInfoCollection.find(
@@ -167,5 +213,14 @@ public class Card extends MongoObject{
 
     public Date getCreationDate() {
         return creationDate;
+    }
+
+    public boolean isBasicLand() {
+        CardInfo ci = MongoHandler.getInstance().getCardInfo(cardInfoId);
+        String[] basicLandsNames = new String[]{"Swamp","Island","Mountain","Plains","Forest"};
+        for(String name : basicLandsNames)
+            if (name.toLowerCase().equals(ci.name.toLowerCase()))
+                return true;
+        return false;
     }
 }

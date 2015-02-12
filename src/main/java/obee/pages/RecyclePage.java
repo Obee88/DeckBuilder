@@ -1,30 +1,29 @@
 package obee.pages;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import custom.components.panels.PlusMinusPanel;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import custom.classes.Administration;
-import custom.classes.CardGenerator;
 import custom.classes.ShowingCard;
 import custom.classes.User;
 import custom.components.IEventListener;
 import custom.components.ListChooser;
 import custom.components.panels.CardSelectionPanel;
 import custom.components.panels.CardView;
-
+import custom.components.panels.PlusMinusPanel;
 import obee.pages.master.MasterPage;
-import org.apache.wicket.util.string.*;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.attributes.IAjaxCallListener;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @AuthorizeInstantiation("USER")
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -42,6 +41,7 @@ public class RecyclePage extends MasterPage {
     private ArrayList<ShowingCard> recycleShortlistList;
     private Form recycleIllegalForm;
     private AjaxLink<Object> fillFromShortlist;
+    private Form recycleAllForm;
 
 
     public RecyclePage(final PageParameters params) {
@@ -50,18 +50,61 @@ public class RecyclePage extends MasterPage {
 		initComponents();
 		initForms();
 		initBehaviours();
+        AjaxEventBehavior keypress =new AjaxEventBehavior("onkeypress"){
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes
+                                                        attributes) {
+                super.updateAjaxAttributes(attributes);
+
+                IAjaxCallListener listener = new AjaxCallListener(){
+                    @Override
+                    public CharSequence getPrecondition(Component component) {
+                        //this javascript code evaluates wether an
+                        //ajaxcall is necessary.
+                        //Here only by keyocdes for 1,2,3
+                        return  "var keycode ="+
+                                "Wicket.Event.keyCode(attrs.event);" +
+                                "if (keycode >=49 && keycode <= 51)" +
+                                "    return true;" +
+                                "else" +
+                                "    return false;";
+                    }
+                };
+                attributes.getAjaxCallListeners().add(listener);
+
+                //Append the pressed keycode to the ajaxrequest
+                attributes.getDynamicExtraParameters()
+                        .add("var eventKeycode = "+
+                                "Wicket.Event.keyCode(attrs.event);" +
+                                "return {keycode: eventKeycode};");
+            }
+            @Override
+            protected void onEvent(AjaxRequestTarget target) {
+
+                final Request request = RequestCycle.get().getRequest();
+                final String code =request.getRequestParameters()
+                        .getParameterValue("keycode").toString("");
+                String key = null;
+                if (code.equals("51"))
+                    key = "3";
+                if (code.equals("49"))
+                    key = "1";
+                if (code.equals("50"))
+                    key = "2";
+                if(cardsPanel.listChooser.selectedChoice==null || key==null) return ;
+                target = cardsPanel.listChooser.informListeners(target, "onKeyPress-"+key);
+            }
+        };
+        add(keypress);
 	}
 
 	private void initLists() {
         recycleShortlistList = (ArrayList<ShowingCard>) usr.getRecycleShortlistShowingCards();
 		tradeList = usr.getTradingShowingCards();
-//		List<ShowingCard> tmpList = new ArrayList<ShowingCard>();
-//		for(ShowingCard sc: tradeList)
-//			if(sc.printed.toLowerCase().equals("false"))
-//				tmpList.add(sc);
-//		tradeList= tmpList;
 		sacList=new ArrayList<ShowingCard>();
 	}
+
+
 
 	private void initForms() {
 		form = new Form("form"){
@@ -118,6 +161,35 @@ public class RecyclePage extends MasterPage {
             }
         };
         add(fillFromShortlist);
+        recycleAllForm = new Form("recycleAllForm"){
+            @Override
+            protected void onSubmit() {
+                super.onSubmit();
+                int jad = 0;
+                for(ShowingCard sc : recycleShortlistList){
+                    try{
+                        usr.removeFromTrading(sc.cardId);
+                        usr.removeFromUsing(sc.cardId);
+                        usr.removeFromBooster(sc.cardId);
+                        usr.removeFromRecycleShortlist(sc.cardId);
+                        mongo.deleteCard(sc.cardId);
+                    } catch (Exception ignorable){
+                    }
+                    finally {
+                        jad++;
+                    }
+                }
+                usr.increaseJad(jad);
+                usr.UPDATE();
+                String msg ="";
+                if(jad==1)
+                    msg = jad + " jad added to your balance!";
+                else
+                    msg = jad + " jada added to your balance!";
+                setResponsePage(RecyclePage.class,new PageParameters().add("infoMsg",msg));
+            }
+        };
+        add(recycleAllForm);
         recycleShortlistPanel = new CardSelectionPanel("recycleShortlistPanel",recycleShortlistList);
         recycleShortlistPanel.listChooser.setMaxRows(19);
         recycleShortlistPanel.setPrintCheckBoxVisible(false);
@@ -254,5 +326,44 @@ public class RecyclePage extends MasterPage {
             }
         };
         recycleShortlistPanel.listChooser.addEventListener(recycle);
+        IEventListener keyPressListener = new IEventListener() {
+            @Override
+            public AjaxRequestTarget onEvent(AjaxRequestTarget target,
+                                             Object sender, String eventType) {
+                if(eventType.startsWith("onKeyPress-")){
+                    String key = eventType.substring(eventType.length()-1);
+                    if(key.equals("3")){
+                        CardSelectionPanel from, to;
+                        List<ShowingCard> fromList, toList;
+                        String senderId = ((ListChooser<ShowingCard>)sender).getParentPanel().getId();
+                        ShowingCard sc = null;
+                        if(senderId.equals("userCards")){
+                            from = cardsPanel;
+                            sc= (ShowingCard) from.listChooser.getDefaultModelObject();
+                            to = recycleShortlistPanel;
+                            fromList = tradeList;
+                            toList = recycleShortlistList;
+                        } else return target;
+                        if(sc==null) return target;
+                        int selectedIndex = from.getChoices().indexOf(sc);
+                        fromList.remove(sc);
+                        from.setChoices(fromList);
+                        toList.add(sc);
+                        to.setChoices(toList);
+                        usr.addToRecycleShortlist(sc);
+                        sc.status = "removing";
+                        sc.UPDATE();
+                        usr.UPDATE();
+                        ShowingCard newSelectedCard = from.listChooser.getChoices().get(selectedIndex);
+                        from.listChooser.setDefaultModelObject(newSelectedCard);
+                        target.add(from);
+                        target.add(to);
+                    }
+
+                }
+                return target;
+            }
+        };
+        cardsPanel.listChooser.addEventListener(keyPressListener);
     }
 }

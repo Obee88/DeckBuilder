@@ -8,71 +8,81 @@
     	<table>
     		<tr>
     			<td>
-			    		<div id="authDiv" class="well">
-				    		<table>
-				    			<tr>
-				    				<td>
-                                        <form wicket:id="form">
-                                            <table>
-                                                <tr>
-                                                    <td>
-                                                        <span wicket:id="userCards"></span>
-                                                    </td>
-                                                    <td>
-                                                        <table>
-                                                            <tr>
-                                                                <td>
-                                                                    <table style="width:100%"><tr>
-                                                                        <td>
-                                                                        </td>
-                                                                        <td>
+                    <div id="authDiv" class="well">
+                        <table>
+                            <tr>
+                                <td>
+                                    <form wicket:id="form">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <span wicket:id="userCards"></span>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <table style="width:100%"><tr>
+                                                                    <td>
+                                                                    </td>
+                                                                    <td>
 
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            weeks old
                                                                         </td>
                                                                         <td>
+                                                                            <span wicket:id="weeksOldPanel"></span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <button class="btn-small btn-info pull-right" wicket:id="filterButton">filter</button>
                                                                         </td>
                                                                     </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                weeks old
-                                                                            </td>
-                                                                            <td>
-                                                                                <span wicket:id="weeksOldPanel"></span>
-                                                                            </td>
-                                                                            <td>
-                                                                                <button class="btn-small btn-info pull-right" wicket:id="filterButton">filter</button>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <span wicket:id="sacCards"></span>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                    <td>
-                                                        <button class= "btn-small btn-success" type="submit" style="text-align:center;" >
-                                                            <i style="color:black; text-align:center;" class="fa fa-refresh fa-spin fa-2x"></i>
-                                                        </button>
-                                                    </td>
-                                                    <td style="width:240px;height:400px;vertical-align: top;" >
-                                                        <span wicket:id="cardView" style="vertical-align: top" />
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </form>
-				    				</td>
-					    			<td>
-					    				Recycle shortlist:
-                                        <span wicket:id="recycleShortlistPanel"></span>
-                                        <button wicket:id="fillFromShortlist">&lt;&lt; Fill &lt;&lt;</button>
-					    			</td>
-				    			</tr>
-				    		</table>
-				    		
-			    		</div>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <span wicket:id="sacCards"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <button class= "btn-small btn-success" type="submit" style="text-align:center;" >
+                                                        <i style="color:black; text-align:center;" class="fa fa-refresh fa-spin fa-2x"></i>
+                                                    </button>
+                                                </td>
+                                                <td style="width:240px;height:400px;vertical-align: top;" >
+                                                    <span wicket:id="cardView" style="vertical-align: top" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </td>
+                                <td>
+                                    Recycle shortlist:
+                                    <span wicket:id="recycleShortlistPanel"></span>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <button wicket:id="fillFromShortlist">&lt;&lt; Fill &lt;&lt;</button>
+                                            </td>
+                                            <td>
+                                                <form wicket:id="recycleAllForm" style="margin-bottom:0px">
+                                                    <button type="submit">^^ Recycle All ^^</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
     			</td>
     		</tr>
     	</table>

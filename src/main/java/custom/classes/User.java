@@ -80,11 +80,6 @@ public class User extends MongoObject implements Serializable{
 
     public static String makePasswordHash(String password, String salt) {
         try {
-//            String saltedAndHashed = password + "," + salt;
-//            MessageDigest digest = MessageDigest.getInstance("MD5");
-//            digest.update(saltedAndHashed.getBytes());
-//        	Base64Codec encoder = new Base64Codec();
-//            byte hashedBytes[] = (new String(digest.digest(), "UTF-8")).getBytes();
             Blake256 blake = new Blake256();
             return blake.digest(password.getBytes());
         } catch (Exception e) {
