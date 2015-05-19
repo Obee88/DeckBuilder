@@ -1,5 +1,6 @@
 package custom.classes;
 
+import com.mongodb.DBObject;
 import database.MongoHandler;
 import suport.MailSender;
 
@@ -20,6 +21,22 @@ public class CardGenerator {
 			checkWishlists(sc,allUsrs, owner);
 			ret.add(c);
 		}
+        DBObject[] retObjs = null;
+        boolean success = false;
+        while (!success){
+            try {
+                retObjs = new DBObject[ret.size()];
+                int i=0;
+                for (Card c : ret){
+                    retObjs[i] = c.toDBObject();
+                    i++;
+                }
+                MongoHandler.getInstance().cardsCollection.insert(retObjs);
+                success = true;
+            } catch(Exception e){
+                System.out.println("nije uspjelo");
+            }
+        }
 		return ret;
 	}
 
@@ -35,6 +52,13 @@ public class CardGenerator {
         Card c = Card.generateCard(owner, rarity, false);
         ShowingCard sc = new ShowingCard(c);
         checkWishlists(sc, allUsrs, owner);
+        boolean success = false;
+        while (!success){
+            try {
+                MongoHandler.getInstance().cardsCollection.insert(c.toDBObject());
+                success = true;
+            } catch(Exception e){}
+        }
         return c;
     }
 

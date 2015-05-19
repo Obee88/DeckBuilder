@@ -1,10 +1,10 @@
 package custom.classes;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import database.MongoHandler;
 import org.joda.time.DateTime;
+
+import java.io.Serializable;
+import java.util.Date;
 
 @SuppressWarnings("serial")
 public class ShowingCard implements Serializable,Comparable<ShowingCard> {
@@ -21,7 +21,7 @@ public class ShowingCard implements Serializable,Comparable<ShowingCard> {
 	public ShowingCard(Card c) {
 		cardId = c.cardId;
 		cardInfoId = c.cardInfoId;
-		cardInfo = MongoHandler.getInstance().getCardInfo(cardInfoId);
+        cardInfo = c.getCardInfo();
 		name = cardInfo.name;
 		printed= c.printed;
 		owner=c.owner;

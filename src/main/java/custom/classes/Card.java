@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Random;
 
 public class Card extends MongoObject{
+    private CardInfo cardInfo = null;
     Integer cardId;
 	Integer cardInfoId;
 	String printed, owner, status;
@@ -37,9 +38,9 @@ public class Card extends MongoObject{
                 .append("cardInfoId", _cardInfoId)
                 .append("status", "booster")
                 .append("creationDate", new DateTime(DateTimeZone.forID("Asia/Tokyo")).toDate())
+                .append("cardInfo",mongo.getCardInfo(_cardInfoId).toDBObject())
                 .append("info", mongo.getCardInfo(_cardInfoId).toDBObject());
         mongo.setExistance(_cardInfoId,true);
-        mongo.cardsCollection.insert(obj);
         return new Card(obj);
     }
 
@@ -58,9 +59,9 @@ public class Card extends MongoObject{
                 .append("cardInfoId", _cardInfoId)
                 .append("status", "booster")
                 .append("creationDate", new DateTime(DateTimeZone.forID("Asia/Tokyo")).toDate())
+                .append("cardInfo",mongo.getCardInfo(_cardInfoId).toDBObject())
                 .append("info", mongo.getCardInfo(_cardInfoId).toDBObject());
-        mongo.setExistance(_cardInfoId,true);
-        mongo.cardsCollection.insert(obj);
+        mongo.setExistance(_cardInfoId, true);
         return new Card(obj);
     }
 
@@ -76,8 +77,8 @@ public class Card extends MongoObject{
         Integer ret = null;
         while(ret==null){
             BasicDBObject basObj = new BasicDBObject("rarity",minRarityQ);
-            if (isNew) //only for one card in booster
-                basObj.append("exist",false);
+//            if (isNew) //only for one card in booster
+//                basObj.append("exist",false);
             DBCursor cur = MongoHandler.getInstance().cardInfoCollection.find(
                     basObj
             );
@@ -135,6 +136,10 @@ public class Card extends MongoObject{
 		status = obj.get("status")==null?null:obj.get("status").toString();
 		inProposal = obj.get("inProposal")==null?"false":obj.get("inProposal").toString();
         creationDate = (Date)obj.get("creationDate");
+        if (!obj.containsField("cardInfo"))
+            updateCardInfo();
+        else
+            cardInfo = new CardInfo((DBObject)obj.get("cardInfo"));
 
 	}
 	
@@ -146,9 +151,18 @@ public class Card extends MongoObject{
 		inProposal = obj.get("inProposal")==null?"false":obj.get("inProposal").toString();
 		this.owner = owner;
         creationDate = (Date)obj.get("creationDate");
+        if (!obj.containsField("cardInfo"))
+            updateCardInfo();
+        else
+            cardInfo = new CardInfo((DBObject)obj.get("cardInfo"));
 	}
 
-	public int getCardId() {
+    private void updateCardInfo() {
+        cardInfo = MongoHandler.getInstance().getCardInfo(cardInfoId);
+        UPDATE();
+    }
+
+    public int getCardId() {
 		return cardId;
 	}
 
@@ -164,7 +178,8 @@ public class Card extends MongoObject{
 		.append("cardInfoId", cardInfoId)
 		.append("status", status)
 		.append("inProposal", inProposal)
-        .append("creationDate",creationDate);
+        .append("cardInfo", cardInfo.toDBObject())
+        .append("creationDate", creationDate);
 		return obj;
 	}
 	
@@ -188,6 +203,7 @@ public class Card extends MongoObject{
 			.append("owner", owner)
 			.append("cardInfoId", _cardInfoId)
 			.append("status", "booster")
+            .append("cardInfo",mongo.getCardInfo(_cardInfoId).toDBObject())
             .append("creationDate",new DateTime(DateTimeZone.forID("Asia/Tokyo")).toDate());
 		mongo.cardsCollection.insert(obj);
 		return new Card(obj);
@@ -222,5 +238,11 @@ public class Card extends MongoObject{
             if (name.toLowerCase().equals(ci.name.toLowerCase()))
                 return true;
         return false;
+    }
+
+    public CardInfo getCardInfo() {
+        if (cardInfo==null)
+            updateCardInfo();
+        return cardInfo;
     }
 }

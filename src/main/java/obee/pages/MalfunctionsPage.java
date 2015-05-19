@@ -1,22 +1,9 @@
 package obee.pages;
 
-import java.util.*;
-
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import obee.pages.master.MasterPage;
-
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import custom.classes.Administration;
 import custom.classes.Card;
 import custom.classes.ShowingCard;
@@ -26,6 +13,17 @@ import custom.components.ListChooser;
 import custom.components.panels.CardSelectionPanel;
 import custom.components.panels.CardView;
 import custom.components.panels.InfoPanel;
+import obee.pages.master.MasterPage;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import java.util.*;
 
 @SuppressWarnings({"serial"})
 @AuthorizeInstantiation("ADMIN")

@@ -3,6 +3,7 @@ package custom.classes;
 import blake.Digest.Blake256;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import custom.classes.abstractClasses.MongoObject;
 import org.joda.time.DateTime;
@@ -329,17 +330,27 @@ public class User extends MongoObject implements Serializable{
 
     public List<ShowingCard> getTradingShowingCards() {
         List<ShowingCard> cards = new ArrayList<ShowingCard>();
-        for(Integer id : trading)
+        DBCursor cardsCursor = mongo.getCardObjects(intl2DBL(trading));
+        while(cardsCursor.hasNext()) {
+            DBObject obj = cardsCursor.next();
+            int id = (Integer) obj.get("id");
             try{
-                cards.add(new ShowingCard( mongo.getCard(id)));
+                cards.add(new ShowingCard( new Card(obj)));
             } catch (NullPointerException ex){
                 ex.printStackTrace();
                 removeFromTrading(id);
                 UPDATE();
                 throw new NullPointerException("id: "+id);
             }
+        }
 
         return cards;
+    }
+
+    private BasicDBList intl2DBL(List<Integer> intl) {
+        BasicDBList ret = new BasicDBList();
+        ret.addAll(intl);
+        return ret;
     }
 
     private List<UserMessage> DBL2MsgL(BasicDBList list) {

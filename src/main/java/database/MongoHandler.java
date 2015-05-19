@@ -630,4 +630,8 @@ public class MongoHandler {
         DBObject cardObj = cur.next();
         return (Integer)cardObj.get("id");
     }
+
+    public DBCursor getCardObjects(BasicDBList ids) {
+        return cardsCollection.find(new BasicDBObject("id", new BasicDBObject("$in", ids)));
+    }
 }

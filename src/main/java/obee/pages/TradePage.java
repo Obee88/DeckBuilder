@@ -1,35 +1,29 @@
 package obee.pages;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import obee.pages.master.MasterPage;
-
-import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
-import org.apache.wicket.ajax.AjaxEventBehavior;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.form.*;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import custom.classes.Administration;
-import custom.classes.ShowingCard;
-import custom.classes.TradingProposal;
-import custom.classes.User;
-import custom.classes.UserMessage;
+import custom.classes.*;
 import custom.components.IEventListener;
 import custom.components.ListChooser;
 import custom.components.panels.CardSelectionPanel;
 import custom.components.panels.CardView;
-import org.apache.wicket.validation.*;
-import org.apache.wicket.validation.validator.RangeValidator;
+import obee.pages.master.MasterPage;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.NumberTextField;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import suport.MailSender;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @AuthorizeInstantiation("USER")
@@ -49,12 +43,12 @@ public class TradePage extends MasterPage {
 
     public TradePage(PageParameters params) {
 		super(params, "Trade");
-		
-		initForm();
-		initLists(params);
-		initComponents();
-		initBehaviours();
-        fillBoxes();
+		initForm(); sw.checkpoint("forms init done");
+		initLists(params); sw.checkpoint("lists init done");
+		initComponents(); sw.checkpoint("components init done");
+		initBehaviours(); sw.checkpoint("behaviors init done");
+        fillBoxes(); sw.checkpoint("boxes fill done");
+        sw.checkpoint("page loaded");
 	}
 
     private void fillBoxes() {
@@ -137,17 +131,21 @@ public class TradePage extends MasterPage {
         List<Integer> fromL = getList(params.get("from").toString(""));
         List<Integer> toL = getList(params.get("to").toString(""));
 		homeTradeList = notInProposal(user.getTradingShowingCards());
+        sw.checkpoint("home trade list filled");
 		awayTradeList = new ArrayList<ShowingCard>();
 		usersStringList = new ArrayList<String>();
 		usersStringList.add("All users");
 		homeOfferList = new ArrayList<ShowingCard>();
 		awayOfferList = new ArrayList<ShowingCard>();
+        sw.checkpoint("lists initiated");
 		List<User> usrs = mongo.getAllUsers();
+        sw.checkpoint("all users loaded");
 		for(User usr : usrs){
 			if(!usr.getUserName().equals(getUserName())){
 				usersStringList.add(usr.getUserName());
 				awayTradeList.addAll(usr.getTradingShowingCards());
 			}
+            sw.checkpoint("user "+usr.getUserName()+" done");
 		}
         trejdL= new ArrayList();
         for(ShowingCard sc : homeTradeList)

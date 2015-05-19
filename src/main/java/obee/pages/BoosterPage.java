@@ -1,11 +1,13 @@
 package obee.pages;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import custom.classes.*;
+import custom.components.IEventListener;
+import custom.components.ListChooser;
+import custom.components.panels.CardSelectionPanel;
+import custom.components.panels.CardView;
+import custom.components.panels.InfoPanel;
+import database.MongoHandler;
 import obee.pages.master.MasterPage;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -28,19 +30,9 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import custom.classes.Card;
-import custom.classes.CardGenerator;
-import custom.classes.ShowingCard;
-import custom.classes.StartingDeck;
-import custom.classes.User;
-import custom.components.IEventListener;
-import custom.components.ListChooser;
-import custom.components.panels.CardSelectionPanel;
-import custom.components.panels.CardView;
-import custom.components.panels.InfoPanel;
-
-
-import database.MongoHandler;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @AuthorizeInstantiation("USER")
 @SuppressWarnings({ "unchecked", "rawtypes", "serial"})
@@ -61,7 +53,8 @@ public class BoosterPage extends MasterPage{
 
 	public BoosterPage(final PageParameters params) {
 		super(params,"Boosters");
-        currentUser.setSubfolders();
+
+        currentUser.setSubfolders(); sw.checkpoint("sunfolders set done");
         AjaxEventBehavior keypress =new AjaxEventBehavior("onkeypress"){
             @Override
             protected void updateAjaxAttributes(AjaxRequestAttributes
@@ -107,11 +100,11 @@ public class BoosterPage extends MasterPage{
                 target = boosterPanel.listChooser.informListeners(target, "onKeyPress-"+key);
             }
         };
-        add(keypress);
+        add(keypress); sw.checkpoint("keypres behaviour initiated");
 
-		getShowingCards();
-		initComponents();
-        addBehaviors();
+		getShowingCards(); sw.checkpoint("get showingCards done");
+		initComponents(); sw.checkpoint("init components done");
+        addBehaviors(); sw.checkpoint("behaviours done");
 		form = new Form("form") {
 			@Override
 			protected void onSubmit() {
@@ -250,7 +243,7 @@ public class BoosterPage extends MasterPage{
             };
         group.add(decks);
         add(SDform);
-        SDform.add(group);
+        SDform.add(group);   sw.checkpoint("page loaded");
 	}
 	
 	protected void save() {
