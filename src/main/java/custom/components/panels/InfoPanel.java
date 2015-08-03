@@ -24,11 +24,11 @@ public class InfoPanel extends Panel implements IEventListener{
 
     private final boolean isAdmin;
     Label nameLabel, rarityLabel, ownerLabel, printedLabel, twoSidedLabel, dateLabel, manaCostlabel;
-	String name="", rarity="", owner="",printed="", isTwoSided="", idStr="", purpose="", date = "", manaCost="";
+	String name="", rarity="", owner="",printed="", isTwoSided="", idStr="", purpose="", date = "", manaCost="", interested="";
 	ShowingCard card;
 	List<Component> components = new ArrayList<Component>();
-	private Label idLabel;
-    private Label IDLabel;
+	private Label idLabel, interestLabel;
+    private Label IDLabel, INTERESTLabel;
     private Label purposeLabel;
     private Label PURPOSELabel;
 
@@ -45,6 +45,7 @@ public class InfoPanel extends Panel implements IEventListener{
         if(!isAdmin){
             hide(IDLabel);hide(idLabel);
         }
+
 		nameLabel = new Label("nameLabel", new PropertyModel<ShowingCard>(this, "name"));
 		rarityLabel = new Label("rarityLabel", new PropertyModel<ShowingCard>(this, "rarity"));
 		ownerLabel = new Label("ownerLabel", new PropertyModel<ShowingCard>(this, "owner"));
@@ -53,6 +54,9 @@ public class InfoPanel extends Panel implements IEventListener{
         dateLabel = new Label("dateLabel", new PropertyModel<Object>(this,"date"));
         purposeLabel=new Label("purposeLabel", new PropertyModel<ShowingCard>(this, "purpose"));
         PURPOSELabel = new Label("PURPOSELabel", "In:");
+		interestLabel = new Label("interestLabel", new PropertyModel<ShowingCard>(this, "interested"));
+		INTERESTLabel = new Label("INTERESTLabel", "Inteersted:");
+
 //        manaCostlabel = new Label("manaCostLabel", new PropertyModel<ShowingCard>(this,"manaCost"));
 		idLabel.setOutputMarkupId(true);
 		nameLabel.setOutputMarkupId(true);
@@ -61,6 +65,8 @@ public class InfoPanel extends Panel implements IEventListener{
 		printedLabel.setOutputMarkupId(true);
 		twoSidedLabel.setOutputMarkupId(true);
         purposeLabel.setOutputMarkupId(true);
+		interestLabel.setOutputMarkupId(true);
+		INTERESTLabel.setOutputMarkupId(true);
 //        manaCostlabel.setOutputMarkupId(true);
         dateLabel.setOutputMarkupId(true);
         add(IDLabel); add(PURPOSELabel);
@@ -72,8 +78,11 @@ public class InfoPanel extends Panel implements IEventListener{
 		add(twoSidedLabel); components.add(twoSidedLabel);
         add(purposeLabel);components.add(purposeLabel);
         add(dateLabel); components.add(dateLabel);
+		add(interestLabel); components.add(interestLabel);
+		add(INTERESTLabel);components.add(INTERESTLabel);
 //        add(manaCostlabel); components.add(manaCostlabel);
-
+		hide(INTERESTLabel);
+		hide(interestLabel);
 	}
 
 	@Override
@@ -90,6 +99,7 @@ public class InfoPanel extends Panel implements IEventListener{
         DateTime dt = new DateTime(card.getCreationDate());
         date =  card==null? "":dt.toString(DateTimeFormat.forPattern("dd.MM.yyyy. 'at' HH:mm:ss"));
         purpose = MongoHandler.getInstance().getUser(owner).getPurpose(card);
+		interested = card.getInterestString();
 //        manaCost = card==null? "": card.cardInfo.manaCost;
 		for(Component c : this.components)
 			target.add(c);
@@ -105,6 +115,15 @@ public class InfoPanel extends Panel implements IEventListener{
             hide(PURPOSELabel);
         }
     }
+	public void setInterestListlVisible(boolean b){
+		if(b){
+			show(interestLabel);
+			show(INTERESTLabel);
+		} else{
+			hide(interestLabel);
+			hide(INTERESTLabel);
+		}
+	}
 
 	@Override
 	public boolean isEnabled() {

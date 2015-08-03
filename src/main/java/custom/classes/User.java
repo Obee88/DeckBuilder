@@ -517,7 +517,7 @@ public class User extends MongoObject implements Serializable{
                 return 1;
             }
         };
-        Collections.sort(list,comparator);
+        Collections.sort(list, comparator);
     }
 
     public boolean wantsProposalMail() {
@@ -641,4 +641,13 @@ public class User extends MongoObject implements Serializable{
         remList.clear();
         UPDATE();
     }
+
+	public List<ShowingCard> getAllShowingCards() {
+		List<ShowingCard> ret = new ArrayList<ShowingCard>();
+		ret.addAll(getBoosterShowingCards());
+		ret.addAll(getUsingShowingCards());
+		ret.addAll(getTradingShowingCards());
+		ret.addAll(getRecycleShortlistShowingCards());
+		return ret;
+	}
 }

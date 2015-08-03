@@ -46,7 +46,7 @@ public class MalfunctionsPage extends MasterPage {
     private AjaxLink<Object> checkOwnerNotInListButton, checkInListNotOwnerButton;
     private Form<Object> clearTradeList;
     private Form<Object> chechInProposalForm;
-    private AjaxLink<Object> clearListUserNilBtn;
+    private Form<Object> fixDoubleIds;
 
 
     public MalfunctionsPage(PageParameters params) {
@@ -221,10 +221,20 @@ public class MalfunctionsPage extends MasterPage {
                     u.UPDATE();
                     count += cnt- boosters.size()-trading.size()-using.size();
 				}
-                info(count +" cards removed!");
+                info(count + " cards removed!");
 			}
 		};
 		add(checkDoublesForm);
+
+        fixDoubleIds = new Form<Object>("fixDoubleIds"){
+            @Override
+            public void onSubmit() {
+                super.onSubmit();
+                info(mongo.fixMultipleIds() + " cards fixed!");
+                setResponsePage(MalfunctionsPage.class);
+            }
+        };
+        add(fixDoubleIds);
 		setRightStatuses = new Form<Object>("setRightStatuses"){
 			@Override
 			protected void onSubmit() {
@@ -316,18 +326,6 @@ public class MalfunctionsPage extends MasterPage {
         };
         form.add(checkInListNotOwnerButton);
 
-        clearListUserNilBtn = new AjaxLink<Object>("clearListUserNilBtn"){
-            @Override
-            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                BasicDBList remList = new BasicDBList();
-                for(ShowingCard sc : ownerNotInListList){
-                    int id = sc.cardId;
-                    remList.add(id);
-                }
-                info(mongo.cardsCollection.remove(new BasicDBObject("id",new BasicDBObject("$in",remList))).toString());
-            }
-        };
-        form.add(clearListUserNilBtn);
 	}
 
 	private void initBehaviours() {

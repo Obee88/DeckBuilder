@@ -5,24 +5,15 @@
 <body>
     <wicket:extend>
         <table>
+            <tr>
+                <td>My cards in <span style="color: greenyellow">trade</span>, <span style="color: yellow">booster</span> and <span style="color: red">using</span>, that people are interested in!</td>
+            </tr>
             <tr style="height: 380px	">
                 <td>
                     <span wicket:id = "cardsPane"></span>
                 </td>
                 <td>
                     <span wicket:id = "infoPane"></span>
-                </td>
-                <td>
-                    <form wicket:id="deleteRangeForm">
-                        <input wicket:id="fromTbx">
-                        <input wicket:id="toTbx">
-                        <input type="submit" value="deleteRangeForm">
-                    </form>
-                </td>
-                <td>
-                    <form wicket:id="fixIdsInList">
-                        <input type="submit" value="fixIdsInList">
-                    </form>
                 </td>
             </tr>
         </table>

@@ -1,5 +1,6 @@
 package obee.pages;
 
+import com.sun.xml.fastinfoset.util.CharArray;
 import custom.classes.CardInfo;
 import custom.classes.OwnerMap;
 import database.MongoHandler;
@@ -46,7 +47,7 @@ public class DeckPrint extends MasterPage {
     private boolean validateResult = true;
 
     public DeckPrint(final PageParameters params) {
-        super(params, "Printer");
+        super(params, "DeckPrint");
         initForms();
         initComponents();
     }
@@ -77,6 +78,7 @@ public class DeckPrint extends MasterPage {
                 List<CardInfo> pageList = new ArrayList<CardInfo>();
                 List<Slika> pages = new ArrayList<Slika>();
                 for (String line : lines){
+                    if(line.trim().length()==0) continue;
                     String cardName = getNameFromLine(line);
                     if (cardName.startsWith("#")) {
                         int id = Integer.parseInt(cardName.substring(1));
@@ -86,7 +88,7 @@ public class DeckPrint extends MasterPage {
                     while (num-->0){
                         CardInfo ci  = null;
                         try{
-                           ci = mongo.getCardInfo(mongo.getCardInfoIdByName(fix(cardName.trim())));
+                           ci = mongo.getCardInfoByName(cardName);
                         }   catch (NullPointerException e){
                             System.out.println();
                         }
@@ -178,8 +180,9 @@ public class DeckPrint extends MasterPage {
         public void validate(IValidatable<String> validatable) {
             String[] lines = validatable.getValue().split("\\r\\n");
             for (String line : lines){
+                if (line.trim().length()==0) continue;
                 String name = getNameFromLine(line.trim());
-                boolean isvalid = mongo.isValidCardName(name) || (name.startsWith("#") && isDigit(name.substring(1))) ;
+                boolean isvalid = name!=null && mongo.isValidCardName(name);
                 if (!isvalid){
                     error("Unknown card: "+line);
                     errorCall(validatable, "Unknown card: "+line);
@@ -204,18 +207,26 @@ public class DeckPrint extends MasterPage {
     }
 
     private String getNameFromLine(String line){
-        String[] parts = line.split("%");
-        String name= parts.length==2 ? parts[1] : parts[0];
-        return name;
-
+        String digits = "0123456789";
+        int i = 0;
+        char[] lineChars = line.toCharArray();
+        while(digits.contains(""+lineChars[i]))
+            i++;
+        boolean hasNum = i>0;
+        if (hasNum && (Character.toLowerCase(lineChars[i++])!='x' || (lineChars[i++]!=' ' && lineChars[i-1]!='\t')))
+            return null;
+        return line.substring(i);
     }
+
     private Integer getNumFromLine(String line){
-        try {
-            String[] parts = line.split("%");
-            if ( parts.length==2) return Integer.parseInt(parts[0]);
-            else return  1;
-        } catch (Exception e){
+        String digits = "0123456789";
+        char[] lineChars = line.toCharArray();
+        int i = 0;
+        while(digits.contains(""+lineChars[i]))
+            i++;
+        if (i<1)
             return 1;
-        }
+        String digPart = line.substring(0,i);
+        return Integer.parseInt(digPart);
     }
 }

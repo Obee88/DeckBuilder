@@ -33,6 +33,8 @@ public class ListChooser<T> extends ListChoice<T>{
 	static ShowingCard DEFAULT_OBJECT= new ShowingCard();
     Comparator comparator=null;
 	Panel parent;
+	private boolean colorByStatus=false;
+	private boolean markInterests=false;
 
 	public ListChooser(String id, ArrayList<T> choices, T choice) {
 		super(id, new Model((Serializable) (choice==null?(T)DEFAULT_OBJECT:choice)),new CollectionModel(choices));
@@ -131,11 +133,46 @@ public class ListChooser<T> extends ListChoice<T>{
 				s=new Character(str.charAt(i)).toString();
 				i--;
 			}
-			buffer.insert(++i, getCSSStyle(choice));
+			buffer.insert(++i, getPrinterCSSStyle(choice));
+		}
+
+		if(colorByStatus){
+			String str = buffer.toString();
+			int i = str.length()-2;
+			String s ="";
+			while(!s.equals(">")){
+				s=new Character(str.charAt(i)).toString();
+				i--;
+			}
+			buffer.insert(++i, getStatusCSSStyle(choice));
+		}
+
+		if(markInterests){
+			String str = buffer.toString();
+			int i = str.length()-2;
+			String s ="";
+			while(!s.equals(">")){
+				s=new Character(str.charAt(i)).toString();
+				i--;
+			}
+			buffer.insert(++i, getInterestsCSSStyle(choice));
 		}
 	}
 
-	private String getCSSStyle(T choice) {
+	private String getInterestsCSSStyle(T choice) {
+		ShowingCard sc = (ShowingCard) choice;
+		String bc = "background-color:";
+		StringBuilder sb = new StringBuilder();
+		sb.append(" style=\"");
+		if(sc.hasInterests())
+			sb.append(bc).append("#F5A9A9;");
+		else
+			sb.append("inherit");
+		sb.append("\"");
+		return sb.toString();
+	}
+
+	private String getPrinterCSSStyle(T choice) {
 		ShowingCard sc = (ShowingCard) choice;
 		String bc = "background-color:";
 		StringBuilder sb = new StringBuilder();
@@ -150,9 +187,28 @@ public class ListChooser<T> extends ListChoice<T>{
 		return sb.toString();
 	}
 
+	private String getStatusCSSStyle(T choice) {
+		ShowingCard sc = (ShowingCard) choice;
+		String bc = "background-color:";
+		StringBuilder sb = new StringBuilder();
+		sb.append(" style=\"");
+		if(sc.status.equals("trade") || sc.status.equals("trading"))
+			sb.append(bc).append("#A9F5A9;");
+		else if(sc.status.equals("using"))
+			sb.append(bc).append("#F5A9A9;");
+		else if(sc.status.equals("booster")|| sc.status.equals("boosters"))
+			sb.append(bc).append("#F2F5A9;");
+		else
+			sb.append("inherit");
+		sb.append("\"");
+		return sb.toString();
+	}
+
 	public void setPrinterIndicator(boolean printerIndicator) {
 		this.printerIndicator = printerIndicator;
 	}
+
+	public void markInterests(boolean b){ this.markInterests = b; }
 
 	public void clearChoices() {
 		availableChoices.clear();
@@ -202,4 +258,8 @@ public class ListChooser<T> extends ListChoice<T>{
         if(this.comparator!=null)
             Collections.sort(availableChoices, comparator);
     }
+
+	public void showColorByStatus(boolean b){
+		colorByStatus = b;
+	}
 }

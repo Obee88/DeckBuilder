@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class ShowingCard implements Serializable,Comparable<ShowingCard> {
@@ -14,8 +15,10 @@ public class ShowingCard implements Serializable,Comparable<ShowingCard> {
 	public String printed, owner,status;
 	public String inProposal;
     private Date creationDate;
+	private List<String> interestList = null;
+	private String interestString;
 
-    public ShowingCard() {
+	public ShowingCard() {
 	}
 	
 	public ShowingCard(Card c) {
@@ -137,4 +140,33 @@ public class ShowingCard implements Serializable,Comparable<ShowingCard> {
     public boolean isNewer(DateTime dateTime) {
         return creationDate.after(dateTime.toDate());
     }
+
+	public List<String> getInterestList(){
+		return interestList;
+	}
+
+	public ShowingCard setInterestList(List<String> list){
+		interestList = list;
+		return this;
+	}
+
+	public String getInterestString() {
+		StringBuilder ret = new StringBuilder();
+		if(interestList==null)
+			return "";
+		boolean	first = true;
+		for (String u : interestList){
+			if(first)
+				first=false;
+			else ret.append(", ");
+			ret.append(u);
+		}
+		return ret.toString();
+
+	}
+
+	public boolean hasInterests() {
+		if (interestList==null) return false;
+		return interestList.size()>0;
+	}
 }

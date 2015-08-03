@@ -2,10 +2,12 @@ package obee.pages;
 
 import custom.classes.ShowingCard;
 import custom.classes.User;
+import custom.classes.WishlistsChecker;
 import custom.components.IEventListener;
 import custom.components.ListChooser;
 import custom.components.panels.CardSelectionPanel;
 import custom.components.panels.CardView;
+import custom.components.panels.InfoPanel;
 import custom.components.panels.PlusMinusPanel;
 import obee.pages.master.MasterPage;
 import org.apache.wicket.Component;
@@ -42,6 +44,7 @@ public class RecyclePage extends MasterPage {
     private Form recycleIllegalForm;
     private AjaxLink<Object> fillFromShortlist;
     private Form recycleAllForm;
+    private InfoPanel infoPanel;
 
 
     public RecyclePage(final PageParameters params) {
@@ -99,8 +102,11 @@ public class RecyclePage extends MasterPage {
 	}
 
 	private void initLists() {
+        WishlistsChecker wlc = WishlistsChecker.fromMongo(mongo);
         recycleShortlistList = (ArrayList<ShowingCard>) usr.getRecycleShortlistShowingCards();
+        wlc.checkList(recycleShortlistList);
 		tradeList = usr.getTradingShowingCards();
+        wlc.checkList(tradeList);
 		sacList=new ArrayList<ShowingCard>();
 	}
 
@@ -195,10 +201,17 @@ public class RecyclePage extends MasterPage {
         recycleShortlistPanel.setPrintCheckBoxVisible(false);
         recycleShortlistPanel.setFilterVisible(false);
         recycleShortlistPanel.setOutputMarkupId(true);
+        recycleShortlistPanel.markInterests(true);
 		add(recycleShortlistPanel);
+        infoPanel = new InfoPanel("infoPanel", currentUser.isAdmin());
+        infoPanel.setOutputMarkupId(true);
+        infoPanel.setInterestListlVisible(true);
+        add(infoPanel);
         cardsPanel = new CardSelectionPanel("userCards", (ArrayList<ShowingCard>) tradeList);
 		cardsPanel.listChooser.setMaxRows(19);
+        cardsPanel.listChooser.addEventListener(infoPanel);
 		cardsPanel.setPrintCheckBoxVisible(false);
+        cardsPanel.markInterests(true);
 	    sacCards = new CardSelectionPanel("sacCards",(ArrayList<ShowingCard>) sacList);
 	    sacCards.listChooser.setMaxRows(6);
 	    sacCards.setPrintCheckBoxVisible(false);
@@ -209,6 +222,7 @@ public class RecyclePage extends MasterPage {
 		cardsPanel.listChooser.addEventListener(cardView);
 		sacCards.listChooser.addEventListener(cardView);
         recycleShortlistPanel.listChooser.addEventListener(cardView);
+        recycleShortlistPanel.listChooser.addEventListener(infoPanel);
         final List<String> rarity = new ArrayList<String>();
         rarity.add("common");rarity.add("uncommon");
         rarity.add("rare"); rarity.add("mythic");

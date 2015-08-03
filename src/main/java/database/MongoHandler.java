@@ -2,8 +2,10 @@ package database;
 
 import com.mongodb.*;
 import custom.classes.*;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.apache.commons.lang3.StringUtils.*;
 
 import java.net.UnknownHostException;
 import java.util.*;
@@ -25,6 +27,7 @@ public class MongoHandler {
 	private MongoClient client;
 	private DB base;
 	public DBCollection usersCollection, cardsCollection, cardInfoCollection, adminCollection, statisticsCollection, sucessfullProposalsCollections;
+    private List<ShowingCard> interestedShowingCards;
 
     private MongoHandler(){
 		try {
@@ -93,13 +96,13 @@ public class MongoHandler {
 	public int getCardInfoId(String name) {
 
 		DBCursor cur = cardInfoCollection.find(
-                new BasicDBObject("name", Pattern.compile("^"+name.trim()+"$", Pattern.CASE_INSENSITIVE)));
+                new BasicDBObject("name", Pattern.compile("^" + name.trim() + "$", Pattern.CASE_INSENSITIVE)));
 		DBObject obj = getRandomOne(cur);
 		return (Integer)obj.get("id");
 	}
 
     public Integer getCardInfoIdByName(String name){
-        DBObject o = cardInfoCollection.findOne(new BasicDBObject("name",Pattern.compile("^"+name.trim()+"$", Pattern.CASE_INSENSITIVE)));
+        DBObject o = cardInfoCollection.findOne(new BasicDBObject("name", Pattern.compile("^" + name.trim() + "$", Pattern.CASE_INSENSITIVE)));
         return (Integer)o.get("id");
     }
 
@@ -113,9 +116,19 @@ public class MongoHandler {
 		return new CardInfo(obj);
 	}
 
+    public CardInfo getCardInfoByName(String cardName) {
+        cardName = StringEscapeUtils.unescapeHtml4(cardName);
+        DBObject ref = new BasicDBObject();
+        ref.put("name", Pattern.compile(cardName, Pattern.CASE_INSENSITIVE));
+        DBObject obj = cardInfoCollection.findOne(ref);
+        if (obj==null)
+            return null;
+        return new CardInfo(obj);
+    }
+
 	public Card getCard(int id) {
 		DBObject obj = cardsCollection.findOne(
-				new BasicDBObject("id",id));
+                new BasicDBObject("id", id));
 		return obj==null?null : new Card(obj);
 	}
 
@@ -214,23 +227,23 @@ public class MongoHandler {
 	public void removeFromAllUserLists(Integer id) {
 		usersCollection.update(
                 new BasicDBObject(),
-                new BasicDBObject("$pull", new BasicDBObject("userCards.boosters",id)),
-                false,true
+                new BasicDBObject("$pull", new BasicDBObject("userCards.boosters", id)),
+                false, true
         );
         usersCollection.update(
                 new BasicDBObject(),
-                new BasicDBObject("$pull", new BasicDBObject("userCards.using",id)),
-                false,true
+                new BasicDBObject("$pull", new BasicDBObject("userCards.using", id)),
+                false, true
         );
         usersCollection.update(
                 new BasicDBObject(),
-                new BasicDBObject("$pull", new BasicDBObject("userCards.trading",id)),
-                false,true
+                new BasicDBObject("$pull", new BasicDBObject("userCards.trading", id)),
+                false, true
         );
         usersCollection.update(
                 new BasicDBObject(),
-                new BasicDBObject("$pull", new BasicDBObject("userCards.recycleShortlist",id)),
-                false,true
+                new BasicDBObject("$pull", new BasicDBObject("userCards.recycleShortlist", id)),
+                false, true
         );
 	}
 
@@ -265,7 +278,7 @@ public class MongoHandler {
 	}
 	
 	public List<Integer> getBoostersCardsIds(String userName) {
-		DBObject usrObj = usersCollection.findOne(new BasicDBObject("userName",userName));
+		DBObject usrObj = usersCollection.findOne(new BasicDBObject("userName", userName));
 		BasicDBList dbl = (BasicDBList) ((DBObject)usrObj.get("userCards")).get("boosters");
 		List<Integer>ret = new ArrayList<Integer>();
 		for(Object o : dbl)
@@ -278,7 +291,7 @@ public class MongoHandler {
         BasicDBObject q = new BasicDBObject("$group",
                 new BasicDBObject("_id","$type").append("num",new BasicDBObject("$sum",1)));
         BasicDBObject s = new BasicDBObject("$sort",new BasicDBObject("num",-1));
-        AggregationOutput cur = cardInfoCollection.aggregate(q,s);
+        AggregationOutput cur = cardInfoCollection.aggregate(q, s);
         Iterable it= cur.results();
         List<String> ret = new ArrayList<String>();
         for(Object o: it){
@@ -320,11 +333,11 @@ public class MongoHandler {
             q.append("subtype", subType);
         if(rarity!=null)
             q.append("rarity",rarity);
-        boolean isEnchantment = false;
+//        boolean isEnchantment = false;
         if(type!=null){
             q.append("type",type);
             BasicDBList dbl = (BasicDBList) ((DBObject) type).get("$in");
-            isEnchantment = dbl.contains("enchantment");
+//            isEnchantment = dbl.contains("enchantment");
         }
         if(manaCost!=null)
             q.append("convertedManaCost",manaCost);
@@ -339,8 +352,8 @@ public class MongoHandler {
             DBObject obj = CIcur.next();
             String n = obj.get("name").toString().toLowerCase();
             String t = obj.get("text").toString().toLowerCase();
-            if(!landNames.contains(n)
-                    && (!isEnchantment &&!t.startsWith("enchant")))
+            if(!landNames.contains(n)) //                    && (!isEnchantment &&!t.startsWith("enchant")))
+
                 list.add(obj.get("id"));
         }
 
@@ -633,5 +646,42 @@ public class MongoHandler {
 
     public DBCursor getCardObjects(BasicDBList ids) {
         return cardsCollection.find(new BasicDBObject("id", new BasicDBObject("$in", ids)));
+    }
+
+    public int fixMultipleIds(){
+        DBCursor cur = cardsCollection.find(new BasicDBObject(),new BasicDBObject("id",1)).sort(new BasicDBObject("id", 1));
+        int last = 0;
+        int count = 0;
+        for(DBObject dbo : cur){
+            int id = (Integer)dbo.get("id");
+            if (id == last){
+                int newId = Administration.getNextCardId();
+                cardsCollection.update(dbo, new BasicDBObject("$set", new BasicDBObject("id", newId)));
+                count++;
+            }
+            else
+                last = id;
+        }
+        return count ;
+    }
+
+    public List<ShowingCard> getInterestedShowingCards(String username) {
+        List<ShowingCard> ret = new ArrayList<ShowingCard>();
+        DBCursor cur = cardsCollection.find(new BasicDBObject("owner",username));
+        while (cur.hasNext()){
+            DBObject obj = cur.next();
+            ShowingCard sc = new ShowingCard(new Card(obj));
+            sc.setInterestList(getInterestList(sc.getName(),username));
+        }
+        return interestedShowingCards;
+    }
+
+    private List<String> getInterestList(String cardName, String username) {
+        //TODO: rjesitit taj interest
+        return null;
+    }
+
+    public BasicDBList getUserWishlist(String userName) {
+        return (BasicDBList)usersCollection.findOne(new BasicDBObject("userName", userName), new BasicDBObject("wishList",true)).get("wishList");
     }
 }

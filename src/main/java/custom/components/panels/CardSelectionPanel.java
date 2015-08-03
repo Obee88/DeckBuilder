@@ -224,4 +224,12 @@ public class CardSelectionPanel extends Panel implements IEventListener{
     public void unselect() {
         listChooser.selectedChoice = null;
     }
+
+	public void showColorByStatus(boolean b){
+		listChooser.showColorByStatus(b);
+	}
+
+	public void markInterests(boolean b){
+		this.listChooser.markInterests(b);
+	}
 }

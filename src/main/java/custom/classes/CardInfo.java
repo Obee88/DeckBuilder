@@ -22,8 +22,11 @@ public class CardInfo {
 		artist = obj.get("artist").toString();
 		edition = obj.get("edition").toString();
 		convertedManaCost = Integer.parseInt(obj.get("convertedManaCost").toString());
-		id = Integer.parseInt(obj.get("id").toString());
-		isTwoSided = getBool(obj.get("isTwoSided").toString());
+        try {
+            isTwoSided = getBool(obj.get("isTwoSided").toString());
+        } catch (Exception guessNot){
+            isTwoSided = false;
+        }
         try{
             numOfColors = Integer.parseInt(obj.get("numOfColors").toString());
         } catch (Exception ignorable){

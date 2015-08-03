@@ -14,7 +14,7 @@ public class CardGenerator {
 		while(ret.size()<size){
             Card c = null;
             while (c==null || c.isBasicLand())
-                c= ret.size()%24==13
+                c= ret.size()%48==13
                     ? Card.generateCard(owner,null,"land", ret.size()==31)
                     : Card.generateCard(owner, ret.size()==31);
 			ShowingCard sc = new ShowingCard(c);
