@@ -30,7 +30,7 @@ public class User extends MongoObject implements Serializable{
 	SubFolders subfolders = null;
 	List<String> wishList = null;
     Set<Integer> recycleShortlist;
-	public String[] subFolderNames = new String[]{"sf0","sf1","sf2","sf3","sf4","sf5"};
+	public String[] subFolderNames = new String[]{"sf0","sf1","sf2","sf3","sf4","sf5","sf6","sf7","sf8","sf9","sf10","sf11"};
     private boolean wantsProposalMail, wantsWishlistMail;
 
     public User(String userName, String eMail, String password){
@@ -64,8 +64,11 @@ public class User extends MongoObject implements Serializable{
         wishlistDBobject = (DBObject)obj.get("wishList");
 		DBObject sfNamesObj= (DBObject) obj.get("subFoldersNames");
 		if(sfNamesObj!=null){
-			for(int i =0;i<6;i++)
-				subFolderNames[i]= (String) sfNamesObj.get("sf"+i);
+			for(int i =0;i<12;i++) {
+				String sfname = (String) sfNamesObj.get("sf" + i);
+				if (sfname!=null)
+					subFolderNames[i]= sfname;
+			}
 		}
         wantsProposalMail = (Boolean)obj.get("wantsProposalMail")==null?false:(Boolean)obj.get("wantsProposalMail");
         wantsWishlistMail = (Boolean)obj.get("wantsWishlistMail")==null?false:(Boolean)obj.get("wantsWishlistMail");
@@ -111,7 +114,7 @@ public class User extends MongoObject implements Serializable{
         if (wishList!=null)
 		    obj.append("wishList", WishListItem.toDBL(wishList));
 		BasicDBObject sfNamesObj = new BasicDBObject();
-		for(int i=0;i<6;i++){
+		for(int i=0;i<12;i++){
 			sfNamesObj.append("sf"+i, subFolderNames[i]);
 		}
 		obj.append("subFoldersNames", sfNamesObj);

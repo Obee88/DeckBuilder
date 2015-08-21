@@ -12,7 +12,8 @@ import custom.classes.abstractClasses.MongoObject;
 @SuppressWarnings("unchecked")
 public class SubFolders extends MongoObject {
 
-	List<ShowingCard>[] subFolders = new List[6];
+	private static final int SUBFOLDERS_COUNT = 12;
+	List<ShowingCard>[] subFolders = new List[SUBFOLDERS_COUNT];
 	User parent ;
 	public SubFolders(DBObject obj, User parent){
 		if(obj!=null){
@@ -22,6 +23,12 @@ public class SubFolders extends MongoObject {
 			subFolders[3] = obj.get("sf3")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf3"));
 			subFolders[4] = obj.get("sf4")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf4"));
 			subFolders[5] = obj.get("sf5")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf5"));
+			subFolders[6] = obj.get("sf6")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf6"));
+			subFolders[7] = obj.get("sf7")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf7"));
+			subFolders[8] = obj.get("sf8")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf8"));
+			subFolders[9] = obj.get("sf9")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf9"));
+			subFolders[10] = obj.get("sf10")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf10"));
+			subFolders[11] = obj.get("sf11")==null?new ArrayList<ShowingCard>():DBL2SCL(obj.get("sf11"));
 		} else{
 			subFolders[0] = new ArrayList<ShowingCard>();
 			subFolders[1] = new ArrayList<ShowingCard>();
@@ -29,9 +36,14 @@ public class SubFolders extends MongoObject {
 			subFolders[3] = new ArrayList<ShowingCard>();
 			subFolders[4] = new ArrayList<ShowingCard>();
 			subFolders[5] = new ArrayList<ShowingCard>();
+			subFolders[6] = new ArrayList<ShowingCard>();
+			subFolders[7] = new ArrayList<ShowingCard>();
+			subFolders[8] = new ArrayList<ShowingCard>();
+			subFolders[9] = new ArrayList<ShowingCard>();
+			subFolders[10] = new ArrayList<ShowingCard>();
+			subFolders[11] = new ArrayList<ShowingCard>();
 		}
 		this.parent=parent;
-		//parent.UPDATE();
 	}
 
 	@Override
@@ -42,7 +54,13 @@ public class SubFolders extends MongoObject {
 			.append("sf2", SCL2DBL(subFolders[2]))
 			.append("sf3", SCL2DBL(subFolders[3]))
 			.append("sf4", SCL2DBL(subFolders[4]))
-			.append("sf5", SCL2DBL(subFolders[5]));
+			.append("sf5", SCL2DBL(subFolders[5]))
+			.append("sf6", SCL2DBL(subFolders[6]))
+			.append("sf7", SCL2DBL(subFolders[7]))
+			.append("sf8", SCL2DBL(subFolders[8]))
+			.append("sf9", SCL2DBL(subFolders[9]))
+			.append("sf10", SCL2DBL(subFolders[10]))
+			.append("sf11", SCL2DBL(subFolders[11]));
 		return obj;
 	}
 
@@ -76,7 +94,7 @@ public class SubFolders extends MongoObject {
 	}
 	
 	public List<ShowingCard> getSubFolder(int index) {
-		if (index>5)
+		if (index>SUBFOLDERS_COUNT-1)
 			return null;
 		return subFolders[index];
 	}
@@ -110,7 +128,7 @@ public class SubFolders extends MongoObject {
 	}
 
 	public void setSubFolders(List<ShowingCard>[] subFolders){
-		for(int i=0;i<6;i++){
+		for(int i=0;i<SUBFOLDERS_COUNT;i++){
 			this.subFolders[i].clear();
 			this.subFolders[i].addAll(subFolders[i]);
 		}
@@ -120,12 +138,13 @@ public class SubFolders extends MongoObject {
 		List<ShowingCard> using = parent.getUsingShowingCards();
 		List<ShowingCard> free= new ArrayList<ShowingCard>();
 		for(ShowingCard sc : using){
-			if(subFolders[0].contains(sc)) continue;
-			if(subFolders[1].contains(sc)) continue;
-			if(subFolders[2].contains(sc)) continue;
-			if(subFolders[3].contains(sc)) continue;
-			if(subFolders[4].contains(sc)) continue;
-			if(subFolders[5].contains(sc)) continue;
+			boolean cont = false;
+			for (int i=0;i<SUBFOLDERS_COUNT;++i)
+				if(subFolders[0].contains(sc)) {
+					cont=true;
+					break;
+				}
+			if (cont) continue;;
 			free.add(sc);
 		}
 		return free;

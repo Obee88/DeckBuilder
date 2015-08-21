@@ -37,14 +37,14 @@ import custom.components.panels.CardView;
 @AuthorizeInstantiation("USER")
 public class SubFoldersPage extends MasterPage {
 
-	private List<ShowingCard>[] subFolderList = new List[6];
+	private List<ShowingCard>[] subFolderList = new List[12];
 	private ArrayList<ShowingCard> usingList ;
 	private User user = null;
 	private CardSelectionPanel usingPanel;
-	private CardSelectionPanel[] subFolderPanel= new CardSelectionPanel[6];
+	private CardSelectionPanel[] subFolderPanel= new CardSelectionPanel[12];
 	private Form<Object> form;
-	private CheckBox[] checkBoxes = new CheckBox[6];
-	private OnChangeAjaxBehavior[] cbChecked= new OnChangeAjaxBehavior[6];
+	private CheckBox[] checkBoxes = new CheckBox[12];
+	private OnChangeAjaxBehavior[] cbChecked= new OnChangeAjaxBehavior[12];
 	protected Integer selectedIndex;
 	@SuppressWarnings("rawtypes")
 	private AjaxLink printButton;
@@ -187,7 +187,54 @@ public class SubFoldersPage extends MasterPage {
 				user.UPDATE();
 			}
 		};
-	
+		subFolderPanel[6] = new CardSelectionPanel("sfPanel6", (ArrayList<ShowingCard>) subFolderList[6]){
+			@Override
+			protected void onTitleChanged() {
+				super.onTitleChanged();
+				user.subFolderNames[6]=title;
+				user.UPDATE();
+			}
+		};
+		subFolderPanel[7] = new CardSelectionPanel("sfPanel7", (ArrayList<ShowingCard>) subFolderList[7]){
+			@Override
+			protected void onTitleChanged() {
+				super.onTitleChanged();
+				user.subFolderNames[7]=title;
+				user.UPDATE();
+			}
+		};
+		subFolderPanel[8] = new CardSelectionPanel("sfPanel8", (ArrayList<ShowingCard>) subFolderList[8]){
+			@Override
+			protected void onTitleChanged() {
+				super.onTitleChanged();
+				user.subFolderNames[8]=title;
+				user.UPDATE();
+			}
+		};
+		subFolderPanel[9] = new CardSelectionPanel("sfPanel9", (ArrayList<ShowingCard>) subFolderList[9]){
+			@Override
+			protected void onTitleChanged() {
+				super.onTitleChanged();
+				user.subFolderNames[9]=title;
+				user.UPDATE();
+			}
+		};
+		subFolderPanel[10] = new CardSelectionPanel("sfPanel10", (ArrayList<ShowingCard>) subFolderList[10]){
+			@Override
+			protected void onTitleChanged() {
+				super.onTitleChanged();
+				user.subFolderNames[10]=title;
+				user.UPDATE();
+			}
+		};
+		subFolderPanel[11] = new CardSelectionPanel("sfPanel11", (ArrayList<ShowingCard>) subFolderList[11]){
+			@Override
+			protected void onTitleChanged() {
+				super.onTitleChanged();
+				user.subFolderNames[11]=title;
+				user.UPDATE();
+			}
+		};
 		form.add(usingPanel);
 		for (int i = 0; i < subFolderPanel.length; i++) {
 			form.add(subFolderPanel[i]);
@@ -208,18 +255,10 @@ public class SubFoldersPage extends MasterPage {
 	private void initLists() {
 		usingList = new ArrayList<ShowingCard>();
 		usingList.addAll(user.getSubfolders().getFreeCards());
-		subFolderList[0] =new ArrayList<ShowingCard>();
-		subFolderList[0].addAll(user.getSubfolders().getSubFolder(0));
-		subFolderList[1] =new ArrayList<ShowingCard>();
-		subFolderList[1].addAll(user.getSubfolders().getSubFolder(1));
-		subFolderList[2] =new ArrayList<ShowingCard>();
-		subFolderList[2].addAll(user.getSubfolders().getSubFolder(2));
-		subFolderList[3] =new ArrayList<ShowingCard>();
-		subFolderList[3].addAll(user.getSubfolders().getSubFolder(3));
-		subFolderList[4] =new ArrayList<ShowingCard>();
-		subFolderList[4].addAll(user.getSubfolders().getSubFolder(4));
-		subFolderList[5] =new ArrayList<ShowingCard>();
-		subFolderList[5].addAll(user.getSubfolders().getSubFolder(5));
+		for (int i =0; i<12; ++i) {
+			subFolderList[i] = new ArrayList<ShowingCard>();
+			subFolderList[i].addAll(user.getSubfolders().getSubFolder(i));
+		}
 		sortChoices = new ArrayList<String>();
 		sortChoices.add("mana cost");
 		sortChoices.add("rarity");
@@ -260,7 +299,7 @@ public class SubFoldersPage extends MasterPage {
 				target.add(usingPanel);
 				for(int i=0;i<4;i++)
 					target.add(subFolderPanel[i]);
-				
+
 		    }
 		};
 		sortDropDown.add(onChangesort);
@@ -269,7 +308,7 @@ public class SubFoldersPage extends MasterPage {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
 				Boolean b = (Boolean) checkBoxes[0].getDefaultModelObject();
-				if(!b) 
+				if(!b)
 					checkBoxes[0].setDefaultModelObject(true);
 				else if(selectedIndex!=null){
 					checkBoxes[selectedIndex].setDefaultModelObject(false);
@@ -355,60 +394,105 @@ public class SubFoldersPage extends MasterPage {
 			}
 		};
 		checkBoxes[5].add(cbChecked[5]);
-		/*IEventListener trejder = new IEventListener() {
-			@SuppressWarnings("rawtypes")
+
+		cbChecked[6] = new OnChangeAjaxBehavior() {
+
 			@Override
-			public AjaxRequestTarget onEvent(AjaxRequestTarget target, Object sender,
-					String eventType) {
-				if(eventType.equals("onDblClk")){
-					
-					CardSelectionPanel from, to;
-					List<ShowingCard> fromList, toList;
-					from = (CardSelectionPanel) ((ListChooser) sender).getParentPanel();
-					String fromIdS = from.getId();
-					if(fromIdS.equals("usingPanel")){
-						fromList =usingList;
-						to = subFolderPanel[selectedIndex];
-						toList = subFolderList[selectedIndex];
-					} else {
-						int fromId = Integer.parseInt(fromIdS.substring(fromIdS.length()-1));
-						to = usingPanel;
-						fromList = subFolderList[fromId];
-						toList = usingList;
-					}
-					ShowingCard sc = (ShowingCard) from.listChooser.getDefaultModelObject();
-					if(sc==null)
-						return setSelectedIndex(from, target);
-					fromList.remove(sc);
-					toList.add(sc);
-					from.setChoices(fromList);
-					to.setChoices(toList);
-					target.add(from);
-					target.add(to);
+			protected void onUpdate(AjaxRequestTarget target) {
+				Boolean b = (Boolean) checkBoxes[6].getDefaultModelObject();
+				if(!b) checkBoxes[6].setDefaultModelObject(true);
+				if(selectedIndex!=null){
+					checkBoxes[selectedIndex].setDefaultModelObject(false);
+					target.add(checkBoxes[selectedIndex]);
 				}
-				save();
-				return target;
+				selectedIndex = 6;
+				target.add(checkBoxes[6]);
 			}
+		};
+		checkBoxes[6].add(cbChecked[6]);
 
-			private AjaxRequestTarget setSelectedIndex(CardSelectionPanel from,
-					AjaxRequestTarget target) {
-				String idS = from.getId();
-				int len = idS.length();
-				String indexS = idS.substring(len-1);
-				int index = Integer.parseInt(indexS);
-				if(!selectedIndex.equals(index)){
-					checkBoxes[index].setDefaultModelObject(true);
-					target.add(checkBoxes[index]);
-					if(selectedIndex!=null){
-						checkBoxes[selectedIndex].setDefaultModelObject(false);
-						target.add(checkBoxes[selectedIndex]);
-					}
-					selectedIndex = index;
+		cbChecked[7] = new OnChangeAjaxBehavior() {
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				Boolean b = (Boolean) checkBoxes[7].getDefaultModelObject();
+				if(!b) checkBoxes[7].setDefaultModelObject(true);
+				if(selectedIndex!=null){
+					checkBoxes[selectedIndex].setDefaultModelObject(false);
+					target.add(checkBoxes[selectedIndex]);
 				}
-				return target;
+				selectedIndex = 7;
+				target.add(checkBoxes[7]);
 			}
+		};
+		checkBoxes[7].add(cbChecked[7]);
 
-		};*/
+		cbChecked[8] = new OnChangeAjaxBehavior() {
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				Boolean b = (Boolean) checkBoxes[8].getDefaultModelObject();
+				if(!b) checkBoxes[8].setDefaultModelObject(true);
+				if(selectedIndex!=null){
+					checkBoxes[selectedIndex].setDefaultModelObject(false);
+					target.add(checkBoxes[selectedIndex]);
+				}
+				selectedIndex = 8;
+				target.add(checkBoxes[8]);
+			}
+		};
+		checkBoxes[8].add(cbChecked[8]);
+
+		cbChecked[9] = new OnChangeAjaxBehavior() {
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				Boolean b = (Boolean) checkBoxes[9].getDefaultModelObject();
+				if(!b) checkBoxes[9].setDefaultModelObject(true);
+				if(selectedIndex!=null){
+					checkBoxes[selectedIndex].setDefaultModelObject(false);
+					target.add(checkBoxes[selectedIndex]);
+				}
+				selectedIndex = 9;
+				target.add(checkBoxes[9]);
+			}
+		};
+		checkBoxes[9].add(cbChecked[9]);
+
+		cbChecked[10] = new OnChangeAjaxBehavior() {
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				Boolean b = (Boolean) checkBoxes[10].getDefaultModelObject();
+				if(!b) checkBoxes[10].setDefaultModelObject(true);
+				if(selectedIndex!=null){
+					checkBoxes[selectedIndex].setDefaultModelObject(false);
+					target.add(checkBoxes[selectedIndex]);
+				}
+				selectedIndex = 10;
+				target.add(checkBoxes[10]);
+			}
+		};
+		checkBoxes[10].add(cbChecked[10]);
+
+		cbChecked[11] = new OnChangeAjaxBehavior() {
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				Boolean b = (Boolean) checkBoxes[11].getDefaultModelObject();
+				if(!b) checkBoxes[11].setDefaultModelObject(true);
+				if(selectedIndex!=null){
+					checkBoxes[selectedIndex].setDefaultModelObject(false);
+					target.add(checkBoxes[selectedIndex]);
+				}
+				selectedIndex = 11;
+				target.add(checkBoxes[11]);
+			}
+		};
+		checkBoxes[11].add(cbChecked[11]);
+
+
+
 		 IEventListener bigListener = new IEventListener() {
 		    	@Override
 		    	public AjaxRequestTarget onEvent(AjaxRequestTarget target,
