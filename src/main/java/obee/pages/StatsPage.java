@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@AuthorizeInstantiation("ADMIN")
+@AuthorizeInstantiation("STATS")
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class StatsPage extends MasterPage {
     private final List allTradesChoices, screwdTradesChoices;

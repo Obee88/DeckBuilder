@@ -119,7 +119,7 @@ public class MongoHandler {
     public CardInfo getCardInfoByName(String cardName) {
         cardName = StringEscapeUtils.unescapeHtml4(cardName);
         DBObject ref = new BasicDBObject();
-        ref.put("name", Pattern.compile(cardName, Pattern.CASE_INSENSITIVE));
+        ref.put("name", Pattern.compile("^"+cardName+"$", Pattern.CASE_INSENSITIVE));
         DBObject obj = cardInfoCollection.findOne(ref);
         if (obj==null)
             return null;
@@ -683,5 +683,9 @@ public class MongoHandler {
 
     public BasicDBList getUserWishlist(String userName) {
         return (BasicDBList)usersCollection.findOne(new BasicDBObject("userName", userName), new BasicDBObject("wishList",true)).get("wishList");
+    }
+
+    public void clearAllMessages(String userName) {
+        usersCollection.update(new BasicDBObject("userName", userName),new BasicDBObject("$set",new BasicDBObject("messages",new BasicDBList())));
     }
 }

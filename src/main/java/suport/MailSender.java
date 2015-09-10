@@ -70,7 +70,7 @@ public class MailSender {
         sb.append("<p>").append(luckyOwner).append(" just gethered ")
         .append(sc.name).append(" card that is in your wishlist!").append("</p></br>");
         sb.append("<img src=\"").append(sc.cardInfo.downloadLink).append("\"/></br>");
-        sb.append("<a href=\"https://obee.xfer.hr/DeckBuilder-1.1/wicket/bookmarkable/obee.pages.TradePage?6\">Go and offer him a trade!</a>");
+        sb.append("<a href=\"http://http://185.53.129.19:8080/DeckBuilder-1.1//DeckBuilder-1.1/wicket/bookmarkable/obee.pages.TradePage?6\">Go and offer him a trade!</a>");
         send(u.getEmail(),"Wishlist notification!", sb.toString());
     }
 
@@ -163,12 +163,12 @@ public class MailSender {
                 "   </tr>" ).append(
                 "     </table></br>");
         if(type==ProposalNotificationType.Offer){
-            sb.append("<a href=\"https://obee.xfer.hr/DeckBuilder-1.1/wicket/bookmarkable/obee.pages.TradingProposalsPage\">");
+            sb.append("<a href=\"http://185.53.129.19:8080/DeckBuilder-1.1/wicket/bookmarkable/obee.pages.TradingProposalsPage\">");
             sb.append("</br><h2>Check it out</h2>").append("</a>");
             send(MongoHandler.getInstance().getUser(tp.getTo()).getEmail(),"Trading proposal",sb.toString());
         }
         else if(type==ProposalNotificationType.Accept){
-            sb.append("<a href=\"https://obee.xfer.hr/DeckBuilder-1.1/wicket/bookmarkable/obee.pages.BoosterPage\">");
+            sb.append("<a href=\"http://185.53.129.19:8080/DeckBuilder-1.1/wicket/bookmarkable/obee.pages.BoosterPage\">");
             sb.append("</br><h2>Check it out</h2>").append("</a>");
             send(MongoHandler.getInstance().getUser(tp.getFrom()).getEmail(),"Trade successfull!",sb.toString());
         }

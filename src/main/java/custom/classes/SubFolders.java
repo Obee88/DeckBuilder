@@ -140,7 +140,7 @@ public class SubFolders extends MongoObject {
 		for(ShowingCard sc : using){
 			boolean cont = false;
 			for (int i=0;i<SUBFOLDERS_COUNT;++i)
-				if(subFolders[0].contains(sc)) {
+				if(subFolders[i].contains(sc)) {
 					cont=true;
 					break;
 				}

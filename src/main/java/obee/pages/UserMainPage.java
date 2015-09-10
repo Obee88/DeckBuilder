@@ -2,6 +2,7 @@ package obee.pages;
 
 import java.util.List;
 
+import database.MongoHandler;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -31,6 +32,7 @@ public class UserMainPage extends MasterPage {
     private static final JavaScriptResourceReference MYPAGE_JS = new JavaScriptResourceReference(UserMainPage.class, "UserMainPage.js");
 
     private final AjaxLink<Object> inboxBtn,outboxBtn,systemBtn,allBtn;
+    private final AjaxLink<Object> clearMessagesBtn;
     Form<Object> form;
 	ListView<UserMessage> messagesView;
     Box currentBox = Box.all;
@@ -103,6 +105,14 @@ public class UserMainPage extends MasterPage {
         messagesView.setOutputMarkupId(true);
 		form.add(messagesView);
 		add(form);
+        clearMessagesBtn =  new AjaxLink<Object>("clearMessagesBtn") {
+            @Override
+            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+                MongoHandler.getInstance().clearAllMessages(user.getUserName());
+                setResponsePage(UserMainPage.class);
+            }
+        };
+        add(clearMessagesBtn);
         inboxBtn = new AjaxLink<Object>("inboxBtn") {
             @Override
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
