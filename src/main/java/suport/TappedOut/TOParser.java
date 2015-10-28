@@ -1,6 +1,7 @@
 package suport.TappedOut;
 
 
+import com.mongodb.util.JSON;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -10,7 +11,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.eclipse.jetty.util.ajax.JSON;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -67,7 +67,7 @@ public class TOParser implements Serializable {
                 InputStream instream = entity.getContent();
                 try {
                     String str = EntityUtils.toString(entity);
-                    HashMap<String,String> o = (HashMap<String,String>)JSON.parse(str);
+                    HashMap<String,String> o = (HashMap<String,String>) JSON.parse(str);
                     String html = o.get("board");
                     Document board = Jsoup.parse(html);
                     Elements cols = board.select(".tappedout-board-col");

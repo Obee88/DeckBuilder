@@ -2,37 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/CardListInRow.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/CardListInRow.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/DeckMissingCardsPanel.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/DeckMissingCardsPanel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/DeckPanel.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/DeckPanel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/DecksPage.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/DecksPage.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_3_6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_3_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jsoup_jsoup_1_7_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/suport/TappedOut/TOCard.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/suport/TappedOut/TODeck.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/deck.txt" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/ForSale.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/ForSale.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DeckBuilder.iml" afterPath="$PROJECT_DIR$/DeckBuilder.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/database/MongoHandler.java" afterPath="$PROJECT_DIR$/src/main/java/database/MongoHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/Page.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/Page.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/StorePage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/StorePage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/User.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/User.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.js" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/UserMainPage.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/obee/test.java" afterPath="$PROJECT_DIR$/src/test/java/obee/test.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java" afterPath="$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java" />
     </list>
     <ignored path="DeckBuilder.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -181,13 +151,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DeckMissingCardsPanel.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DeckMissingCardsPanel.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/custom/components/panels/DeckMissingCardsPanel.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6070496">
+            <state vertical-scroll-proportion="-19.375">
               <caret line="31" column="7" selection-start-line="31" selection-start-column="7" selection-end-line="31" selection-end-column="7" />
               <folding>
                 <element signature="n#style#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#wicket:panel#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TOParser.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.37974682">
+              <caret line="69" column="82" selection-start-line="69" selection-start-column="82" selection-end-line="69" selection-end-column="82" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -222,16 +204,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="692" column="16" selection-start-line="692" selection-start-column="16" selection-end-line="692" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DeckPanel.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/custom/components/panels/DeckPanel.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.375">
-              <caret line="15" column="54" selection-start-line="15" selection-start-column="54" selection-end-line="15" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -328,7 +300,6 @@
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/testers/RepeaterPanel.java" />
         <option value="$PROJECT_DIR$/src/main/java/custom/classes/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/database/MongoHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java" />
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/DeckPanel.html" />
         <option value="$PROJECT_DIR$/src/main/java/suport/TappedOut/TODeck.java" />
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/DeckPanel.java" />
@@ -338,6 +309,7 @@
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/DecksPage.java" />
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.java" />
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/DeckMissingCardsPanel.html" />
+        <option value="$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java" />
       </list>
     </option>
   </component>
@@ -1588,16 +1560,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="70" column="49" selection-start-line="70" selection-start-column="49" selection-end-line="70" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/custom/components/panels/DeckPanel.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.375">
@@ -1691,10 +1653,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/custom/components/panels/DeckMissingCardsPanel.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6070496">
+        <state vertical-scroll-proportion="-19.375">
           <caret line="31" column="7" selection-start-line="31" selection-start-column="7" selection-end-line="31" selection-end-column="7" />
           <folding>
             <element signature="n#style#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#wicket:panel#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37974682">
+          <caret line="69" column="82" selection-start-line="69" selection-start-column="82" selection-end-line="69" selection-end-column="82" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
