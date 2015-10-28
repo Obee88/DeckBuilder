@@ -1,7 +1,9 @@
 package custom.classes;
 
+import java.io.Serializable;
+
 @SuppressWarnings("rawtypes")
-public class Page {
+public class Page implements Serializable{
 	String name,role;
 	Class pageClass;
 	

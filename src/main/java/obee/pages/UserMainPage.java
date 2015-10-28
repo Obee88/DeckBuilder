@@ -93,9 +93,6 @@ public class UserMainPage extends MasterPage {
                         response.write(msg.getEscapedSubject());
                     }
                 };
-                ////////////////////////////////////////////////////////////////////////////////////////
-//                item.add(new Label("subjectLbl",subject));
-//				item.add(new Label("textLbl",msg.getText()));
                 item.add(subjectComponent);
                 item.add(messageComponent);
 				item.add(new Label("dateLbl",msg.getDateString()));

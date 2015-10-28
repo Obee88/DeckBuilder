@@ -30,6 +30,7 @@ public class User extends MongoObject implements Serializable{
 	SubFolders subfolders = null;
 	List<String> wishList = null;
     Set<Integer> recycleShortlist;
+	List<String> decks;
 	public String[] subFolderNames = new String[]{"sf0","sf1","sf2","sf3","sf4","sf5","sf6","sf7","sf8","sf9","sf10","sf11"};
     private boolean wantsProposalMail, wantsWishlistMail;
 
@@ -49,6 +50,7 @@ public class User extends MongoObject implements Serializable{
 		userName=obj.get("userName").toString();
 		passwordHash = obj.get("passwordHash").toString();
 		eMail = obj.get("eMail").toString();
+		decks = obj.get("decks")==null?new ArrayList<String>():DBL2StrL((BasicDBList)obj.get("decks"));
 		DBObject cardsObj = (DBObject) obj.get("userCards");
 		booster = DBL2IntL((BasicDBList)cardsObj.get("boosters"));
 		using = DBL2IntL((BasicDBList)cardsObj.get("using"));
@@ -248,6 +250,22 @@ public class User extends MongoObject implements Serializable{
         if (ret>350) ret = 350;
         return ret;
 	}
+
+//	public int cardsAvailable(){
+//		if(lastBoosterDate==null)
+//			return 48;
+//		DateTime now = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
+//		DateTime lbd = new DateTime(lastBoosterDate);
+//		List<Integer> boosterDays = new ArrayList<Integer>();
+//		boosterDays.add(1); boosterDays.add(4);  // ponedjeljak i srijeda
+//		int ret =0;
+//		while (now.isAfter(lbd)){
+//			if (boosterDays.contains(now.getDayOfWeek()))
+//				ret+=32;
+//			now=now.minusDays(1);
+//		}
+//		if (ret>350) ret = 350;
+//	}
 	
 	public void setBooster(Collection<ShowingCard> b) {
 		booster.clear();
@@ -652,5 +670,15 @@ public class User extends MongoObject implements Serializable{
 		ret.addAll(getTradingShowingCards());
 		ret.addAll(getRecycleShortlistShowingCards());
 		return ret;
+	}
+
+	public List<String> getDecks() {
+		return decks;
+	}
+
+	public String getOneDeckName() {
+		if( this.decks==null) return null;
+		if(this.decks.size()==0)return null;
+		return this.decks.get(0);
 	}
 }

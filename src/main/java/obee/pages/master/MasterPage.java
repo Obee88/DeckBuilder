@@ -122,7 +122,7 @@ public class MasterPage extends WebPage{
         list.add(new Page("Stats", "STATS", StatsPage.class));
         list.add(new Page("Store","USER",StorePage.class));
 		list.add(new Page("DeckPrint","USER",DeckPrint.class));
-//		list.add(new Page("ForSale","USER",ForSale.class));
+		list.add(new Page("Decks","ADMIN",DecksPage.class));
 		return list;
 	}
 

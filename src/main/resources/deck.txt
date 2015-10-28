@@ -1,0 +1,44 @@
+-Land
+3x Plains
+3x Island
+2x Swamp
+-Creature
+1x Blood Scrivener
+1x Dregscape Zombie
+1x Death Baron
+-Enchantment
+1x Wight of Precinct Six
+1x Infectious Horror
+1x Gray Merchant of Asphodel
+1x Lich Lord of Unx
+1x Skinrender
+1x Cemetery Reaper
+-sideboard
+2x SIdedeck Card
+2x More sidedeck Cards
+-malokraca
+1x Ancestral Recall
+1x Wight of Precinct Six
+1x Infectious Horror
+1x Gray Merchant of Asphodel
+1x Lich Lord of Unx
+1x Skinrender
+1x Cemetery Reaper
+-Kategorija3
+1x Wight of Precinct Six
+1x Infectious Horror
+1x Gray Merchant of Asphodel
+1x Lich Lord of Unx
+1x Skinrender
+1x Cemetery Reaper
+-Kategorija2
+1x Blood Scrivener
+1x Dregscape Zombie
+1x Death Baron
+-Kategorija1
+4x Cetrikrichra
+2x dva krichra
+-Maybeboard
+1x Blood Scrivener
+1x Dregscape Zombie
+1x Death Baron

@@ -5,13 +5,13 @@ import custom.classes.*;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.apache.commons.lang3.StringUtils.*;
 
+import java.io.Serializable;
 import java.net.UnknownHostException;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class MongoHandler {
+public class MongoHandler implements Serializable {
 	private static MongoHandler instance;
 	
 	private final String HOST = "localhost";
@@ -28,6 +28,7 @@ public class MongoHandler {
 	private DB base;
 	public DBCollection usersCollection, cardsCollection, cardInfoCollection, adminCollection, statisticsCollection, sucessfullProposalsCollections;
     private List<ShowingCard> interestedShowingCards;
+
 
     private MongoHandler(){
 		try {
@@ -687,5 +688,33 @@ public class MongoHandler {
 
     public void clearAllMessages(String userName) {
         usersCollection.update(new BasicDBObject("userName", userName),new BasicDBObject("$set",new BasicDBObject("messages",new BasicDBList())));
+    }
+
+    public long numOfCardsPerPlayer(String cardName, String userName) {
+        DBObject q = new BasicDBObject("cardInfo.name",cardName).append("owner",userName);
+        return cardsCollection.count(q);
+    }
+
+    public String getCardOwnersAsString(String cardName) {
+        DBCursor cur = cardsCollection.find(new BasicDBObject("cardInfo.name",cardName), new BasicDBObject("owner",true));
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        while(cur.hasNext()){
+            DBObject dbo = cur.next();
+            if (!first){
+                sb.append(", ");
+            } else first=false;
+            sb.append(dbo.get("owner").toString());
+        }
+        return sb.toString();
+    }
+
+
+    public boolean isBasicLandName(String cardName) {
+        String[] names = new String[]{"island","forest","plains","swamp"};
+        for(String n : names)
+            if (n.equals(cardName.toLowerCase()))
+                return true;
+        return false;
     }
 }

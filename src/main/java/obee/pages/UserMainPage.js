@@ -16,12 +16,10 @@ function showImage(src, component){
     var minTop = scrollTop;
     var maxTop = scrollTop + documentHeight - imageWindowHeight;
     var maxLeft = documentWidth - imageView.offsetWidth;
-    debugger;
     if (top>maxTop) top = maxTop;
     if (top< minTop) top = minTop;
     if (left>maxLeft) left = maxLeft;
-    if(top+imageWindowHeight)
-    debugger;
+
     imageView.style.left = left+"px";
     imageView.style.top= top+"px";
 }

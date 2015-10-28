@@ -29,7 +29,7 @@ public class StorePage extends MasterPage {
 
     @SuppressWarnings("serial")
     public StorePage(final PageParameters params) {
-        super(params, "Admin");
+        super(params, "Store");
         initLists();
         initForms();
         initComponents();

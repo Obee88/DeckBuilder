@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <title>Wicket Examples - sample panel</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+ 
+ Everything outside of the &lt;wicket:panel&gt; tags will be ignored.
+ Might be handy as preview code.
+ 
+ 	<wicket:panel>
+        <div class="well">
+            Missing cards:
+            <table>
+                <tr >
+                    <!--<span wicket:id="imeDecka"></span>-->
+                    <td style="vertical-align:top">
+                        <ul wicket:id="list">
+                            <li>
+                                <b><span wicket:id="cardName"></span>:</b>
+                                <span wicket:id="usersList"></span>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+	 </wicket:panel>
+
+</body>
+</html>
