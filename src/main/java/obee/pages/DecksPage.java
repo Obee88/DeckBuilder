@@ -3,6 +3,7 @@ package obee.pages;
 import custom.classes.User;
 import custom.components.panels.DeckMissingCardsPanel;
 import custom.components.panels.DeckPanel;
+import custom.test.StopWatch;
 import database.MongoHandler;
 import obee.pages.master.MasterPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -68,15 +69,21 @@ public class DecksPage extends MasterPage {
         onChange = new OnChangeAjaxBehavior() {
             @Override
             protected void onUpdate(AjaxRequestTarget ajaxRequestTarget) {
+                StopWatch sw =new StopWatch();
+                sw.start();
                 String selection = deckChooser.getDefaultModelObjectAsString();
                 TODeck deck = null;
                 try {
                     deck = TOParser.getInstance().getDeck(selection);
+                    sw.checkpoint("deck pulled from TO!");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 ajaxRequestTarget = deckPanel.setDeck(ajaxRequestTarget,deck);
+
+                sw.checkpoint("deckPanel Initialized");
                 ajaxRequestTarget = missingCardsPanel.setDeck(ajaxRequestTarget,deck);
+                sw.checkpoint("missing cards Initialized");
 //                System.out.println("ovo se dogadja");
             }
         };

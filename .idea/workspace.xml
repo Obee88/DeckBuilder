@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/components/panels/DeckMissingCardsPanel.java" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/DeckMissingCardsPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/suport/TappedOut/TODeck.java" afterPath="$PROJECT_DIR$/src/main/java/suport/TappedOut/TODeck.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/DecksPage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/DecksPage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java" afterPath="$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java" />
     </list>
     <ignored path="DeckBuilder.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -113,18 +113,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DecksPage.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DecksPage.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/DecksPage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="39" column="28" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.69746834">
+              <caret line="72" column="27" selection-start-line="72" selection-start-column="27" selection-end-line="72" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#958#1014#0" expanded="true" />
-                <element signature="e#1724#1725#0" expanded="true" />
-                <element signature="e#1772#1773#0" expanded="true" />
-                <element signature="e#2340#3020#0" expanded="true" />
-                <element signature="e#3019#3020#0" expanded="true" />
+                <element signature="e#988#1044#0" expanded="true" />
+                <element signature="e#1754#1755#0" expanded="true" />
+                <element signature="e#1802#1803#0" expanded="true" />
+                <element signature="e#2370#3301#0" expanded="true" />
+                <element signature="e#3300#3301#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -140,10 +140,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DeckMissingCardsPanel.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DeckMissingCardsPanel.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/custom/components/panels/DeckMissingCardsPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35443038">
+            <state vertical-scroll-proportion="0.0">
               <caret line="39" column="116" selection-start-line="39" selection-start-column="116" selection-end-line="39" selection-end-column="116" />
               <folding>
                 <element signature="e#2555#2563#0" expanded="true" />
@@ -168,7 +168,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="93" column="17" selection-start-line="93" selection-start-column="17" selection-end-line="93" selection-end-column="17" />
+              <caret line="47" column="63" selection-start-line="47" selection-start-column="63" selection-end-line="47" selection-end-column="63" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -308,12 +308,12 @@
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/DeckPanel.java" />
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/DecksPage.html" />
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/CardListInRow.java" />
-        <option value="$PROJECT_DIR$/src/main/java/obee/pages/DecksPage.java" />
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.java" />
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/DeckMissingCardsPanel.html" />
-        <option value="$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java" />
         <option value="$PROJECT_DIR$/src/main/java/suport/TappedOut/TODeck.java" />
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/DeckMissingCardsPanel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/obee/pages/DecksPage.java" />
       </list>
     </option>
   </component>
@@ -1590,21 +1590,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/DecksPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="28" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#958#1014#0" expanded="true" />
-            <element signature="e#1724#1725#0" expanded="true" />
-            <element signature="e#1772#1773#0" expanded="true" />
-            <element signature="e#2340#3020#0" expanded="true" />
-            <element signature="e#3019#3020#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1643,16 +1628,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="93" column="17" selection-start-line="93" selection-start-column="17" selection-end-line="93" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/suport/TappedOut/TODeck.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1670,10 +1645,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/custom/components/panels/DeckMissingCardsPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35443038">
+        <state vertical-scroll-proportion="0.0">
           <caret line="39" column="116" selection-start-line="39" selection-start-column="116" selection-end-line="39" selection-end-column="116" />
           <folding>
             <element signature="e#2555#2563#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/suport/TappedOut/TOParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="47" column="63" selection-start-line="47" selection-start-column="63" selection-end-line="47" selection-end-column="63" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/DecksPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.69746834">
+          <caret line="72" column="27" selection-start-line="72" selection-start-column="27" selection-end-line="72" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#988#1044#0" expanded="true" />
+            <element signature="e#1754#1755#0" expanded="true" />
+            <element signature="e#1802#1803#0" expanded="true" />
+            <element signature="e#2370#3301#0" expanded="true" />
+            <element signature="e#3300#3301#0" expanded="true" />
           </folding>
         </state>
       </provider>
