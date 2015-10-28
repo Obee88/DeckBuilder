@@ -151,6 +151,13 @@ public class TODeck implements Serializable {
         return ret;
     }
 
+    public List<TOCard> getAllTOCards(){
+        List<TOCard> ret = new ArrayList<TOCard>();
+        for (String catName : categoryes.keySet())
+            ret.addAll(getCategory(catName).keySet());
+        return ret;
+    }
+
     public String getName() {
         return name;
     }
