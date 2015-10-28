@@ -46,7 +46,7 @@ public class TODeck implements Serializable {
     }
 
     public TODeck add(TOCard card){
-        return add(card,1);
+        return add(card,card.getQuantity());
     }
 
     public TODeck add(TOCard tcrd, int num) {
