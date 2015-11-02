@@ -2,6 +2,7 @@ package suport.TappedOut;
 
 
 import com.mongodb.util.JSON;
+import custom.classes.Deck;
 import custom.test.StopWatch;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -45,9 +46,10 @@ public class TOParser implements Serializable {
         return instance;
     }
 
-    public TODeck getDeck(String deckName) throws IOException {
+    public TODeck getDeck(Deck deckObj) throws IOException {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
+        String deckName = deckObj.getTappedOutId();
         TODeck deck = new TODeck(deckName);
 
         try {

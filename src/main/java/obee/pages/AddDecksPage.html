@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+    <wicket:extend>
+    	<p>ovo je add deck stranica</p>
+		<div class="well">
+			<form wicket:id="addDeckForm">
+				<table>
+					<tr>
+						<td>
+							<table>
+								<tr>
+									<td>
+										Deck Name:
+									</td>
+									<td>
+										<input wicket:id="deckNameTbx" type="text">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										TappedOut Url:
+									</td>
+									<td>
+										<input wicket:id="deckUrlTbx" type="text">
+										<p>*** Make sure that your TappedOut deck is marked as <b>PUBLIC</b> so given url can be accessed without you logging in.</p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="submit" value="Add deck">
+									</td>
+									<td></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+    </wicket:extend>
+</body>
+</html>

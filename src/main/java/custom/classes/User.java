@@ -30,7 +30,7 @@ public class User extends MongoObject implements Serializable{
 	SubFolders subfolders = null;
 	List<String> wishList = null;
     Set<Integer> recycleShortlist;
-	List<String> decks;
+	List<Deck> decks;
 	public String[] subFolderNames = new String[]{"sf0","sf1","sf2","sf3","sf4","sf5","sf6","sf7","sf8","sf9","sf10","sf11"};
     private boolean wantsProposalMail, wantsWishlistMail;
 
@@ -50,7 +50,7 @@ public class User extends MongoObject implements Serializable{
 		userName=obj.get("userName").toString();
 		passwordHash = obj.get("passwordHash").toString();
 		eMail = obj.get("eMail").toString();
-		decks = obj.get("decks")==null?new ArrayList<String>():DBL2StrL((BasicDBList)obj.get("decks"));
+		decks = Deck.parse(obj.get("decks")==null?new BasicDBList(): (BasicDBList) obj.get("decks"));
 		DBObject cardsObj = (DBObject) obj.get("userCards");
 		booster = DBL2IntL((BasicDBList)cardsObj.get("boosters"));
 		using = DBL2IntL((BasicDBList)cardsObj.get("using"));
@@ -123,6 +123,7 @@ public class User extends MongoObject implements Serializable{
         obj.append("wantsWishlistMail",wantsWishlistMail);
         obj.append("wantsProposalMail",wantsProposalMail);
         obj.append("jadBalance",jadBalance);
+		obj.append("decks", getDecksDBList());
 		return obj;
 	}
 
@@ -672,13 +673,45 @@ public class User extends MongoObject implements Serializable{
 		return ret;
 	}
 
-	public List<String> getDecks() {
+	public List<Deck> getDecks() {
 		return decks;
 	}
 
-	public String getOneDeckName() {
-		if( this.decks==null) return null;
-		if(this.decks.size()==0)return null;
-		return this.decks.get(0);
+
+	public boolean hasDeck(String deckName) {
+		for (Deck d : this.decks)
+			if (d.isNameEqual(deckName))
+				return true;
+		return false;
+	}
+
+	private Object getDecksDBList() {
+		BasicDBList dbl = new BasicDBList();
+		for(Deck d: getDecks())
+			dbl.add(d.toDBObject());
+		return dbl;
+	}
+
+	public List<String> getDeckNames() {
+		List<String> names = new ArrayList<String>();
+		for (Deck d : getDecks())
+			names.add(d.getName());
+		return names;
+	}
+
+	public void addDeck(Deck deck) {
+		this.decks.add(deck);
+	}
+
+	public Deck getDeck(String deckName){
+		for (Deck d: getDecks())
+			if (d.isNameEqual(deckName))
+				return d;
+		return null;
+	}
+
+	public void removeDeck(String deckName) {
+		Deck remDeck = getDeck(deckName);
+		this.decks.remove(remDeck);
 	}
 }

@@ -10,6 +10,23 @@
 				<td>
 					<select wicket:id="deckChooser" />
 				</td>
+				<td>
+					<table>
+						<tr>
+							<td>
+								<form wicket:id="removeDeckForm" style="display:none;">
+									<input type="submit" class="btn btn-small btn-danger" value="Remove deck">
+								</form>
+							</td>
+							<td>
+								<form wicket:id="addDeckForm" style="display:inline;">
+									<input type="submit" class="btn btn-small btn-success" value="Add new deck">
+								</form>
+
+							</td>
+						</tr>
+					</table>
+				</td>
 			</tr>
 			<tr>
 				<td>

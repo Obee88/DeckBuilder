@@ -15,7 +15,7 @@ public class test {
 
 
         TOParser to = TOParser.getInstance();
-        TODeck deck = to.getDeck("bwg-radnaverzija");
+//        TODeck deck = to.getDeck("bwg-radnaverzija");
         System.out.println();
     }
 

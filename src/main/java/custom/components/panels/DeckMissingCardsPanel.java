@@ -34,13 +34,14 @@ public class DeckMissingCardsPanel extends Panel {
 
     private void setDeck(TODeck deck) {
         missingCards = new CardMap();
-        for (TOCard card : deck.getAllTOCards()){
-            String cardName = card.getName();
-            if (isLandCard(cardName)) continue;
-            if (MongoHandler.getInstance().numOfCardsPerPlayer(cardName, this.user.getUserName())<card.getQuantity()){
-                missingCards.put(cardName, MongoHandler.getInstance().getCardOwnersAsString(cardName));
+        for (TOCard card : deck.getAllTOCards())
+            if (!card.getCategory().toLowerCase().equals("sideboard")){
+                String cardName = card.getName();
+                if (isLandCard(cardName)) continue;
+                if (MongoHandler.getInstance().numOfCardsPerPlayer(cardName, this.user.getUserName())<card.getQuantity()){
+                    missingCards.put(cardName, MongoHandler.getInstance().getCardOwnersAsString(cardName));
+                }
             }
-        }
     }
 
     private boolean isLandCard(String cardName) {
