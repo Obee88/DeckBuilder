@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.util.List;
 
 
-@AuthorizeInstantiation("ADMIN")
+@AuthorizeInstantiation("USER")
 @SuppressWarnings({ "unchecked", "rawtypes", "serial" })
 public class DecksPage extends MasterPage {
 
