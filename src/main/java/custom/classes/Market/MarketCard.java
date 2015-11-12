@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Obee on 09/11/15.
  */
 public class MarketCard {
-    private static final int BID_DURATION_DAYS = 2, DAYS_TO_LIVE = 5, HATES_LIMIT = 5;
+    private static final int BID_DURATION_DAYS = 2, DAYS_TO_LIVE = 5, HATES_LIMIT = 4;
     private Integer rarityInt;
     public BasicDBList bids = new BasicDBList();
     private Integer id;
