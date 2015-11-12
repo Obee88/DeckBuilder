@@ -9,30 +9,31 @@ public class CardInfo {
     private int numOfColors;
     public String downloadLink,text,name,type,manaCost,rarity,artist,edition,subType;
 	public boolean isTwoSided;
-	public int convertedManaCost, id;
+	public int convertedManaCost, id, rarityInt;
 	private MongoHandler mongo = MongoHandler.getInstance();
 
-	public CardInfo(DBObject obj) {
-		downloadLink = obj.get("downloadLink").toString();
-		text = obj.get("text").toString();
-		name = obj.get("name").toString();
-		type = obj.get("type").toString();
-		manaCost = obj.get("manaCost").toString();
-		rarity = obj.get("rarity").toString();
-		artist = obj.get("artist").toString();
-		edition = obj.get("edition").toString();
-		convertedManaCost = Integer.parseInt(obj.get("convertedManaCost").toString());
+    public CardInfo(DBObject obj) {
+        downloadLink = obj.get("downloadLink").toString();
+        text = obj.get("text").toString();
+        name = obj.get("name").toString();
+        type = obj.get("type").toString();
+        manaCost = obj.get("manaCost").toString();
+        rarity = obj.get("rarity").toString();
+        artist = obj.get("artist").toString();
+        edition = obj.get("edition").toString();
+        convertedManaCost = Integer.parseInt(obj.get("convertedManaCost").toString());
         try {
             isTwoSided = getBool(obj.get("isTwoSided").toString());
-        } catch (Exception guessNot){
+        } catch (Exception guessNot) {
             isTwoSided = false;
         }
-        try{
+        try {
             numOfColors = Integer.parseInt(obj.get("numOfColors").toString());
-        } catch (Exception ignorable){
+        } catch (Exception ignorable) {
             numOfColors = 0;
         }
-	}
+        rarityInt = obj.get("rarity_int") == null ? calcRarityInt() : (Integer) obj.get("rarity_int");
+    }
 
 	private Boolean getBool(String string) {
 		if (string.toLowerCase().equals("true"))
@@ -53,6 +54,7 @@ public class CardInfo {
         obj.append("convertedManaCost", convertedManaCost);
         obj.append("id", id);
         obj.append("isTwoSided", isTwoSided);
+        obj.append("rarity_int", rarityInt);
         return obj;
     }
 
@@ -71,5 +73,15 @@ public class CardInfo {
             return text.contains("{"+c+"}") || manaCost.contains(c);
         }
         return manaCost.contains(c);
+    }
+
+
+    public int calcRarityInt() {
+        String[] rarityes = new String[]{"common","uncommon","rare","mythic"};
+        for (int i = 0; i < rarityes.length; i++) {
+            if (rarityes[i].equals(rarity))
+                return i;
+        }
+        return 99;
     }
 }

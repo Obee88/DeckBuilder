@@ -6,7 +6,6 @@ import custom.components.panels.DeckPanel;
 import custom.test.StopWatch;
 import database.MongoHandler;
 import obee.pages.master.MasterPage;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;

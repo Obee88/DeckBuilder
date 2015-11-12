@@ -252,21 +252,19 @@ public class User extends MongoObject implements Serializable{
         return ret;
 	}
 
-//	public int cardsAvailable(){
-//		if(lastBoosterDate==null)
-//			return 48;
-//		DateTime now = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
-//		DateTime lbd = new DateTime(lastBoosterDate);
-//		List<Integer> boosterDays = new ArrayList<Integer>();
-//		boosterDays.add(1); boosterDays.add(4);  // ponedjeljak i srijeda
-//		int ret =0;
-//		while (now.isAfter(lbd)){
-//			if (boosterDays.contains(now.getDayOfWeek()))
-//				ret+=32;
-//			now=now.minusDays(1);
-//		}
-//		if (ret>350) ret = 350;
-//	}
+	public int cardsAvailable(List<Integer> days){
+		DateTime now = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
+		DateTime lastPick = new DateTime(lastBoosterDate);
+		int total = 0;
+		int CARDS_PER_BOOSTER = 30;
+		while(now.getYear() != lastPick.getYear() ||
+				now.getDayOfYear() != lastPick.getDayOfYear()){
+			if (days.contains(now.getDayOfWeek()))
+				total+= CARDS_PER_BOOSTER;
+			now = now.minusDays(1);
+		}
+		return total;
+	}
 	
 	public void setBooster(Collection<ShowingCard> b) {
 		booster.clear();
@@ -568,16 +566,17 @@ public class User extends MongoObject implements Serializable{
     }
 
     public boolean isBoosterTakenThisWeek() {
-        DBObject usrObj = mongo.usersCollection.findOne(new BasicDBObject("userName",userName));
-        Date lbd = (Date) usrObj.get("lastBoosterDate");
-        DateTime now = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
-        DateTime deadline = now.withDayOfWeek(DateTimeConstants.MONDAY)
-                .withHourOfDay(0)
-                .withMinuteOfHour(0)
-                .withSecondOfMinute(0)
-                .withMillisOfSecond(0);
-        DateTime lastPick = new DateTime(lbd);
-        return !lastPick.isBefore(deadline);
+		return cardsAvailable(Arrays.asList(new Integer[]{DateTimeConstants.MONDAY, DateTimeConstants.THURSDAY}))==0;
+			//        DBObject usrObj = mongo.usersCollection.findOne(new BasicDBObject("userName",userName));
+			//        Date lbd = (Date) usrObj.get("lastBoosterDate");
+			//        DateTime now = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
+			//        DateTime deadline = now.withDayOfWeek(DateTimeConstants.MONDAY)
+			//                .withHourOfDay(0)
+			//                .withMinuteOfHour(0)
+			//                .withSecondOfMinute(0)
+			//                .withMillisOfSecond(0);
+			//        DateTime lastPick = new DateTime(lbd);
+			//        return !lastPick.isBefore(deadline);
     }
 
     public void changeName(String newName, String newMail){

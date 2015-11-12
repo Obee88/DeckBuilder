@@ -74,5 +74,6 @@ public class ImageWindow extends WebComponent implements IEventListener {
 	public ShowingCard getCard() {
 		return card;
 	}
+
     
 }

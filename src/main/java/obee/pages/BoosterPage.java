@@ -29,8 +29,10 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.joda.time.DateTimeConstants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +48,7 @@ public class BoosterPage extends MasterPage{
 	Form<?> form;
 	CheckBox goodCheck, badCheck;
 	User u =currentUser;
-	int cardsAv = u.cardsAvailable();
+	int cardsAv = u.cardsAvailable(Arrays.asList(new Integer[]{DateTimeConstants.MONDAY, DateTimeConstants.THURSDAY}));
 	CardSelectionPanel boosterPanel, goodChoice, badChoice;
 	CardView cardView;
 	boolean includeSubFolders = false;

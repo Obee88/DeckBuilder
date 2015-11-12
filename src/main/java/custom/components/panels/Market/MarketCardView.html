@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <title>Wicket Examples - sample panel</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+ 
+ Everything outside of the &lt;wicket:panel&gt; tags will be ignored.
+ Might be handy as preview code.
+ 
+ 	<wicket:panel>
+        <div class="well">
+            <table>
+                <tr>
+                    <td>
+                        <label wicket:id="timeLbl"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img wicket:id="view">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label wicket:id="statusLbl"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table style="width:100%">
+                            <tr>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <label wicket:id="priceLbl"></label>
+                                            </td>
+                                            <td>
+                                                <form wicket:id="bidForm"style="display:inline">
+                                                    <input type="submit" value="Bid" >
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <label wicket:id="hatersCntLbl"></label>
+                                            </td>
+                                            <td>
+                                                <form wicket:id="hateForm" style="display:inline">
+                                                    <input type="submit" value="hate">
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+	 </wicket:panel>
+
+</body>
+</html>

@@ -2,6 +2,7 @@ package database;
 
 import com.mongodb.*;
 import custom.classes.*;
+import custom.classes.Market.MarketCard;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -12,7 +13,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class MongoHandler implements Serializable {
-	private static MongoHandler instance;
+    private static MongoHandler instance;
 	
 	private final String HOST = "localhost";
 	private final Integer PORT = 27017;
@@ -23,11 +24,12 @@ public class MongoHandler implements Serializable {
 	private final String ADMIN_COLLECTION_NAME = "administration";
     private final String STATISTICS_COLLECTION_NAME = "statistics";
     private final String SUCESSFULL_PROPOSALS_COLLECTION_NAME = "statistics";
+    private final String MARKET_COLLECTION_NAME = "market" ;
 	
 	private MongoClient client;
 	private DB base;
-	public DBCollection usersCollection, cardsCollection, cardInfoCollection, adminCollection, statisticsCollection, sucessfullProposalsCollections;
-    private List<ShowingCard> interestedShowingCards;
+	public DBCollection usersCollection, cardsCollection, cardInfoCollection, adminCollection, statisticsCollection,
+            sucessfullProposalsCollections, marketCollection;
 
 
     private MongoHandler(){
@@ -40,6 +42,7 @@ public class MongoHandler implements Serializable {
 			cardInfoCollection=base.getCollection(CARDIFNO_COLLECTION_NAME);
 			adminCollection=base.getCollection(ADMIN_COLLECTION_NAME);
             statisticsCollection=base.getCollection(STATISTICS_COLLECTION_NAME);
+            marketCollection = base.getCollection(MARKET_COLLECTION_NAME);
             sucessfullProposalsCollections = base.getCollection(SUCESSFULL_PROPOSALS_COLLECTION_NAME);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -51,8 +54,16 @@ public class MongoHandler implements Serializable {
 			instance = new MongoHandler();
 		return instance;
 	}
-	
-	public User getUser(String userName){
+
+    public List<MarketCard> getMarketCards() {
+        List<MarketCard> cards = new ArrayList<MarketCard>();
+        DBCursor cur = marketCollection.find();
+        for (DBObject obj : cur)
+            cards.add(new MarketCard(obj));
+        return cards;
+    }
+
+    public User getUser(String userName){
 		DBObject q =new BasicDBObject("userName", userName);
 		DBObject obj = usersCollection.findOne(q);
 		if(obj==null) return null;
@@ -113,7 +124,9 @@ public class MongoHandler implements Serializable {
 
 	public CardInfo getCardInfo(int id) {
 		DBObject obj = cardInfoCollection.findOne(
-				new BasicDBObject("id",id));
+				new BasicDBObject("id",id)
+        );
+        if (obj==null) return null;
 		return new CardInfo(obj);
 	}
 
@@ -666,22 +679,6 @@ public class MongoHandler implements Serializable {
         return count ;
     }
 
-    public List<ShowingCard> getInterestedShowingCards(String username) {
-        List<ShowingCard> ret = new ArrayList<ShowingCard>();
-        DBCursor cur = cardsCollection.find(new BasicDBObject("owner",username));
-        while (cur.hasNext()){
-            DBObject obj = cur.next();
-            ShowingCard sc = new ShowingCard(new Card(obj));
-            sc.setInterestList(getInterestList(sc.getName(),username));
-        }
-        return interestedShowingCards;
-    }
-
-    private List<String> getInterestList(String cardName, String username) {
-        //TODO: rjesitit taj interest
-        return null;
-    }
-
     public BasicDBList getUserWishlist(String userName) {
         return (BasicDBList)usersCollection.findOne(new BasicDBObject("userName", userName), new BasicDBObject("wishList",true)).get("wishList");
     }
@@ -716,5 +713,9 @@ public class MongoHandler implements Serializable {
             if (n.equals(cardName.toLowerCase()))
                 return true;
         return false;
+    }
+
+    public MarketCard getMarketCard(Integer id) {
+        return new MarketCard(marketCollection.findOne(new BasicDBObject("id", id)));
     }
 }
