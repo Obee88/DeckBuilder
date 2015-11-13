@@ -1,31 +1,19 @@
 package custom.components.panels.Market;
 
 import custom.classes.Market.MarketCard;
-import custom.classes.User;
 import custom.components.ImageWindow;
-import database.MongoHandler;
 import obee.pages.MarketPage;
-import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.Response;
-import suport.TappedOut.TOCard;
-import suport.TappedOut.TODeck;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Obee on 28/09/15.
  */
-public class MarketCardView extends Panel{
+public class MarketCardView extends Panel {
 
     private final MarketCard card;
     private ImageWindow view;
@@ -42,6 +30,8 @@ public class MarketCardView extends Panel{
         this.card = card;
         this.price = card.getPrice();
         this.userName = userName;
+
+        add(new AttributeAppender("class", new Model(card.userActionStatus(userName)), " "));
 
         initComponents();
         initForms();

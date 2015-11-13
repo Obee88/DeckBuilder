@@ -8,6 +8,7 @@ import database.MongoHandler;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
  */
 public class MarketCard {
     private static final int BID_DURATION_DAYS = 2, DAYS_TO_LIVE = 5, HATES_LIMIT = 3;
+    private static final double PRICE_RAISE_RATE = 1.2;
     private Integer rarityInt;
     public BasicDBList bids = new BasicDBList();
     private Integer id;
@@ -95,9 +97,12 @@ public class MarketCard {
 
     public int getPrice() {
         Integer lastBidValue = MongoHandler.getInstance().getMarketCard(id).getLastBidValue();
-        if (lastBidValue == null)
-            return (int) (this.getStartingPrice() * rates[getHatersCnt()]);
-        return (int) (lastBidValue * 1.2);
+        if (lastBidValue == null) {
+            int lowerPrice = (int) (this.getStartingPrice() * rates[getHatersCnt()]);
+            return lowerPrice==0? 1:lowerPrice;
+        }
+        int higherPrice = (int) (lastBidValue * PRICE_RAISE_RATE);
+        return higherPrice == lastBidValue.intValue()? higherPrice+1:higherPrice;
     }
 
     public String getImageUrl() {
@@ -185,5 +190,15 @@ public class MarketCard {
         millis = millis % (1000*60);
         long seconds = millis / 1000;
         return String.format("%dD %dH %dM %dS", days, hours, minutes, seconds);
+    }
+
+    public String userActionStatus(String userName) {
+        if (haters.contains(userName)) return "hated";
+        for(Object bidObj : bids){
+            DBObject bid  = (DBObject)bidObj;
+            if(bid.get("userName").toString().equals(userName))
+                return "bidded";
+        }
+        return "no-action";
     }
 }

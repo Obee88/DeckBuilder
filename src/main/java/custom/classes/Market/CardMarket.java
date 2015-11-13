@@ -12,11 +12,15 @@ import java.util.*;
  */
 public class CardMarket {
     public static Integer MARKET_SIZE = 20; // Mora biti djeljivo sa CARDS_PER_ROW!!
+    private final String userName;
     List<MarketCard> cards;
     private boolean full;
     private List<String>[] triples;
+    private Comparator<MarketCard> bidsUpHatesDown, expirationDesc;
 
     public CardMarket(final String userName) {
+        this.userName = userName;
+
         fetchCards();
 
         checkExpirationDates();
@@ -26,7 +30,12 @@ public class CardMarket {
             fetchCards();
         }
 
-        Collections.sort(cards, new Comparator<MarketCard>() {
+        initComparators();
+        Collections.sort(cards, expirationDesc);
+    }
+
+    private void initComparators() {
+        this.bidsUpHatesDown = new Comparator<MarketCard>() {
             @Override
             public int compare(MarketCard o1, MarketCard o2) {
                 int result = Integer.compare(o2.bidsCount(),o1.bidsCount());
@@ -38,7 +47,14 @@ public class CardMarket {
                 }
                 return result;
             }
-        });
+        };
+        this.expirationDesc = new Comparator<MarketCard>() {
+            @Override
+            public int compare(MarketCard o1, MarketCard o2) {
+                if (o1.getExpirationDate().isBefore(o2.getExpirationDate())) return -1;
+                return 1;
+            }
+        };
     }
 
     private void checkExpirationDates() {
