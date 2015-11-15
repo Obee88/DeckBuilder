@@ -29,7 +29,9 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeZone;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -201,7 +203,8 @@ public class BoosterPage extends MasterPage{
                     setResponsePage(BoosterPage.class);
                 } else{
                     u.addToBooster(CardGenerator.generateBooster(cardsAv,getUserName()));
-                    u.setLastBoosterDate(new Date());
+					Date now = new DateTime(DateTimeZone.forID("Asia/Tokyo")).toLocalDateTime().toDate();
+                    u.setLastBoosterDate(now);
                     u.UPDATE();
                     info(cardsAv+" cards added!");
                     setResponsePage(BoosterPage.class);
