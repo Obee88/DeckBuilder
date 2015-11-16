@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/Card.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/Card.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/CardGenerator.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/CardGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/Market/CardMarket.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/Market/CardMarket.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/suport/MailSender.java" afterPath="$PROJECT_DIR$/src/main/java/suport/MailSender.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.html" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.java" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/MarketPage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/MarketPage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/database/MongoHandler.java" afterPath="$PROJECT_DIR$/src/main/java/database/MongoHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DeckBuilder.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -144,18 +135,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MarketCard.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MarketCard.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-22.25926">
-              <caret line="219" column="18" selection-start-line="219" selection-start-column="18" selection-end-line="219" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.5874674">
+              <caret line="43" column="43" selection-start-line="43" selection-start-column="43" selection-end-line="43" selection-end-column="43" />
               <folding>
-                <element signature="e#2163#2164#0" expanded="true" />
-                <element signature="e#2241#2242#0" expanded="true" />
-                <element signature="e#6673#6674#0" expanded="true" />
-                <element signature="e#6719#6720#0" expanded="true" />
-                <element signature="e#6929#6930#0" expanded="true" />
-                <element signature="e#6960#6961#0" expanded="true" />
+                <element signature="e#2172#2173#0" expanded="true" />
+                <element signature="e#2250#2251#0" expanded="true" />
+                <element signature="e#6682#6683#0" expanded="true" />
+                <element signature="e#6728#6729#0" expanded="true" />
+                <element signature="e#6938#6939#0" expanded="true" />
+                <element signature="e#6969#6970#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -230,10 +221,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MarketPage.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MarketPage.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/MarketPage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.66204286">
+            <state vertical-scroll-proportion="0.0">
               <caret line="44" column="12" selection-start-line="44" selection-start-column="12" selection-end-line="44" selection-end-column="12" />
               <folding />
             </state>
@@ -313,7 +304,6 @@
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/MarketPage.html" />
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/BoosterPage.java" />
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.html" />
-        <option value="$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java" />
         <option value="$PROJECT_DIR$/src/main/java/custom/classes/Card.java" />
         <option value="$PROJECT_DIR$/src/main/java/database/MongoHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/custom/classes/CardGenerator.java" />
@@ -321,6 +311,7 @@
         <option value="$PROJECT_DIR$/src/main/java/suport/MailSender.java" />
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.java" />
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/MarketPage.java" />
+        <option value="$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java" />
       </list>
     </option>
   </component>
@@ -1565,21 +1556,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-22.25926">
-          <caret line="219" column="18" selection-start-line="219" selection-start-column="18" selection-end-line="219" selection-end-column="18" />
-          <folding>
-            <element signature="e#2163#2164#0" expanded="true" />
-            <element signature="e#2241#2242#0" expanded="true" />
-            <element signature="e#6673#6674#0" expanded="true" />
-            <element signature="e#6719#6720#0" expanded="true" />
-            <element signature="e#6929#6930#0" expanded="true" />
-            <element signature="e#6960#6961#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.4545455">
@@ -1593,9 +1569,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/MarketPage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66204286">
+        <state vertical-scroll-proportion="0.0">
           <caret line="44" column="12" selection-start-line="44" selection-start-column="12" selection-end-line="44" selection-end-column="12" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5874674">
+          <caret line="43" column="43" selection-start-line="43" selection-start-column="43" selection-end-line="43" selection-end-column="43" />
+          <folding>
+            <element signature="e#2172#2173#0" expanded="true" />
+            <element signature="e#2250#2251#0" expanded="true" />
+            <element signature="e#6682#6683#0" expanded="true" />
+            <element signature="e#6728#6729#0" expanded="true" />
+            <element signature="e#6938#6939#0" expanded="true" />
+            <element signature="e#6969#6970#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

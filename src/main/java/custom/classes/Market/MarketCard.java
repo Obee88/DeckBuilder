@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Obee on 09/11/15.
  */
 public class MarketCard {
-    private static final int BID_DURATION_DAYS = 2, DAYS_TO_LIVE = 5, HATES_LIMIT = 3;
+    private static final int BID_DURATION_DAYS = 2, DAYS_TO_LIVE = 4, HATES_LIMIT = 5;
     private static final double PRICE_RAISE_RATE = 1.2;
     private Integer rarityInt;
     public BasicDBList bids = new BasicDBList();
@@ -25,7 +25,7 @@ public class MarketCard {
     private String imageUrl, cardName;
     private BasicDBList haters = new BasicDBList();
     private DateTime creationDate;
-    private double[] rates = new double[]{1.0,0.5,0.1};
+    private double[] rates = new double[]{1.0,1.0,0.6,0.25,0.1};
     private BasicDBList saw = new BasicDBList();
 
     public MarketCard(DBObject obj) {
