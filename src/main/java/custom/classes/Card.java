@@ -44,6 +44,25 @@ public class Card extends MongoObject{
         return new Card(obj);
     }
 
+    public static Card generateCard(String owner, CardInfo ci){
+        MongoHandler mongo;
+        mongo = MongoHandler.getInstance();
+        int _cardId=Administration.getNextCardId();
+        boolean _printed=false;
+        int _cardInfoId = ci.id;
+        DBObject obj = new BasicDBObject()
+                .append("id", _cardId)
+                .append("printed", _printed)
+                .append("owner", owner)
+                .append("cardInfoId", _cardInfoId)
+                .append("status", "booster")
+                .append("creationDate", new DateTime(DateTimeZone.forID("Asia/Tokyo")).toDate())
+                .append("cardInfo",ci.toDBObject())
+                .append("info", ci.toDBObject());
+        mongo.setExistance(_cardInfoId,true);
+        return new Card(obj);
+    }
+
     public static Card generateCard(String owner, String rarity, String type, boolean isNew) {
         MongoHandler mongo;
         mongo = MongoHandler.getInstance();
@@ -188,7 +207,7 @@ public class Card extends MongoObject{
 	}
 	
 	public void UPDATE(){
-		MongoHandler.getInstance().cardsCollection.update(getQ(), toDBObject());
+		MongoHandler.getInstance().cardsCollection.update(getQ(), toDBObject(),true,false);
 	}
 
 	public static Card generateFromCardName(String name, String owner) {

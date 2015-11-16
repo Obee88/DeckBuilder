@@ -718,4 +718,8 @@ public class MongoHandler implements Serializable {
     public MarketCard getMarketCard(Integer id) {
         return new MarketCard(marketCollection.findOne(new BasicDBObject("id", id)));
     }
+
+    public CardInfo getCardInfo(String cardName) {
+        return new CardInfo(cardInfoCollection.findOne(new BasicDBObject("name",cardName)));
+    }
 }

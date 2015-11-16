@@ -20,12 +20,38 @@
             .hated .well{
                 background-color: #F09E9E;
             }
+            .new .new-image {
+                display: inline;
+            }
+            .new-image {
+                display: none;
+            }
         </style>
         <div  class="well">
             <table>
                 <tr>
                     <td>
-                        <label wicket:id="timeLbl"></label>
+                        <table>
+                            <tr>
+                                <td style="width:auto">
+                                <img class="new-image" width="40" height="40" src="http://findicons.com/files/icons/1681/siena/128/label_new_red.png">
+                            </td>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <label wicket:id="timeLbl"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label wicket:id="nameLbl"></label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
                 <tr>

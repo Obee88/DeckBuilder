@@ -16,6 +16,7 @@ import org.apache.wicket.model.Model;
 public class MarketCardView extends Panel {
 
     private final MarketCard card;
+    private final int jadAvailableForBidding;
     private ImageWindow view;
     private final String userName;
     private Label statusLbl;
@@ -24,18 +25,23 @@ public class MarketCardView extends Panel {
     private Label hatersCntLbl;
     private Form bidForm, hateForm;
     private Label timeLbl;
+    private Label nameLbl;
 
-    public MarketCardView(String id, final MarketCard card, final String userName) {
+    public MarketCardView(String id, final MarketCard card, final String userName, int jadAvailableForBidding) {
         super(id);
         this.card = card;
         this.price = card.getPrice();
         this.userName = userName;
+        this.jadAvailableForBidding = jadAvailableForBidding;
 
         add(new AttributeAppender("class", new Model(card.userActionStatus(userName)), " "));
+        if (card.isNewToPlayer(userName)){
+            add(new AttributeAppender("class", new Model("new"), " "));
+        }
 
         initComponents();
         initForms();
-
+        card.userSawCard(userName);
     }
 
     private void initForms() {
@@ -51,7 +57,7 @@ public class MarketCardView extends Panel {
             @Override
             public boolean isVisible() {
                 String lastBidder = card.getLastBidUserName();
-                return !card.listHaters().contains(userName) && (lastBidder==null || !lastBidder.equals(userName));
+                return !card.listHaters().contains(userName) && (lastBidder==null || !lastBidder.equals(userName)) && jadAvailableForBidding>=price;
             }
         };
         add(bidForm);
@@ -66,13 +72,16 @@ public class MarketCardView extends Panel {
 
             @Override
             public boolean isVisible() {
-                return !card.listHaters().contains(userName) && !card.bids.contains(userName);
+                return !card.listHaters().contains(userName) && card.bids.isEmpty();
             }
         };
         add(hateForm);
     }
 
     private void initComponents() {
+        this.nameLbl = new Label("nameLbl", card.getCardName());
+        add(nameLbl);
+
         this.timeLbl = new Label("timeLbl",card.getTimeToLooseString());
         add(timeLbl);
 

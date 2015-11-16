@@ -14,9 +14,7 @@ public class CardGenerator {
 		while(ret.size()<size){
             Card c = null;
             while (c==null || c.isBasicLand())
-                c= ret.size()%48==13
-                    ? Card.generateCard(owner,null,"land", ret.size()==31)
-                    : Card.generateCard(owner, ret.size()==31);
+                c= Card.generateCard(owner, ret.size()==31);
 			ShowingCard sc = new ShowingCard(c);
 			checkWishlists(sc,allUsrs, owner);
 			ret.add(c);
@@ -70,7 +68,7 @@ public class CardGenerator {
         return c;
     }
 
-	private static void checkWishlists(ShowingCard sc, List<User> allUsrs, String owner) {
+	public static void checkWishlists(ShowingCard sc, List<User> allUsrs, String owner) {
 		for(User u: allUsrs){
             u.setWishlists();
 			if(u.wishList.contains(sc.name)){
@@ -81,4 +79,6 @@ public class CardGenerator {
 			}
 		}
 	}
+
+
 }

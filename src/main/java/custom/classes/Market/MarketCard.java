@@ -26,6 +26,7 @@ public class MarketCard {
     private BasicDBList haters = new BasicDBList();
     private DateTime creationDate;
     private double[] rates = new double[]{1.0,0.5,0.1};
+    private BasicDBList saw = new BasicDBList();
 
     public MarketCard(DBObject obj) {
         load(obj);
@@ -48,6 +49,7 @@ public class MarketCard {
         ret.put("creationDate", creationDate.toDate());
         ret.put("bids", bids);
         ret.put("rarityInt", rarityInt);
+        ret.put("saw", saw);
         return ret;
     }
 
@@ -70,7 +72,7 @@ public class MarketCard {
     }
 
     private void load() {
-        MongoHandler.getInstance().marketCollection.findOne(q());
+        load(MongoHandler.getInstance().marketCollection.findOne(q()));
     }
 
     private void load(DBObject obj) {
@@ -81,6 +83,7 @@ public class MarketCard {
         this.creationDate = new DateTime(obj.get("creationDate"));
         this.rarityInt = (Integer)obj.get("rarityInt");
         this.bids = (BasicDBList)obj.get("bids");
+        this.saw = obj.get("saw")!=null? (BasicDBList)obj.get("saw"):new BasicDBList();
     }
 
     public DBObject q() {
@@ -99,7 +102,7 @@ public class MarketCard {
         Integer lastBidValue = MongoHandler.getInstance().getMarketCard(id).getLastBidValue();
         if (lastBidValue == null) {
             int lowerPrice = (int) (this.getStartingPrice() * rates[getHatersCnt()]);
-            return lowerPrice==0? 1:lowerPrice;
+            return lowerPrice<2? 2:lowerPrice;
         }
         int higherPrice = (int) (lastBidValue * PRICE_RAISE_RATE);
         return higherPrice == lastBidValue.intValue()? higherPrice+1:higherPrice;
@@ -201,4 +204,21 @@ public class MarketCard {
         }
         return "no-action";
     }
+
+    public boolean isNewToPlayer(String userName){
+        return !saw.contains(userName);
+    }
+
+    public void userSawCard(String userName){
+        if (isNewToPlayer(userName)) {
+            saw.add(userName);
+            UPDATE();
+            load();
+        }
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
 }

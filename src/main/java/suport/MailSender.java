@@ -2,6 +2,7 @@ package suport;
 
 
 import com.mongodb.BasicDBObject;
+import custom.classes.Market.MarketCard;
 import custom.classes.ShowingCard;
 import custom.classes.TradingProposal;
 import custom.classes.User;
@@ -72,6 +73,15 @@ public class MailSender {
         sb.append("<img src=\"").append(sc.cardInfo.downloadLink).append("\"/></br>");
         sb.append("<a href=\"http://http://185.53.129.19:8080/DeckBuilder-1.1//DeckBuilder-1.1/wicket/bookmarkable/obee.pages.TradePage?6\">Go and offer him a trade!</a>");
         send(u.getEmail(),"Wishlist notification!", sb.toString());
+    }
+
+    public static void sendBidWinningMail(String email, MarketCard c) {
+        StringBuilder sb = new StringBuilder();
+        String title = "You have won the bid!";
+        sb.append("<h1>").append(c.getCardName()).append("</h1>");
+        sb.append("<p>Congratulation! You have won this card for only ").append(c.getLastBidValue()).append(" jada</p>");
+        sb.append("<img src='").append(c.getImageUrl()).append("'></img>");
+        send(email, title, sb.toString());
     }
 
     public enum ProposalNotificationType{

@@ -2,8 +2,9 @@ package custom.classes.Market;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-import custom.classes.CardInfo;
+import custom.classes.*;
 import database.MongoHandler;
+import suport.MailSender;
 
 import java.util.*;
 
@@ -31,21 +32,38 @@ public class CardMarket {
         }
 
         initComparators();
-        Collections.sort(cards, expirationDesc);
+        Collections.sort(cards, bidsUpHatesDown);
     }
 
     private void initComparators() {
         this.bidsUpHatesDown = new Comparator<MarketCard>() {
             @Override
             public int compare(MarketCard o1, MarketCard o2) {
-                int result = Integer.compare(o2.bidsCount(),o1.bidsCount());
-                if(result==0) {
-                    if (o2.listHaters().contains(userName))
-                        return -1;
-                    if (o1.listHaters().contains(userName))
-                        return 1;
+                int o2bc = o2.bidsCount(),o1bc = o1.bidsCount();
+                // if no bids or same bids count
+                if (o2bc==o1bc){
+                    if (o2.bids.contains(userName)) return 1;
+                    if (o1.bids.contains(userName)) return -1;
+                    int result = Integer.compare(o2.bidsCount(),o1.bidsCount());
+                    if(result==0) {
+                        // one with less haters go first
+                        if (o2.listHaters().contains(userName))
+                            return -1;
+                        if (o1.listHaters().contains(userName))
+                            return 1;
+                        // if same haters count -> compare expiration dates
+                        int expRes = expirationDesc.compare(o1, o2);
+                        if (expRes!=0) return expRes;
+                        // if expiration date is same compare prices
+                        return Integer.compare(o1.getPrice(), o2.getPrice());
+                    }
+                    return result;
                 }
-                return result;
+                // cards I bidded comes first
+                if(o1bc==0) return 1;
+                if(o2bc==0) return -1;
+                // if all the same compare num of bids
+                return Integer.compare(o2bc, o1bc);
             }
         };
         this.expirationDesc = new Comparator<MarketCard>() {
@@ -80,6 +98,21 @@ public class CardMarket {
     }
 
     private void onBidWon(MarketCard c) {
+        String winner = c.getLastBidUserName();
+        CardInfo ci = MongoHandler.getInstance().getCardInfo(c.getCardName());
+        Card newCard = Card.generateCard(winner, ci);
+        newCard.UPDATE();
+        User u = MongoHandler.getInstance().getUser(winner);
+        u.addToBooster(newCard.getCardId());
+        u.decreaseJadBalance(c.getLastBidValue());
+        String message = "You have won #"+c.getCardName()+"# card for "+c.getLastBidValue()+" jads!";
+        u.addMessage(new UserMessage(u.getNextMessageId(),"You won the bid!",message));
+        u.UPDATE();
+        if (u.wantsProposalMail() || u.wantsWishlistMail())
+            MailSender.sendBidWinningMail(u.getEmail(),c);
+        CardGenerator.checkWishlists(new ShowingCard(newCard), MongoHandler.getInstance().getAllUsers(), winner);
+
+
     }
 
     private void fetchCards() {
@@ -130,5 +163,13 @@ public class CardMarket {
         for(int i=0; i<cards.size();++i)
             row[i/CARDS_PER_ROW].add(cards.get(i));
         return row;
+    }
+
+    public int biddingTotal(String userName){
+        int total = 0;
+        for(MarketCard c : getCards())
+            if (c.getLastBidUserName()!=null && c.getLastBidUserName().equals(userName))
+                total+=c.getLastBidValue();
+        return total;
     }
 }
