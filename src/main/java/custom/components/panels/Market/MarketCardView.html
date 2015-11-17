@@ -26,6 +26,23 @@
             .new-image {
                 display: none;
             }
+            div .list {
+                background:
+                    linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+                    linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+                    linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+                    linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+                    linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+                    linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+                background-color: #131313;
+                background-size: 20px 20px;
+                color: green;
+                font-family: "Times New Roman", Times, serif;
+                font-size: 3px;
+                padding: 7px;
+                border: 4px outset silver;
+                border-radius: 5px;
+            }
         </style>
         <div  class="well">
             <table>
@@ -45,7 +62,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label wicket:id="nameLbl"></label>
+                                                <label wicket:id="nameLbl" style="font-weight:bold;"></label>
                                             </td>
                                         </tr>
                                     </table>
@@ -61,7 +78,26 @@
                 </tr>
                 <tr>
                     <td>
-                        <label wicket:id="statusLbl"></label>
+                        <table width="100%">
+                            <tr>
+                                <td style="width:50%">
+                                    <label wicket:id="biddersNumLbl" style="font-weight:bold;" onmouseover="showFirstSibling(this)" onmouseout="hideFirstSibling(this)"></label>
+                                    <div style="overflow:visible; position:absolute;" class="hidden">
+                                        <span wicket:id="bidsList">
+                                            <label wicket:id="bidLbl"></label>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td style="width:50%">
+                                    <label wicket:id="hatersNumLbl" style="font-weight:bold;" onmouseover="showFirstSibling(this)" onmouseout="hideFirstSibling(this)"></label>
+                                    <div style="overflow:visible; position:absolute;" class="hidden">
+                                        <span wicket:id="hatersList">
+                                            <label wicket:id="haterLbl"></label>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
                 <tr>
@@ -102,6 +138,16 @@
                 </tr>
             </table>
         </div>
+        <script>
+            function showFirstSibling(sender){
+                var list = $(sender).siblings().first();
+                if (list.children().size()>0)
+                    list.attr("class","list");
+            }
+            function hideFirstSibling(sender){
+                $(sender).siblings().first().attr("class","hidden");
+            }
+        </script>
 	 </wicket:panel>
 
 </body>
