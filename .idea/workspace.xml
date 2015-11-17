@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.java" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java" afterPath="$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java" />
     </list>
     <ignored path="DeckBuilder.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -138,7 +138,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.40857503">
-              <caret line="118" column="83" selection-start-line="118" selection-start-column="83" selection-end-line="118" selection-end-column="83" />
+              <caret line="118" column="8" selection-start-line="118" selection-start-column="8" selection-end-line="118" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -259,11 +259,11 @@
         <option value="$PROJECT_DIR$/src/main/java/custom/classes/Market/CardMarket.java" />
         <option value="$PROJECT_DIR$/src/main/java/suport/MailSender.java" />
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/MarketPage.java" />
-        <option value="$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java" />
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.html" />
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.html" />
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/MarketPage.html" />
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.java" />
+        <option value="$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java" />
       </list>
     </option>
   </component>
@@ -1631,7 +1631,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.40857503">
-          <caret line="118" column="83" selection-start-line="118" selection-start-column="83" selection-end-line="118" selection-end-column="83" />
+          <caret line="118" column="8" selection-start-line="118" selection-start-column="8" selection-end-line="118" selection-end-column="8" />
           <folding />
         </state>
       </provider>

@@ -116,7 +116,7 @@ public class MarketCard {
         if (getLastBidValue() == null)
             return "No bids for this card yet. ";
         String status = String.format("%s bided %d", getLastBidUserName(), getLastBidValue());
-        if (bids.size()>0) status+= String.format(" (%d bids total)", bids.size());
+        //        if (bids.size()>0) status+= String.format(" (%d bids total)", bids.size());
         return status;
     }
 
