@@ -91,7 +91,7 @@ public class MarketCardView extends Panel {
         this.timeLbl = new Label("timeLbl",card.getTimeToLooseString());
         add(timeLbl);
 
-        this.biddersNumLbl = new Label("biddersNumLbl", card.getLastBidUserName()+" bidded "+card.getLastBidValue());
+        this.biddersNumLbl = new Label("biddersNumLbl", card.bidingStatus());
         add(biddersNumLbl);
 
         this.hatersNumLbl= new Label("hatersNumLbl", card.listHaters().size()+" hates");
