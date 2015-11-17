@@ -122,7 +122,6 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <label wicket:id="hatersCntLbl"></label>
                                             </td>
                                             <td>
                                                 <form wicket:id="hateForm" style="display:inline">
@@ -140,12 +139,17 @@
         </div>
         <script>
             function showFirstSibling(sender){
-                var list = $(sender).siblings().first();
-                if (list.children().size()>0)
-                    list.attr("class","list");
+                var $sender = $(sender);
+                var $list = $sender.siblings().first();
+                if ($list.children().size()>0){
+                    $list.attr("class","list");
+                    $sender.css("color","blue");
+                }
             }
             function hideFirstSibling(sender){
-                $(sender).siblings().first().attr("class","hidden");
+                var $sender = $(sender);
+                $sender.siblings().first().attr("class","hidden");
+                $sender.css("color","black");
             }
         </script>
 	 </wicket:panel>

@@ -28,7 +28,6 @@ public class MarketCardView extends Panel {
     private Label biddersNumLbl, hatersNumLbl;
     private Label priceLbl;
     private final int price;
-    private Label hatersCntLbl;
     private Form bidForm, hateForm;
     private Label timeLbl;
     private Label nameLbl;
@@ -92,14 +91,11 @@ public class MarketCardView extends Panel {
         this.timeLbl = new Label("timeLbl",card.getTimeToLooseString());
         add(timeLbl);
 
-        this.biddersNumLbl = new Label("biddersNumLbl", card.bids.size()+" bids");
+        this.biddersNumLbl = new Label("biddersNumLbl", card.getLastBidUserName()+" bidded "+card.getLastBidValue());
         add(biddersNumLbl);
 
         this.hatersNumLbl= new Label("hatersNumLbl", card.listHaters().size()+" hates");
         add(hatersNumLbl);
-
-        this.hatersCntLbl = new Label("hatersCntLbl", "H:"+card.getHatersCnt());
-        add(hatersCntLbl);
 
         this.priceLbl = new Label("priceLbl", "$"+this.price);
         add(priceLbl);
