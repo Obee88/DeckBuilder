@@ -112,12 +112,16 @@ public class MarketCard {
         return imageUrl;
     }
 
-    public String bidingStatus() {
+    public String getBidingStatus() {
         if (getLastBidValue() == null)
-            return "No bids for this card yet. ";
+            return "No bids yet. ";
         String status = String.format("%s bided %d", getLastBidUserName(), getLastBidValue());
         //        if (bids.size()>0) status+= String.format(" (%d bids total)", bids.size());
         return status;
+    }
+
+    public String getHatersStatus(){
+        return haters.size()+" hates";
     }
 
     public String bid(String userName, Integer value) {

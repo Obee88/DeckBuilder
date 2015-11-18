@@ -4,6 +4,9 @@ import com.mongodb.DBObject;
 import custom.classes.Market.MarketCard;
 import custom.components.ImageWindow;
 import obee.pages.MarketPage;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -28,10 +31,11 @@ public class MarketCardView extends Panel {
     private Label biddersNumLbl, hatersNumLbl;
     private Label priceLbl;
     private final int price;
-    private Form bidForm, hateForm;
+    private AjaxLink bidForm, hateForm;
     private Label timeLbl;
     private Label nameLbl;
     private ListView bidsList, hatersList;
+    private MarketCardView self;
 
     public MarketCardView(String id, final MarketCard card, final String userName, int jadAvailableForBidding) {
         super(id);
@@ -39,6 +43,8 @@ public class MarketCardView extends Panel {
         this.price = card.getPrice();
         this.userName = userName;
         this.jadAvailableForBidding = jadAvailableForBidding;
+        this.self = this;
+        setOutputMarkupId(true);
 
         add(new AttributeAppender("class", new Model(card.userActionStatus(userName)), " "));
         if (card.isNewToPlayer(userName)){
@@ -51,13 +57,15 @@ public class MarketCardView extends Panel {
     }
 
     private void initForms() {
-        this.bidForm = new Form("bidForm"){
+        this.bidForm = new AjaxLink("bidForm"){
             @Override
-            protected void onSubmit() {
-                super.onSubmit();
+            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 String message = card.bid(userName,price);
                 info(message);
-                setResponsePage(MarketPage.class);
+                ajaxRequestTarget.add(self);
+//                ajaxRequestTarget.add(biddersNumLbl);
+//                ajaxRequestTarget.add(hatersNumLbl);
+//                ajaxRequestTarget.add(priceLbl);
             }
 
             @Override
@@ -68,12 +76,11 @@ public class MarketCardView extends Panel {
         };
         add(bidForm);
 
-        this.hateForm = new Form("hateForm"){
+        this.hateForm = new AjaxLink("hateForm"){
             @Override
-            protected void onSubmit() {
-                super.onSubmit();
+            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 card.hate(userName);
-                setResponsePage(MarketPage.class);
+                ajaxRequestTarget.add(self);
             }
 
             @Override
@@ -91,13 +98,16 @@ public class MarketCardView extends Panel {
         this.timeLbl = new Label("timeLbl",card.getTimeToLooseString());
         add(timeLbl);
 
-        this.biddersNumLbl = new Label("biddersNumLbl", card.bidingStatus());
+        this.biddersNumLbl = new Label("biddersNumLbl", new PropertyModel<String>(this, "card.bidingStatus"));
+        this.biddersNumLbl.setOutputMarkupId(true);
         add(biddersNumLbl);
 
-        this.hatersNumLbl= new Label("hatersNumLbl", card.listHaters().size()+" hates");
+        this.hatersNumLbl= new Label("hatersNumLbl", new PropertyModel<String>(this, "card.hatersStatus"));
+        this.hatersNumLbl.setOutputMarkupId(true);
         add(hatersNumLbl);
 
-        this.priceLbl = new Label("priceLbl", "$"+this.price);
+        this.priceLbl = new Label("priceLbl", new PropertyModel<String>(this, "card.price"));
+        this.priceLbl.setOutputMarkupId(true);
         add(priceLbl);
 
         this.view = new ImageWindow("view", new Model<String>(card.getImageUrl().toString()), null);
