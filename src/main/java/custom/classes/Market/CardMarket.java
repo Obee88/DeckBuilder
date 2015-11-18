@@ -39,9 +39,8 @@ public class CardMarket {
     }
 
     public static CardMarket getInstance(String userName){
-        if(instance == null)
-            instance = new CardMarket(userName);
-        return instance;
+        return  new CardMarket(userName);
+
     }
 
     private void initComparators() {
@@ -84,7 +83,7 @@ public class CardMarket {
         };
     }
 
-    private void checkExpirationDates() {
+    public void checkExpirationDates() {
         boolean shouldReload = false;
         for (MarketCard c : cards){
             if (c.hasExpired()){
