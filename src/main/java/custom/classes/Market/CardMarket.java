@@ -18,6 +18,7 @@ public class CardMarket {
     private boolean full;
     private List<String>[] triples;
     private Comparator<MarketCard> bidsUpHatesDown, expirationDesc;
+    private MarketCard cardInfoStatusToHated;
 
     public CardMarket(final String userName) {
         this.userName = userName;
@@ -85,12 +86,18 @@ public class CardMarket {
                 shouldReload = true;
             }
             if (c.hasReachedHateLimit()){
-                removeCard(c);
+                onHatedLimitReached(c);
+
                 shouldReload = true;
             }
         }
         if (shouldReload)
             fetchCards();
+    }
+
+    private void onHatedLimitReached(MarketCard c) {
+        setCardInfoStatusToHated(c);
+        removeCard(c);
     }
 
     private void removeCard(MarketCard c) {
@@ -110,9 +117,8 @@ public class CardMarket {
         u.UPDATE();
         if (u.wantsProposalMail() || u.wantsWishlistMail())
             MailSender.sendBidWinningMail(u.getEmail(),c);
+        MongoHandler.getInstance().insertWinningBid(c.getLastBid());
         CardGenerator.checkWishlists(new ShowingCard(newCard), MongoHandler.getInstance().getAllUsers(), winner);
-
-
     }
 
     private void fetchCards() {
@@ -123,7 +129,7 @@ public class CardMarket {
         int id = getBiggestId()+1;
         int cardInfoCount = (int) MongoHandler.getInstance().cardInfoCollection.count();
         CardInfo ci = null;
-        while(ci==null || MongoHandler.getInstance().isBasicLandName(ci.name)){
+        while(ci==null || MongoHandler.getInstance().isBasicLandName(ci.name) || ci.isHated()){
             int cardInfoId= new Random().nextInt(cardInfoCount-1)+1;
             ci = MongoHandler.getInstance().getCardInfo(cardInfoId);
         }
@@ -171,5 +177,14 @@ public class CardMarket {
             if (c.getLastBidUserName()!=null && c.getLastBidUserName().equals(userName))
                 total+=c.getLastBidValue();
         return total;
+    }
+
+    public void setCardInfoStatusToHated(MarketCard c) {
+        MongoHandler.getInstance().cardInfoCollection.update(
+                new BasicDBObject("name", c.getCardName()),
+                new BasicDBObject("$set", new BasicDBObject("hated", true)),
+                false, //upsert
+                true   //multi
+        );
     }
 }

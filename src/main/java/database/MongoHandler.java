@@ -24,12 +24,13 @@ public class MongoHandler implements Serializable {
 	private final String ADMIN_COLLECTION_NAME = "administration";
     private final String STATISTICS_COLLECTION_NAME = "statistics";
     private final String SUCESSFULL_PROPOSALS_COLLECTION_NAME = "statistics";
+    private final String BIDS_WON_COLLECTION_NAME = "bidsWon";
     private final String MARKET_COLLECTION_NAME = "market" ;
 	
 	private MongoClient client;
 	private DB base;
 	public DBCollection usersCollection, cardsCollection, cardInfoCollection, adminCollection, statisticsCollection,
-            sucessfullProposalsCollections, marketCollection;
+            sucessfullProposalsCollections, marketCollection, bidsWonCollection;
 
 
     private MongoHandler(){
@@ -44,6 +45,7 @@ public class MongoHandler implements Serializable {
             statisticsCollection=base.getCollection(STATISTICS_COLLECTION_NAME);
             marketCollection = base.getCollection(MARKET_COLLECTION_NAME);
             sucessfullProposalsCollections = base.getCollection(SUCESSFULL_PROPOSALS_COLLECTION_NAME);
+            bidsWonCollection = base.getCollection(BIDS_WON_COLLECTION_NAME);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
@@ -721,5 +723,9 @@ public class MongoHandler implements Serializable {
 
     public CardInfo getCardInfo(String cardName) {
         return new CardInfo(cardInfoCollection.findOne(new BasicDBObject("name",cardName)));
+    }
+
+    public void insertWinningBid(DBObject bid){
+        bidsWonCollection.insert(bid);
     }
 }
