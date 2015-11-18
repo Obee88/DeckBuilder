@@ -359,7 +359,6 @@ public class RecyclePage extends MasterPage {
                             toList = recycleShortlistList;
                         } else return target;
                         if(sc==null) return target;
-                        int selectedIndex = from.getChoices().indexOf(sc);
                         fromList.remove(sc);
                         from.setChoices(fromList);
                         toList.add(sc);
@@ -368,8 +367,6 @@ public class RecyclePage extends MasterPage {
                         sc.status = "removing";
                         sc.UPDATE();
                         usr.UPDATE();
-                        ShowingCard newSelectedCard = from.listChooser.getChoices().get(selectedIndex);
-                        from.listChooser.setDefaultModelObject(newSelectedCard);
                         target.add(from);
                         target.add(to);
                     }
