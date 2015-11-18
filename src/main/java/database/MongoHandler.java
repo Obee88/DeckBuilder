@@ -728,4 +728,11 @@ public class MongoHandler implements Serializable {
     public void insertWinningBid(DBObject bid){
         bidsWonCollection.insert(bid);
     }
+
+    public boolean isCardHated(String cardName) {
+        return (Boolean)cardInfoCollection.findOne(
+                new BasicDBObject("name",cardName),
+                new BasicDBObject("hated",true)
+        ).get("hated");
+    }
 }

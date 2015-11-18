@@ -33,7 +33,7 @@ public class MasterPage extends WebPage{
 	protected Link<Object> logOffButton;
 	protected MongoHandler mongo = MongoHandler.getInstance();
 	protected String PAGE_NAME;
-	protected FeedbackPanel feedback;
+	public FeedbackPanel feedback;
 	protected SignInSession session;
     protected User currentUser;
     protected Integer jadBalance;
@@ -57,6 +57,7 @@ public class MasterPage extends WebPage{
             jadBalance = currentUser.getJadBalance();
 		initNavgator();
 		initMasterComponents();
+		feedback.setOutputMarkupId(true);
         sw.checkpoint("master loading finished");
 	}
 	

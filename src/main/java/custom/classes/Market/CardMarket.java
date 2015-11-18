@@ -15,12 +15,10 @@ public class CardMarket {
     public static Integer MARKET_SIZE = 20; // Mora biti djeljivo sa CARDS_PER_ROW!!
     private final String userName;
     List<MarketCard> cards;
-    private boolean full;
-    private List<String>[] triples;
     private Comparator<MarketCard> bidsUpHatesDown, expirationDesc;
-    private MarketCard cardInfoStatusToHated;
+    private static CardMarket instance;
 
-    public CardMarket(final String userName) {
+    private CardMarket(final String userName) {
         this.userName = userName;
 
         fetchCards();
@@ -33,7 +31,17 @@ public class CardMarket {
         }
 
         initComparators();
+        sortCards();
+    }
+
+    public void sortCards() {
         Collections.sort(cards, bidsUpHatesDown);
+    }
+
+    public static CardMarket getInstance(String userName){
+        if(instance == null)
+            instance = new CardMarket(userName);
+        return instance;
     }
 
     private void initComparators() {
@@ -129,7 +137,7 @@ public class CardMarket {
         int id = getBiggestId()+1;
         int cardInfoCount = (int) MongoHandler.getInstance().cardInfoCollection.count();
         CardInfo ci = null;
-        while(ci==null || MongoHandler.getInstance().isBasicLandName(ci.name) || ci.isHated()){
+        while(ci==null || MongoHandler.getInstance().isBasicLandName(ci.name) || MongoHandler.getInstance().isCardHated(ci.name)){
             int cardInfoId= new Random().nextInt(cardInfoCount-1)+1;
             ci = MongoHandler.getInstance().getCardInfo(cardInfoId);
         }

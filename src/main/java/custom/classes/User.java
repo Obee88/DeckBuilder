@@ -5,6 +5,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import custom.classes.Market.CardMarket;
 import custom.classes.abstractClasses.MongoObject;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -34,7 +35,7 @@ public class User extends MongoObject implements Serializable{
 	public String[] subFolderNames = new String[]{"sf0","sf1","sf2","sf3","sf4","sf5","sf6","sf7","sf8","sf9","sf10","sf11"};
     private boolean wantsProposalMail, wantsWishlistMail;
 
-    public User(String userName, String eMail, String password){
+	public User(String userName, String eMail, String password){
 		this.userName=userName;
 		this.eMail=eMail;
 		this.passwordHash = makePasswordHash(password, Integer.toString(new Random().nextInt()));
@@ -712,5 +713,15 @@ public class User extends MongoObject implements Serializable{
 	public void removeDeck(String deckName) {
 		Deck remDeck = getDeck(deckName);
 		this.decks.remove(remDeck);
+	}
+
+	public int getJadAvailableForBidding() {
+		int biddingTotal = CardMarket.getInstance(userName).biddingTotal(getUserName());
+		return getJadBalance()-biddingTotal;
+	}
+
+	public String getMarketStatusMessage() {
+		int biddingTotal = CardMarket.getInstance(userName).biddingTotal(getUserName());
+		return "Jad in bids: "+biddingTotal+" / Jad available: "+ getJadAvailableForBidding();
 	}
 }

@@ -2,8 +2,10 @@ package custom.components.panels.Market;
 
 import com.mongodb.DBObject;
 import custom.classes.Market.MarketCard;
+import custom.classes.User;
 import custom.components.ImageWindow;
 import obee.pages.MarketPage;
+import obee.pages.master.MasterPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -25,9 +27,9 @@ import java.util.List;
 public class MarketCardView extends Panel {
 
     private final MarketCard card;
-    private final int jadAvailableForBidding;
+    private MasterPage masterPage;
     private ImageWindow view;
-    private final String userName;
+    private User user;
     private Label biddersNumLbl, hatersNumLbl;
     private Label priceLbl;
     private final int price;
@@ -37,41 +39,38 @@ public class MarketCardView extends Panel {
     private ListView bidsList, hatersList;
     private MarketCardView self;
 
-    public MarketCardView(String id, final MarketCard card, final String userName, int jadAvailableForBidding) {
+    public MarketCardView(String id, final MarketCard card, User user, MasterPage masterPage) {
         super(id);
         this.card = card;
         this.price = card.getPrice();
-        this.userName = userName;
-        this.jadAvailableForBidding = jadAvailableForBidding;
+        this.user = user;
         this.self = this;
+        this.masterPage = masterPage;
         setOutputMarkupId(true);
 
-        add(new AttributeAppender("class", new Model(card.userActionStatus(userName)), " "));
-        if (card.isNewToPlayer(userName)){
+        add(new AttributeAppender("class", new Model(card.userActionStatus(user.getUserName())), " "));
+        if (card.isNewToPlayer(user.getUserName())){
             add(new AttributeAppender("class", new Model("new"), " "));
         }
 
         initComponents();
         initForms();
-        card.userSawCard(userName);
+        card.userSawCard(user.getUserName());
     }
 
     private void initForms() {
         this.bidForm = new AjaxLink("bidForm"){
             @Override
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                String message = card.bid(userName,price);
-                info(message);
-                ajaxRequestTarget.add(self);
-//                ajaxRequestTarget.add(biddersNumLbl);
-//                ajaxRequestTarget.add(hatersNumLbl);
-//                ajaxRequestTarget.add(priceLbl);
+                String message = card.bid(user.getUserName(),price);
+                masterPage.info(user.getMarketStatusMessage());
+                ajaxRequestTarget.add(masterPage);
             }
 
             @Override
             public boolean isVisible() {
                 String lastBidder = card.getLastBidUserName();
-                return !card.listHaters().contains(userName) && (lastBidder==null || !lastBidder.equals(userName)) && jadAvailableForBidding>=price;
+                return !card.listHaters().contains(user.getUserName()) && (lastBidder==null || !lastBidder.equals(user.getUserName())) && user.getJadAvailableForBidding()>=price;
             }
         };
         add(bidForm);
@@ -79,13 +78,14 @@ public class MarketCardView extends Panel {
         this.hateForm = new AjaxLink("hateForm"){
             @Override
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                card.hate(userName);
+                card.hate(user.getUserName());
+                masterPage.info(user.getMarketStatusMessage());
                 ajaxRequestTarget.add(self);
             }
 
             @Override
             public boolean isVisible() {
-                return !card.listHaters().contains(userName) && card.bids.isEmpty();
+                return !card.listHaters().contains(user.getUserName()) && card.bids.isEmpty();
             }
         };
         add(hateForm);

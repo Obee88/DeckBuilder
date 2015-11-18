@@ -22,7 +22,6 @@ public class CardInfo {
         rarity = obj.get("rarity").toString();
         artist = obj.get("artist").toString();
         edition = obj.get("edition").toString();
-        hated = (Boolean)obj.get("hated");
         convertedManaCost = Integer.parseInt(obj.get("convertedManaCost").toString());
         try {
             isTwoSided = getBool(obj.get("isTwoSided").toString());
@@ -57,7 +56,6 @@ public class CardInfo {
         obj.append("id", id);
         obj.append("isTwoSided", isTwoSided);
         obj.append("rarity_int", rarityInt);
-        obj.append("hated", hated);
         return obj;
     }
 
@@ -86,9 +84,5 @@ public class CardInfo {
                 return i;
         }
         return 99;
-    }
-
-    public boolean isHated() {
-        return hated;
     }
 }

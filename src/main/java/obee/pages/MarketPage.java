@@ -16,14 +16,16 @@ import java.util.*;
 public class MarketPage extends MasterPage {
 
 
+    private MarketPage self;
+    private CardMarket market;
+
     public MarketPage(final PageParameters params) {
         super(params, "Market");
-        CardMarket market = new CardMarket(getUserName());
+        this.market = CardMarket.getInstance(getUserName());
+        market.sortCards();
+        this.self = this;
         List<MarketCard>[] triples = market.getRows();
-        int biddingTotal = market.biddingTotal(getUserName());
-        final int jadAvailableForBidding = (currentUser.getJadBalance()-biddingTotal);
 
-        final int[] newCardsCount = {0};
         ListView rows = new ListView("rows", Arrays.asList(triples)) {
             @Override
             protected void populateItem(ListItem rowItem) {
@@ -32,18 +34,18 @@ public class MarketPage extends MasterPage {
                     @Override
                     protected void populateItem(ListItem cellItem) {
                         MarketCard card = (MarketCard) cellItem.getModelObject();
-                        cellItem.add(new MarketCardView("cardPanel", card, getUserName(), jadAvailableForBidding));
-                        if (card.isNewToPlayer(userName)) newCardsCount[0]++;
+                        cellItem.add(new MarketCardView("cardPanel", card, currentUser, self));
                     }
                 });
 
             }
         };
         add(rows);
-        String statusMessage = "Jad in bids: "+biddingTotal+" / Jad available: "+ jadAvailableForBidding;
-        if (newCardsCount[0]>0)
-            statusMessage = newCardsCount+" new cards in market / "+ statusMessage;
-        info(statusMessage);
+        setStatusMessage();
+    }
+
+    private void setStatusMessage() {
+        info(currentUser.getMarketStatusMessage());
     }
 
 
