@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a4b7d85-661c-4ef6-bee7-c58b8ffc0c5a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.html" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.java" afterPath="$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.html" afterPath="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.html" />
     </list>
     <ignored path="DeckBuilder.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -123,28 +122,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MasterPage.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/master/MasterPage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="59" column="41" selection-start-line="59" selection-start-column="41" selection-end-line="59" selection-end-column="41" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#2590#2591#0" expanded="false" />
-                <element signature="e#2645#2646#0" expanded="false" />
-                <element signature="e#2918#2919#0" expanded="false" />
-                <element signature="e#2979#2980#0" expanded="false" />
-                <element signature="e#5013#5014#0" expanded="false" />
-                <element signature="e#5035#5036#0" expanded="false" />
-                <element signature="e#5075#5076#0" expanded="false" />
-                <element signature="e#5147#5148#0" expanded="false" />
-                <element signature="e#5185#5186#0" expanded="false" />
-                <element signature="e#5255#5256#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="User.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/User.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -200,10 +177,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TradePage.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TradePage.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/TradePage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33291298">
+            <state vertical-scroll-proportion="0.0">
               <caret line="128" column="17" selection-start-line="128" selection-start-column="17" selection-end-line="128" selection-end-column="17" />
               <folding />
             </state>
@@ -235,6 +212,18 @@
                 <element signature="e#975#976#0" expanded="true" />
                 <element signature="e#3877#3878#0" expanded="true" />
                 <element signature="e#3922#3923#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MarketCardView.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.2119636">
+              <caret line="112" column="48" selection-start-line="112" selection-start-column="48" selection-end-line="112" selection-end-column="48" />
+              <folding>
+                <element signature="n#style#0;n#form#0;n#td#1;n#tr#0;n#table#0;n#td#1;n#tr#0;n#table#0;n#td#0;n#tr#3;n#table#0;n#div#0;n#wicket:panel#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -318,9 +307,9 @@
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/MarketPage.java" />
         <option value="$PROJECT_DIR$/src/main/java/custom/classes/Market/CardMarket.java" />
         <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.java" />
-        <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.html" />
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.html" />
         <option value="$PROJECT_DIR$/src/main/java/obee/pages/RecyclePage.java" />
+        <option value="$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.html" />
       </list>
     </option>
   </component>
@@ -742,7 +731,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="classes" />
+              <option name="myItemId" value="components" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -772,7 +761,45 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="classes" />
+              <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="panels" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DeckBuilder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="custom" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="panels" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -1585,34 +1612,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
-          <folding>
-            <element signature="e#950#951#0" expanded="true" />
-            <element signature="e#975#976#0" expanded="true" />
-            <element signature="e#3877#3878#0" expanded="true" />
-            <element signature="e#3922#3923#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/MarketPage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.7555267">
-          <caret line="127" column="80" selection-start-line="127" selection-start-column="80" selection-end-line="127" selection-end-column="80" />
-          <folding>
-            <element signature="n#style#0;n#form#0;n#td#1;n#tr#0;n#table#0;n#td#1;n#tr#0;n#table#0;n#td#0;n#tr#3;n#table#0;n#div#0;n#wicket:panel#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1673,9 +1677,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/obee/pages/TradePage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33291298">
+        <state vertical-scroll-proportion="0.0">
           <caret line="128" column="17" selection-start-line="128" selection-start-column="17" selection-end-line="128" selection-end-column="17" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/custom/classes/Market/MarketCard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
+          <folding>
+            <element signature="e#950#951#0" expanded="true" />
+            <element signature="e#975#976#0" expanded="true" />
+            <element signature="e#3877#3878#0" expanded="true" />
+            <element signature="e#3922#3923#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/custom/components/panels/Market/MarketCardView.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2119636">
+          <caret line="112" column="48" selection-start-line="112" selection-start-column="48" selection-end-line="112" selection-end-column="48" />
+          <folding>
+            <element signature="n#style#0;n#form#0;n#td#1;n#tr#0;n#table#0;n#td#1;n#tr#0;n#table#0;n#td#0;n#tr#3;n#table#0;n#div#0;n#wicket:panel#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
