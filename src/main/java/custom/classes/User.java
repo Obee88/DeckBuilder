@@ -34,6 +34,7 @@ public class User extends MongoObject implements Serializable{
 	List<Deck> decks;
 	public String[] subFolderNames = new String[]{"sf0","sf1","sf2","sf3","sf4","sf5","sf6","sf7","sf8","sf9","sf10","sf11"};
     private boolean wantsProposalMail, wantsWishlistMail;
+	private BasicDBList dontWantRecycle;
 
 	public User(String userName, String eMail, String password){
 		this.userName=userName;
@@ -44,7 +45,7 @@ public class User extends MongoObject implements Serializable{
 		messages = new ArrayList<UserMessage>();
 		messages.add(UserMessage.Welcome);
 		maxMessageId=0;
-
+		dontWantRecycle = new BasicDBList();
 	}
 
 	public User(DBObject obj) {
@@ -65,6 +66,7 @@ public class User extends MongoObject implements Serializable{
 		messages = DBL2MsgL((BasicDBList)obj.get("messages"));
         subfoldersDBobject = (DBObject)obj.get("subFolders");
         wishlistDBobject = (DBObject)obj.get("wishList");
+		dontWantRecycle = obj.get("dontWantRecycle") == null ? new BasicDBList() : (BasicDBList) obj.get("dontWantRecycle");
 		DBObject sfNamesObj= (DBObject) obj.get("subFoldersNames");
 		if(sfNamesObj!=null){
 			for(int i =0;i<12;i++) {
@@ -125,6 +127,7 @@ public class User extends MongoObject implements Serializable{
         obj.append("wantsProposalMail",wantsProposalMail);
         obj.append("jadBalance",jadBalance);
 		obj.append("decks", getDecksDBList());
+		obj.append("dontWantRecycle", dontWantRecycle);
 		return obj;
 	}
 
@@ -723,5 +726,27 @@ public class User extends MongoObject implements Serializable{
 	public String getMarketStatusMessage() {
 		int biddingTotal = CardMarket.getInstance(userName).biddingTotal(getUserName());
 		return "Jad in bids: "+biddingTotal+" / Jad available: "+ getJadAvailableForBidding();
+	}
+
+	public BasicDBList getDontWantRecycleIds() {
+		return dontWantRecycle;
+	}
+
+	public List<ShowingCard> getDontWantRecycleShowingCards(){
+		List<ShowingCard> ret = new ArrayList<ShowingCard>();
+		for (Object obj : getDontWantRecycleIds()){
+			Integer id = (Integer)obj;
+			ShowingCard sc = mongo.getShowingCard(id);
+			ret.add(sc);
+		}
+		return ret;
+	}
+
+	public void addToDontWantRecycle(ShowingCard sc) {
+		this.dontWantRecycle.add(sc.cardId);
+	}
+
+	public void removeFromDontWantRecycle(Integer cardId) {
+		this.dontWantRecycle.remove(cardId);
 	}
 }

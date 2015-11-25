@@ -100,11 +100,7 @@ public class RecyclePage extends MasterPage {
         recycleShortlistList = (ArrayList<ShowingCard>) usr.getRecycleShortlistShowingCards();
         wlc.checkList(recycleShortlistList);
 		tradeList = usr.getTradingShowingCards();
-        dontWantRecycleList = new ArrayList<ShowingCard>();
-        for(ShowingCard sc : tradeList)
-            if(sc.status.endsWith("!")){
-                dontWantRecycleList.add(sc);
-            }
+        dontWantRecycleList = usr.getDontWantRecycleShowingCards();
         tradeList.removeAll(dontWantRecycleList);
         tradeList.removeAll(recycleShortlistList);
         wlc.checkList(tradeList);
@@ -219,7 +215,9 @@ public class RecyclePage extends MasterPage {
 						to = cardsPanel;
 						fromList = dontWantRecycleList;
 						toList = tradeList;
+                        usr.removeFromDontWantRecycle(sc.cardId);
                         sc.status = "trading";
+                        usr.UPDATE();
                         sc.UPDATE();
 					} else if(senderId.equals("recycleShortlistPanel")){
 						to = cardsPanel;
@@ -295,7 +293,8 @@ public class RecyclePage extends MasterPage {
                             to = dontWantRecyclePanel;
                             fromList = tradeList;
                             toList = dontWantRecycleList;
-                            sc.status = "trading!";
+                            sc.status = "trading";
+                            usr.addToDontWantRecycle(sc);
                         } else if(senderId.equals("recycleShortlistPanel")){
                             from = recycleShortlistPanel;
                             sc= (ShowingCard) from.listChooser.getDefaultModelObject();
@@ -308,6 +307,7 @@ public class RecyclePage extends MasterPage {
                         from.setChoices(fromList);
                         toList.add(sc);
                         to.setChoices(toList);
+                        usr.UPDATE();
                         sc.UPDATE();
                         target.add(from);
                         target.add(to);
