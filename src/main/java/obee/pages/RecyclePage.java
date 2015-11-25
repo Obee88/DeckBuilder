@@ -31,20 +31,14 @@ import java.util.List;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class RecyclePage extends MasterPage {
 	private static final long serialVersionUID = 1L;
-	private Form form;
 	private CardSelectionPanel cardsPanel,recycleShortlistPanel;
-	private List<ShowingCard> tradeList;
-	private CardSelectionPanel sacCards;
+	private List<ShowingCard> tradeList, dontWantRecycleList;
 	private CardView cardView;
-	private List<ShowingCard> sacList;
-    private PlusMinusPanel weeksOldPanel;
-    private AjaxLink<Object> filterButton;
     User usr =  currentUser;
     private ArrayList<ShowingCard> recycleShortlistList;
-    private Form recycleIllegalForm;
-    private AjaxLink<Object> fillFromShortlist;
     private Form recycleAllForm;
     private InfoPanel infoPanel;
+    private CardSelectionPanel dontWantRecyclePanel;
 
 
     public RecyclePage(final PageParameters params) {
@@ -106,67 +100,21 @@ public class RecyclePage extends MasterPage {
         recycleShortlistList = (ArrayList<ShowingCard>) usr.getRecycleShortlistShowingCards();
         wlc.checkList(recycleShortlistList);
 		tradeList = usr.getTradingShowingCards();
+        dontWantRecycleList = new ArrayList<ShowingCard>();
+        for(ShowingCard sc : tradeList)
+            if(sc.status.endsWith("!")){
+                dontWantRecycleList.add(sc);
+            }
+        tradeList.removeAll(dontWantRecycleList);
         wlc.checkList(tradeList);
-		sacList=new ArrayList<ShowingCard>();
 	}
 
 
 
 	private void initForms() {
-		form = new Form("form"){
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onSubmit() {
-				super.onSubmit();
-                int jad = 0;
-				for(ShowingCard sc : sacList){
-                    try{
-                        usr.removeFromTrading(sc.cardId);
-                        usr.removeFromUsing(sc.cardId);
-                        usr.removeFromBooster(sc.cardId);
-                        usr.removeFromRecycleShortlist(sc.cardId);
-                        mongo.deleteCard(sc.cardId);
-                    } catch (Exception ignorable){
-                    }
-                    finally {
-                        jad++;
-                    }
-                }
-				usr.increaseJad(jad);
-                usr.UPDATE();
-                String msg ="";
-                if(jad==1)
-				    msg = jad + " jad added to your balance!";
-                else
-                    msg = jad + " jada added to your balance!";
-				setResponsePage(RecyclePage.class,new PageParameters().add("infoMsg",msg));
-			}
-		};
-		form.add(cardsPanel);
-		form.add(sacCards);
-		form.add(cardView);
-        form.add(weeksOldPanel);
-        form.add(filterButton);
-        add(form);
 	}
 
 	private void initComponents() {
-        fillFromShortlist = new AjaxLink<Object>("fillFromShortlist"){
-
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                while (sacList.size()<6 && recycleShortlistList.size()>0){
-                    ShowingCard sc = recycleShortlistList.remove(0);
-                    recycleShortlistPanel.removeChoice(sc);
-                    sacCards.addChoice(sc);
-                    sacList.add(sc);
-                    target.add(recycleShortlistPanel);
-                    target.add(sacCards);
-                }
-            }
-        };
-        add(fillFromShortlist);
         recycleAllForm = new Form("recycleAllForm"){
             @Override
             protected void onSubmit() {
@@ -196,33 +144,40 @@ public class RecyclePage extends MasterPage {
             }
         };
         add(recycleAllForm);
+
+        infoPanel = new InfoPanel("infoPanel", currentUser.isAdmin());
+        infoPanel.setOutputMarkupId(true);
+        infoPanel.setInterestListlVisible(true);
+        add(infoPanel);
+        cardView = new CardView("cardView");
+        cardView.setRarityLblVisible(true);
+        add(cardView);
         recycleShortlistPanel = new CardSelectionPanel("recycleShortlistPanel",recycleShortlistList);
         recycleShortlistPanel.listChooser.setMaxRows(19);
         recycleShortlistPanel.setPrintCheckBoxVisible(false);
         recycleShortlistPanel.setFilterVisible(false);
         recycleShortlistPanel.setOutputMarkupId(true);
         recycleShortlistPanel.markInterests(true);
-		add(recycleShortlistPanel);
-        infoPanel = new InfoPanel("infoPanel", currentUser.isAdmin());
-        infoPanel.setOutputMarkupId(true);
-        infoPanel.setInterestListlVisible(true);
-        add(infoPanel);
-        cardsPanel = new CardSelectionPanel("userCards", (ArrayList<ShowingCard>) tradeList);
-		cardsPanel.listChooser.setMaxRows(19);
-        cardsPanel.listChooser.addEventListener(infoPanel);
-		cardsPanel.setPrintCheckBoxVisible(false);
-        cardsPanel.markInterests(true);
-	    sacCards = new CardSelectionPanel("sacCards",(ArrayList<ShowingCard>) sacList);
-	    sacCards.listChooser.setMaxRows(6);
-	    sacCards.setPrintCheckBoxVisible(false);
-	    sacCards.setFilterVisible(false);
-        sacCards.setOutputMarkupId(true);
-		cardView = new CardView("cardView");
-		cardView.setRarityLblVisible(true);
-		cardsPanel.listChooser.addEventListener(cardView);
-		sacCards.listChooser.addEventListener(cardView);
         recycleShortlistPanel.listChooser.addEventListener(cardView);
         recycleShortlistPanel.listChooser.addEventListener(infoPanel);
+		add(recycleShortlistPanel);
+        dontWantRecyclePanel = new CardSelectionPanel("dontWantRecyclePanel", (ArrayList<ShowingCard>) dontWantRecycleList);
+        dontWantRecyclePanel.listChooser.setMaxRows(19);
+        dontWantRecyclePanel.setPrintCheckBoxVisible(false);
+        dontWantRecyclePanel.setFilterVisible(false);
+        dontWantRecyclePanel.setOutputMarkupId(true);
+        dontWantRecyclePanel.markInterests(true);
+        dontWantRecyclePanel.listChooser.addEventListener(cardView);
+        dontWantRecyclePanel.listChooser.addEventListener(infoPanel);
+        add(dontWantRecyclePanel);
+        cardsPanel = new CardSelectionPanel("userCards", (ArrayList<ShowingCard>) tradeList);
+		cardsPanel.listChooser.setMaxRows(19);
+		cardsPanel.setPrintCheckBoxVisible(false);
+        cardsPanel.markInterests(true);
+		cardsPanel.listChooser.addEventListener(cardView);
+        cardsPanel.listChooser.addEventListener(infoPanel);
+        add(cardsPanel);
+
         final List<String> rarity = new ArrayList<String>();
         rarity.add("common");rarity.add("uncommon");
         rarity.add("rare"); rarity.add("mythic");
@@ -245,19 +200,6 @@ public class RecyclePage extends MasterPage {
                         return 0;
                     }
                 });
-        weeksOldPanel = new PlusMinusPanel("weeksOldPanel");
-        filterButton = new AjaxLink<Object>("filterButton"){
-            @Override
-            public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-                boolean ismore = weeksOldPanel.isMore();
-                int wo = weeksOldPanel.getNumber();
-                List<ShowingCard> filteredList = currentUser.getTradingShowingCardsOlderThan(wo, ismore);
-                filteredList.removeAll(sacList);
-                tradeList=filteredList;
-                cardsPanel.setChoices(tradeList);
-                ajaxRequestTarget.add(cardsPanel);
-            }
-        };
 	}
 
 	private void initBehaviours() {
@@ -270,23 +212,20 @@ public class RecyclePage extends MasterPage {
 					List<ShowingCard> fromList, toList;
 					String senderId = ((ListChooser<ShowingCard>)sender).getParentPanel().getId();
                     ShowingCard sc = null;
-					if(senderId.equals("userCards")){
-						from = cardsPanel;
+					if(senderId.equals("dontWantRecyclePanel")){
+						from = dontWantRecyclePanel;
                         sc= (ShowingCard) from.listChooser.getDefaultModelObject();
-						to = sacCards;
-						fromList = tradeList;
-						toList = sacList;
-						if(to.getChoices().size()>=6) {
-							info("Can't sac more than 6 cards at once.");
-							target.add(feedback);
-							return target;
-						}
-					} else if(senderId.equals("sacCards")){
 						to = cardsPanel;
-						from = sacCards;
+						fromList = dontWantRecycleList;
+						toList = tradeList;
+                        sc.status = "trading";
+                        sc.UPDATE();
+					} else if(senderId.equals("recycleShortlistPanel")){
+						to = cardsPanel;
+						from = recycleShortlistPanel;
                         sc = (ShowingCard) from.listChooser.getDefaultModelObject();
 						toList = tradeList;
-						fromList = sacList;
+						fromList = recycleShortlistList;
                         usr.removeFromRecycleShortlist(sc.cardId);
                         usr.addToTrading(sc.cardId);
                         sc.status = "trading";
@@ -304,42 +243,9 @@ public class RecyclePage extends MasterPage {
 				return target;
 			}
 		};
-		sacCards.listChooser.addEventListener(trejd);
-		cardsPanel.listChooser.addEventListener(trejd);
+		dontWantRecyclePanel.listChooser.addEventListener(trejd);
+		recycleShortlistPanel.listChooser.addEventListener(trejd);
 
-        IEventListener recycle = new IEventListener() {
-            @Override
-            public AjaxRequestTarget onEvent(AjaxRequestTarget target, Object sender,
-                                             String eventType) {
-                if(eventType.equals("onDblClk")){
-                    CardSelectionPanel from, to;
-                    List<ShowingCard> fromList, toList;
-                    String senderId = ((ListChooser<ShowingCard>)sender).getParentPanel().getId();
-                    ShowingCard sc = null;
-                    if(senderId.equals("recycleShortlistPanel")){
-                        from = recycleShortlistPanel;
-                        sc= (ShowingCard) from.listChooser.getDefaultModelObject();
-                        to = sacCards;
-                        fromList = recycleShortlistList;
-                        toList = sacList;
-                        if(to.getChoices().size()>=6) {
-                            info("Can't sac more than 6 cards at once.");
-                            target.add(feedback);
-                            return target;
-                        }
-                    } else return target;
-                    if(sc==null) return target;
-                    fromList.remove(sc);
-                    from.setChoices(fromList);
-                    toList.add(sc);
-                    to.setChoices(toList);
-                    target.add(from);
-                    target.add(to);
-                }
-                return target;
-            }
-        };
-        recycleShortlistPanel.listChooser.addEventListener(recycle);
         IEventListener keyPressListener = new IEventListener() {
             @Override
             public AjaxRequestTarget onEvent(AjaxRequestTarget target,
@@ -357,16 +263,51 @@ public class RecyclePage extends MasterPage {
                             to = recycleShortlistPanel;
                             fromList = tradeList;
                             toList = recycleShortlistList;
+                            sc.status = "removing";
+                            usr.addToRecycleShortlist(sc);
+                        } else if (senderId.equals("dontWantRecyclePanel")){
+                            from = dontWantRecyclePanel;
+                            sc= (ShowingCard) from.listChooser.getDefaultModelObject();
+                            to = recycleShortlistPanel;
+                            fromList = dontWantRecycleList;
+                            toList = recycleShortlistList;
+
                         } else return target;
                         if(sc==null) return target;
                         fromList.remove(sc);
                         from.setChoices(fromList);
                         toList.add(sc);
                         to.setChoices(toList);
-                        usr.addToRecycleShortlist(sc);
-                        sc.status = "removing";
                         sc.UPDATE();
                         usr.UPDATE();
+                        target.add(from);
+                        target.add(to);
+                    }
+                    if(key.equals("1")){
+                        CardSelectionPanel from, to;
+                        List<ShowingCard> fromList, toList;
+                        String senderId = ((ListChooser<ShowingCard>)sender).getParentPanel().getId();
+                        ShowingCard sc = null;
+                        if (senderId.equals("userCards")){
+                            from = cardsPanel;
+                            sc= (ShowingCard) from.listChooser.getDefaultModelObject();
+                            to = dontWantRecyclePanel;
+                            fromList = tradeList;
+                            toList = dontWantRecycleList;
+                            sc.status = "trading!";
+                        } else if(senderId.equals("recycleShortlistPanel")){
+                            from = recycleShortlistPanel;
+                            sc= (ShowingCard) from.listChooser.getDefaultModelObject();
+                            to = dontWantRecyclePanel;
+                            fromList = recycleShortlistList;
+                            toList = dontWantRecycleList;
+                        } else return target;
+                        if(sc==null) return target;
+                        fromList.remove(sc);
+                        from.setChoices(fromList);
+                        toList.add(sc);
+                        to.setChoices(toList);
+                        sc.UPDATE();
                         target.add(from);
                         target.add(to);
                     }
