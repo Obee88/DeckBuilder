@@ -33,7 +33,8 @@ public class MarketCardView extends Panel {
     private Label biddersNumLbl, hatersNumLbl;
     private Label priceLbl;
     private final int price;
-    private AjaxLink bidForm, hateForm;
+    private AjaxLink bidLink, hateLink;
+    private Form hateForm;
     private Label timeLbl;
     private Label nameLbl;
     private ListView bidsList, hatersList;
@@ -59,7 +60,7 @@ public class MarketCardView extends Panel {
     }
 
     private void initForms() {
-        this.bidForm = new AjaxLink("bidForm"){
+        this.bidLink = new AjaxLink("bidForm"){
             @Override
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 String message = card.bid(user.getUserName(),price);
@@ -73,9 +74,26 @@ public class MarketCardView extends Panel {
                 return !card.listHaters().contains(user.getUserName()) && (lastBidder==null || !lastBidder.equals(user.getUserName())) && user.getJadAvailableForBidding()>=price;
             }
         };
-        add(bidForm);
+        add(bidLink);
 
-        this.hateForm = new AjaxLink("hateForm"){
+        this.hateForm = new Form("hateForm"){
+
+            @Override
+            protected void onSubmit() {
+                super.onSubmit();
+                card.hate(user.getUserName());
+                masterPage.info(user.getMarketStatusMessage());
+                setResponsePage(MarketPage.class);
+            }
+
+            @Override
+            public boolean isVisible() {
+                return !card.listHaters().contains(user.getUserName()) && card.bids.isEmpty() && card.listHaters().size()==4;
+            }
+        };
+        add(hateForm);
+
+        this.hateLink = new AjaxLink("hateLink") {
             @Override
             public void onClick(AjaxRequestTarget ajaxRequestTarget) {
                 card.hate(user.getUserName());
@@ -85,10 +103,10 @@ public class MarketCardView extends Panel {
 
             @Override
             public boolean isVisible() {
-                return !card.listHaters().contains(user.getUserName()) && card.bids.isEmpty();
+                return !card.listHaters().contains(user.getUserName()) && card.bids.isEmpty() && card.listHaters().size()!=4;
             }
         };
-        add(hateForm);
+        add(hateLink);
     }
 
     private void initComponents() {

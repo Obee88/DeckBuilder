@@ -140,7 +140,7 @@ public class CardMarket {
             int cardInfoId= new Random().nextInt(cardInfoCount-1)+1;
             ci = MongoHandler.getInstance().getCardInfo(cardInfoId);
         }
-        MarketCard c = new MarketCard(id,ci);
+        MarketCard c = new MarketCard(id, ci);
         c.UPDATE();
     }
 
