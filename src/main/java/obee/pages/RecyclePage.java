@@ -106,6 +106,7 @@ public class RecyclePage extends MasterPage {
                 dontWantRecycleList.add(sc);
             }
         tradeList.removeAll(dontWantRecycleList);
+        tradeList.removeAll(recycleShortlistList);
         wlc.checkList(tradeList);
 	}
 
