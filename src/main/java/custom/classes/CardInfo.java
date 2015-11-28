@@ -22,6 +22,7 @@ public class CardInfo {
         rarity = obj.get("rarity").toString();
         artist = obj.get("artist").toString();
         edition = obj.get("edition").toString();
+        id=(Integer)obj.get("id");
         convertedManaCost = Integer.parseInt(obj.get("convertedManaCost").toString());
         try {
             isTwoSided = getBool(obj.get("isTwoSided").toString());
