@@ -161,7 +161,7 @@ public class RecyclePage extends MasterPage {
         dontWantRecyclePanel = new CardSelectionPanel("dontWantRecyclePanel", (ArrayList<ShowingCard>) dontWantRecycleList);
         dontWantRecyclePanel.listChooser.setMaxRows(19);
         dontWantRecyclePanel.setPrintCheckBoxVisible(false);
-        dontWantRecyclePanel.setFilterVisible(false);
+        dontWantRecyclePanel.setFilterVisible(true);
         dontWantRecyclePanel.setOutputMarkupId(true);
         dontWantRecyclePanel.markInterests(true);
         dontWantRecyclePanel.listChooser.addEventListener(cardView);
