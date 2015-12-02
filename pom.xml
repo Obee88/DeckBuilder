@@ -23,15 +23,8 @@
 	<groupId>obee</groupId>
 	<artifactId>DeckBuilder</artifactId>
 	<packaging>war</packaging>
-		<!-- TODO project name  -->
 	<name>DeckBuilder</name>
 	<description></description>
-	<!--
-		<organization>
-			<name>company name</name>
-			<url>company url</url>
-		</organization>
-	-->
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -66,11 +59,6 @@
             <artifactId>wicket-dnd</artifactId>
             <version>0.6.0</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>javax</groupId>-->
-            <!--<artifactId>javaee-api</artifactId>-->
-            <!--<version>6.0</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>

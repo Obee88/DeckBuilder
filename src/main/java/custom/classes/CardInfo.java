@@ -22,7 +22,7 @@ public class CardInfo {
         rarity = obj.get("rarity").toString();
         artist = obj.get("artist").toString();
         edition = obj.get("edition").toString();
-        id=(Integer)obj.get("id");
+        id=obj.get("id")==null?this.fixId():(Integer)obj.get("id");
         convertedManaCost = Integer.parseInt(obj.get("convertedManaCost").toString());
         try {
             isTwoSided = getBool(obj.get("isTwoSided").toString());
@@ -37,7 +37,15 @@ public class CardInfo {
         rarityInt = obj.get("rarity_int") == null ? calcRarityInt() : (Integer) obj.get("rarity_int");
     }
 
-	private Boolean getBool(String string) {
+    private int fixId() {
+        int id = mongo.getNextCardInfoId();
+        BasicDBObject q = new BasicDBObject("name",name);
+        q.append("id",new BasicDBObject("$exists", false));
+        mongo.cardInfoCollection.update(q, toDBObject(),false,false);
+        return id;
+    }
+
+    private Boolean getBool(String string) {
 		if (string.toLowerCase().equals("true"))
 			return true;
 		return false;
@@ -61,11 +69,11 @@ public class CardInfo {
     }
 
     public void UPDATE(){
-        mongo.cardInfoCollection.update(getQ(), toDBObject());
+        mongo.cardInfoCollection.update(getQ(), toDBObject(),true, true);
     }
 
     public DBObject getQ() {
-        return new BasicDBObject("id", id);
+        return new BasicDBObject("name", name);
     }
 
     public boolean hasColor(String c) {

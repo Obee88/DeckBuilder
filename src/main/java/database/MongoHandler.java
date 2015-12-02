@@ -26,11 +26,14 @@ public class MongoHandler implements Serializable {
     private final String SUCESSFULL_PROPOSALS_COLLECTION_NAME = "statistics";
     private final String BIDS_WON_COLLECTION_NAME = "bidsWon";
     private final String MARKET_COLLECTION_NAME = "market" ;
-	
-	private MongoClient client;
+    private final String TOKENS_COLLECTION_NAME = "tokens" ;
+    private final String INVOICES_COLLECTION_NAME = "invoices" ;
+
+    private MongoClient client;
 	private DB base;
 	public DBCollection usersCollection, cardsCollection, cardInfoCollection, adminCollection, statisticsCollection,
-            sucessfullProposalsCollections, marketCollection, bidsWonCollection;
+            sucessfullProposalsCollections, marketCollection, bidsWonCollection, tokensCollection, invoicesCollection;
+    private List<Invoice> allInvoices;
 
 
     private MongoHandler(){
@@ -46,6 +49,8 @@ public class MongoHandler implements Serializable {
             marketCollection = base.getCollection(MARKET_COLLECTION_NAME);
             sucessfullProposalsCollections = base.getCollection(SUCESSFULL_PROPOSALS_COLLECTION_NAME);
             bidsWonCollection = base.getCollection(BIDS_WON_COLLECTION_NAME);
+            tokensCollection = base.getCollection(TOKENS_COLLECTION_NAME);
+            invoicesCollection = base.getCollection(INVOICES_COLLECTION_NAME);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
@@ -734,5 +739,19 @@ public class MongoHandler implements Serializable {
                 new BasicDBObject("name",cardName),
                 new BasicDBObject("hated",true)
         ).get("hated");
+    }
+
+    public int getNextCardInfoId() {
+        return ((Integer) cardInfoCollection.find().sort(new BasicDBObject("id", -1)).limit(1).next().get("id"))+1;
+    }
+
+    public List<Invoice> getAllInvoices() {
+        List<Invoice> ret = new ArrayList<Invoice>();
+        DBCursor cur = invoicesCollection.find().sort(new BasicDBObject("date",-1));
+        while (cur.hasNext()){
+            DBObject o = cur.next();
+            ret.add(new Invoice(o));
+        }
+        return ret;
     }
 }

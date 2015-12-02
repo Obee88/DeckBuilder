@@ -125,6 +125,7 @@ public class MasterPage extends WebPage{
 		list.add(new Page("DeckPrint","USER",DeckPrint.class));
 		list.add(new Page("Decks","USER",DecksPage.class));
 		list.add(new Page("Market", "SHOPPER", MarketPage.class));
+		list.add(new Page("Cashier", "CASHIER", CashierPage.class));
 		return list;
 	}
 

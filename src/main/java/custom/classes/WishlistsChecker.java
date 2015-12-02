@@ -33,8 +33,8 @@ public class WishlistsChecker {
         interestMap.put(cardName, userName);
     }
 
-    public void checkList(List<ShowingCard> tradeList) {
-        for (ShowingCard sc: tradeList)
+    public void checkList(List<ShowingCard> cardsList) {
+        for (ShowingCard sc: cardsList)
             sc.setInterestList(getInterestedUserNames(sc.name));
     }
 

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+</head>
+<body>
+    <wicket:extend>
+        <table>
+            <tr style="height: 380px	">
+                <td>
+                    <div >
+                        <form wicket:id="form" style="margin-top: 0px; margin-bottom: 0px">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="well" style="padding:0px; margin-right: 15px; margin-top:10px ">
+                                            <table>
+                                                <tr>
+                                                    <td>jad amount: </td><td><input wicket:id="jadAmountInput" type="number" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>users: </td><td><span wicket:id="usersCheckGroup" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>comment: </td><td><input wicket:id="commentTextInput" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td><td><input type="submit" /> </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <style>
+                                            .ll{
+                                                margin-right:40px;
+                                            }
+                                        </style>
+                                        <table class="table">
+                                            <tr>
+                                                <td>Date</td>
+                                                <td>Jad </td>
+                                                <td>Users</td>
+                                                <td>Comment</td>
+                                            </tr>
+                                            <tr wicket:id="invoices">
+                                                <td><label wicket:id="dateLbl" class="ll"/></td>
+                                                <td><label wicket:id="amountLbl" class="ll"/></td>
+                                                <td><label wicket:id="usersLbl" class="ll"/></td>
+                                                <td><label wicket:id="commentLbl" class="ll"/></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    </wicket:extend>
+</body>
+</html>
