@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@AuthorizeInstantiation("ADMIN")
+@AuthorizeInstantiation("USER")
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class RecyclePage extends MasterPage {
 	private static final long serialVersionUID = 1L;
