@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@AuthorizeInstantiation("USER")
+@AuthorizeInstantiation("ADMIN")
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class RecyclePage extends MasterPage {
 	private static final long serialVersionUID = 1L;
@@ -261,6 +261,7 @@ public class RecyclePage extends MasterPage {
                             sc= (ShowingCard) from.listChooser.getDefaultModelObject();
                             to = recycleShortlistPanel;
                             fromList = tradeList;
+                            if (!fromList.contains(sc)) return target;
                             toList = recycleShortlistList;
                             sc.status = "removing";
                             usr.addToRecycleShortlist(sc);
@@ -269,6 +270,7 @@ public class RecyclePage extends MasterPage {
                             sc= (ShowingCard) from.listChooser.getDefaultModelObject();
                             to = recycleShortlistPanel;
                             fromList = dontWantRecycleList;
+                            if (!fromList.contains(sc)) return target;
                             toList = recycleShortlistList;
 
                         } else return target;
@@ -292,6 +294,7 @@ public class RecyclePage extends MasterPage {
                             sc= (ShowingCard) from.listChooser.getDefaultModelObject();
                             to = dontWantRecyclePanel;
                             fromList = tradeList;
+                            if (!fromList.contains(sc)) return target;
                             toList = dontWantRecycleList;
                             sc.status = "trading";
                             usr.addToDontWantRecycle(sc);
@@ -300,6 +303,7 @@ public class RecyclePage extends MasterPage {
                             sc= (ShowingCard) from.listChooser.getDefaultModelObject();
                             to = dontWantRecyclePanel;
                             fromList = recycleShortlistList;
+                            if (!fromList.contains(sc)) return target;
                             toList = dontWantRecycleList;
                         } else return target;
                         if(sc==null) return target;
