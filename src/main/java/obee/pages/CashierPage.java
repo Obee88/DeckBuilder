@@ -55,13 +55,14 @@ public class CashierPage extends MasterPage{
                 item.add(new Label("commentLbl", inv.getComment()));
             }
         };
-        form.add(invoicesView);
+        add(invoicesView);
         commentTextInput = new TextField<String>("commentTextInput", new Model<String>());
         form.add(commentTextInput);
         jadAmountInput = new NumberTextField<Integer>("jadAmountInput", new Model(0));
         form.add(jadAmountInput);
         usersCheckGroup =  new MyCheckGroup<String>("usersCheckGroup",new Model(userchoices), USERS);
         form.add(usersCheckGroup);
+        form.setVisible(currentUser.hasRole("CASHIER"));
     }
 
     private void initForms() {

@@ -8,6 +8,8 @@ import database.MongoHandler;
 import obee.SignInSession;
 import obee.WicketApplication;
 import obee.pages.*;
+import obee.pages.tokens.EditToken;
+import obee.pages.tokens.TokensPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -125,7 +127,8 @@ public class MasterPage extends WebPage{
 		list.add(new Page("DeckPrint","USER",DeckPrint.class));
 		list.add(new Page("Decks","USER",DecksPage.class));
 		list.add(new Page("Market", "SHOPPER", MarketPage.class));
-		list.add(new Page("Cashier", "CASHIER", CashierPage.class));
+		list.add(new Page("Cashier", "USER", CashierPage.class));
+		list.add(new Page("Tokens", "USER", TokensPage.class));
 		return list;
 	}
 

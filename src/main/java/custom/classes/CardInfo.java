@@ -34,7 +34,7 @@ public class CardInfo {
         } catch (Exception ignorable) {
             numOfColors = 0;
         }
-        rarityInt = obj.get("rarity_int") == null ? calcRarityInt() : (Integer) obj.get("rarity_int");
+        rarityInt = obj.get("rarity_int") == null ? calcRarityInt() : Integer.parseInt(obj.get("rarity_int").toString());
     }
 
     private int fixId() {

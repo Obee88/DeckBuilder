@@ -11,26 +11,26 @@ public class Token {
 
     private String color;
     private String type, name, url;
-    private String att, def;
+    private String stats, text;
     private Integer id;
 
-    public Token(String name, String url, String color, String type, String att, String def) {
+    public Token(String name, String url, String color, String type, String stats, String text) {
         this.color = color;
         this.type = type;
         this.url = url;
         this.name = name;
-        this.att = att;
-        this.def = def;
+        this.stats = stats;
+        this.text = text;
         this.id = getNextId();
     }
 
-    public Token(String name, String url, String color, String type, String att, String def, Integer id) {
+    public Token(String name, String url, String color, String type, String stats, String text, Integer id) {
         this.color = color;
         this.type = type;
         this.url = url;
+        this.text = text;
         this.name = name;
-        this.att = att;
-        this.def = def;
+        this.stats = stats;
         this.id = id;
     }
     
@@ -41,8 +41,8 @@ public class Token {
         r.append("url",url);
         r.append("color",color);
         r.append("type",type);
-        r.append("att",att);
-        r.append("def",def);
+        r.append("text",text);
+        r.append("stats",stats);
         return r;
     }
 
@@ -66,8 +66,8 @@ public class Token {
                 obj.get("url").toString(),
                 obj.get("color").toString(),
                 obj.get("type").toString(),
-                obj.get("att").toString(),
-                obj.get("def").toString(),
+                obj.get("stats").toString(),
+                obj.get("text").toString(),
                 (Integer)obj.get("id")
             );
     }

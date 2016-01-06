@@ -46,6 +46,8 @@ public class ListChooser<T> extends ListChoice<T>{
 		sort((Comparator<T>) new Comparator<ShowingCard>() {
 			@Override
 			public int compare(ShowingCard o1, ShowingCard o2) {
+				if (o2==null) return 1;
+				if (o1==null) return -1;
 				if(o1.cardId>o2.cardId) return 1;
 				if(o1.cardId<o2.cardId) return -1;
 				return 0;
