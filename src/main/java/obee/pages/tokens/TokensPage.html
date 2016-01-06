@@ -4,7 +4,44 @@
 </head>
 <body>
 <wicket:extend>
-   <div id="content"></div>
+    <style>
+        .tokens-board {
+            float: left;
+            clear: left;
+            display: block;
+        }
+
+        .token-view {
+            float: left;
+            margin: 3px;
+        }
+
+        .selected-token {
+            border: solid red 2px;
+            margin: 1px;
+        }
+
+        .selected-token-preview {
+            float: left;
+            width: 256px;
+        }
+
+        .print-paper{
+            margin-left:20px;
+            width: 370px;
+            height:250px;
+            border-left: solid black 1px;
+            border-bottom: solid black 2px;
+            border-top: solid black 1px;
+            border-right: solid black 2px;
+            padding: 10px 15px 10px 15px;
+        }
+
+        .print-button {
+
+        }
+    </style>
+   <div id="tokens-content"></div>
 
 </wicket:extend>
 </body>

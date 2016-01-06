@@ -1,0 +1,32 @@
+{
+  "name": "tokens-page",
+  "version": "1.0.0",
+  "description": "tokens page for Deck Builder with npm as build tool",
+  "main": "index.js",
+  "scripts": {
+    "watch-js": "watchify components/tokens-page.js --debug  -t babelify -v  --outfile ./../TokensPage.js",
+    "server": "http-server ./build -s -c-1 -p 8888",
+    "dev": "npm run watch-js"
+  },
+  "author": "Davor Obilinovic",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^5.0.12",
+    "babelify": "^6.0.2",
+    "bootstrap": "^3.3.5",
+    "browserify": "latest",
+    "http-server": "^0.8.0",
+    "jquery": "^2.1.4",
+    "react": "^0.13.1",
+    "uglifyify": "^3.0.1",
+    "watchify": "^3.1.0",
+    "watchy": "^0.6.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Obee88/minesweeper-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Obee88/minesweeper-react/issues"
+  }
+}

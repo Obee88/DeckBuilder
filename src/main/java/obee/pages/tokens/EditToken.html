@@ -4,8 +4,25 @@
 </head>
 <body>
 <wicket:extend>
-   <div id="tokens-content"></div>
-
+   <table>
+      <tr>
+         <td>
+            <form wicket:id="form">
+               id: <input wicket:id="id" /> <br/>
+               name: <input wicket:id="name" /><br/>
+               stats: <input wicket:id="stats" /><br/>
+               color: <input wicket:id="color" /><br/>
+               type: <input wicket:id="type" /><br/>
+               text: <input wicket:id="text" /><br/>
+               url: <input wicket:id="url" /><br/>
+               <input type="submit" value="submit" />
+            </form>
+         </td>
+         <td>
+            <img src="#" wicket:id="image" >
+         </td>
+      </tr>
+   </table>
 </wicket:extend>
 </body>
 </html>
