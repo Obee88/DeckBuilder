@@ -6,9 +6,9 @@
     <wicket:extend>
         <h4 style="text-aligh:center">Jad rewards for attending Magic 'the jad' gatherings.</h4>
         <table>
-            <tr style="height: 380px	">
+            <tr style="height: 380px">
                 <td>
-                    <div >
+                    <div  >
                         <table>
                             <tr>
                                 <td>
@@ -37,20 +37,22 @@
                                             margin-right:40px;
                                         }
                                     </style>
-                                    <table class="table">
-                                        <tr>
-                                            <td>Date</td>
-                                            <td>Jad </td>
-                                            <td>Users</td>
-                                            <td>Comment</td>
-                                        </tr>
-                                        <tr wicket:id="invoices">
-                                            <td><label wicket:id="dateLbl" class="ll"/></td>
-                                            <td><label wicket:id="amountLbl" class="ll"/></td>
-                                            <td><label wicket:id="usersLbl" class="ll"/></td>
-                                            <td><label wicket:id="commentLbl" class="ll"/></td>
-                                        </tr>
-                                    </table>
+                                    <div style="height:500px; overflow-y:auto;">
+                                        <table class="table"  >
+                                            <tr>
+                                                <td>Date</td>
+                                                <td>Jad </td>
+                                                <td>Users</td>
+                                                <td>Comment</td>
+                                            </tr>
+                                            <tr wicket:id="invoices">
+                                                <td><label wicket:id="dateLbl" class="ll"/></td>
+                                                <td><label wicket:id="amountLbl" class="ll"/></td>
+                                                <td><label wicket:id="usersLbl" class="ll"/></td>
+                                                <td><label wicket:id="commentLbl" class="ll"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
