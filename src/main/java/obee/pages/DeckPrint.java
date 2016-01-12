@@ -79,7 +79,7 @@ public class DeckPrint extends MasterPage {
                 List<Slika> pages = new ArrayList<Slika>();
                 for (String line : lines){
                     if(line.trim().length()==0) continue;
-                    String cardName = getNameFromLine(line);
+                    String cardName = getNameFromLine(line).trim();
                     if (cardName.startsWith("#")) {
                         int id = Integer.parseInt(cardName.substring(1));
                         cardName = mongo.getCardInfo(id).name;
