@@ -22,8 +22,8 @@ class TokensPage extends React.Component {
 	}
 
 	refreshTokens(filter){
-		// var url = "http://localhost:8081/DeckBuilderApi/tokens?filter="+filter;
-		var url = "http://185.53.129.19:8080/server-rest/DeckBuilderApi/tokens?filter="+filter;
+//		var url = "http://185.53.129.19:8080/server-rest/DeckBuilderApi/tokens?filter="+filter;
+		 var url = "http://localhost:8081/DeckBuilderApi/tokens?filter="+filter;
 		var self = this;
 		var onTokensRecived = function(tokens){
 			self.setState({tokens:tokens, "filter":filter});
@@ -58,8 +58,8 @@ class TokensPage extends React.Component {
 		this.state.selectedTokens.forEach(function(model){
 			arr.push(model["id"]);
 		});
-		// var url = "http://localhost:8081/DeckBuilderApi/tokens/print?arr="+arr.toString();
-		var url = "http://185.53.129.19:8080/server-rest/DeckBuilderApi/tokens/print?arr="+arr.toString();
+		 var url = "http://localhost:8081/DeckBuilderApi/tokens/print?arr="+arr.toString();
+//		var url = "http://185.53.129.19:8080/server-rest/DeckBuilderApi/tokens/print?arr="+arr.toString();
 		var win = window.open(url);
   		win.focus();
 	}
