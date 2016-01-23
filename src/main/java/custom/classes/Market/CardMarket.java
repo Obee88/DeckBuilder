@@ -12,7 +12,7 @@ import java.util.*;
  * Created by Obee on 09/11/15.
  */
 public class CardMarket {
-    public static Integer MARKET_SIZE = 20; // Mora biti djeljivo sa CARDS_PER_ROW!!
+    public static Integer MARKET_SIZE = 25; // Mora biti djeljivo sa CARDS_PER_ROW!!
     private final String userName;
     List<MarketCard> cards;
     private Comparator<MarketCard> bidsUpHatesDown, expirationDesc;
