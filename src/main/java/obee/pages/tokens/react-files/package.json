@@ -21,12 +21,5 @@
     "uglifyify": "^3.0.1",
     "watchify": "^3.1.0",
     "watchy": "^0.6.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Obee88/minesweeper-react.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Obee88/minesweeper-react/issues"
   }
 }

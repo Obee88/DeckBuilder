@@ -700,7 +700,7 @@ public class MongoHandler implements Serializable {
     }
 
     public String getCardOwnersAsString(String cardName) {
-        DBCursor cur = cardsCollection.find(new BasicDBObject("cardInfo.name",cardName), new BasicDBObject("owner",true));
+        DBCursor cur = cardsCollection.find(new BasicDBObject("cardInfo.name",cardName), new BasicDBObject("owner",true).append("status",true));
         StringBuilder sb = new StringBuilder();
         boolean first = true;
         while(cur.hasNext()){
@@ -709,6 +709,8 @@ public class MongoHandler implements Serializable {
                 sb.append(", ");
             } else first=false;
             sb.append(dbo.get("owner").toString());
+            if (dbo.get("status").equals("trading"))
+                sb.append("!");
         }
         return sb.toString();
     }
@@ -751,6 +753,17 @@ public class MongoHandler implements Serializable {
         while (cur.hasNext()){
             DBObject o = cur.next();
             ret.add(new Invoice(o));
+        }
+        return ret;
+    }
+
+    public List<Card> getCards(String cardName) {
+        Integer ciId = (Integer) cardInfoCollection.findOne(new BasicDBObject("name",cardName)).get("id");
+        DBCursor cur = cardsCollection.find(new BasicDBObject("cardInfoId",ciId));
+        List<Card> ret = new ArrayList<Card>();
+        while(cur.hasNext()){
+            DBObject o = cur.next();
+            ret.add(new Card(o));
         }
         return ret;
     }

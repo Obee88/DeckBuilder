@@ -8,7 +8,6 @@ import database.MongoHandler;
 import obee.SignInSession;
 import obee.WicketApplication;
 import obee.pages.*;
-import obee.pages.tokens.EditToken;
 import obee.pages.tokens.TokensPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;

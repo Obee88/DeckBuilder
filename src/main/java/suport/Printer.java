@@ -30,7 +30,7 @@ public class Printer {
 		for(int i=0; i<8; i++){
 			try{
 				ShowingCard sc = list.get(i);
-				prednje.add(getSlikaFromUrl(sc.cardInfo.downloadLink, sc.name));
+				prednje.add(getSlikaFromUrl(sc.cardInfo.getLinkForDownloading(), sc.name));
 			}catch(IndexOutOfBoundsException ex){
 				prednje.add(getBlank());
 			}
@@ -44,7 +44,7 @@ public class Printer {
         for(int i=0; i<8; i++){
             try{
                 CardInfo sc = list.get(i);
-                prednje.add(getSlikaFromUrl(sc.downloadLink, sc.name));
+                prednje.add(getSlikaFromUrl(sc.getLinkForDownloading(), sc.name));
             }catch(IndexOutOfBoundsException ex){
                 prednje.add(getBlank());
             }

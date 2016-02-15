@@ -6,6 +6,7 @@ import com.mongodb.DBObject;
 import database.MongoHandler;
 
 public class CardInfo {
+    private final String _id;
     private int numOfColors;
     public String downloadLink,text,name,type,manaCost,rarity,artist,edition,subType;
 	public boolean isTwoSided;
@@ -21,6 +22,7 @@ public class CardInfo {
         manaCost = obj.get("manaCost").toString();
         rarity = obj.get("rarity").toString();
         artist = obj.get("artist").toString();
+        _id = obj.get("_id").toString();
         edition = obj.get("edition").toString();
         id=obj.get("id")==null?this.fixId():(Integer)obj.get("id");
         convertedManaCost = Integer.parseInt(obj.get("convertedManaCost").toString());
@@ -93,5 +95,9 @@ public class CardInfo {
                 return i;
         }
         return 99;
+    }
+
+    public String getLinkForDownloading() {
+        return "127.0.0.1/images/" +_id+".jpg";
     }
 }
