@@ -98,6 +98,6 @@ public class CardInfo {
     }
 
     public String getLinkForDownloading() {
-        return "127.0.0.1/images/" +_id+".jpg";
+        return "http://127.0.0.1/images/" +_id+".jpg";
     }
 }
