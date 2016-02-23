@@ -3,41 +3,18 @@
 <head>
 </head>
 <body>
-    <wicket:extend>
-        <label wicket:id="dateLabel"/>
-    	<br/>
-    	<table>
-    		<tr>
-    			<td>
-                    <img wicket:id="dailyGroupVisitsChart" style="display:none">
-                    <span wicket:id="proposalsPanel"/>
-    			</td>
-                <td>
-                    <table>
-                        <tr>
-                            <td>
-                                <!--<select wicket:id = "userChooser"></select>-->
-                            </td>
-                            <td>
-                                all trades       <br/>
-                                <select wicket:id="allTrades"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <!--<span wicket:id="tradesPanel"></span>-->
-                            </td>
-                            <td>
-                                screwd trades      <br/>
-                                <select wicket:id="screwdTrades"/>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-    	</table>
-   		
-   		
-    </wicket:extend>
+<wicket:extend>
+    <div id="chartContainer" style="height: 600px; width: 100%;margin-bottom:30px">
+    </div>
+    <table id="tabla" class="table table-condensed">
+        <tr>
+            <td>USER NAME</td>
+            <td>BIDS WON</td>
+            <td>JAD SPENT</td>
+        </tr>
+    </table>
+
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+</wicket:extend>
 </body>
 </html>

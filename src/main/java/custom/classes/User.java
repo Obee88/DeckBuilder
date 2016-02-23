@@ -617,13 +617,23 @@ public class User extends MongoObject implements Serializable{
     }
 
     public List<ShowingCard> getRecycleShortlistShowingCards(){
-        List<ShowingCard> ret = new ArrayList<ShowingCard>();
-        for (Integer id: recycleShortlist) {
-            ShowingCard sc =  mongo.getShowingCard(id);
-            if (sc!=null)
-                ret.add(sc);
-        }
-        return ret;
+		List<ShowingCard> ret = new ArrayList<ShowingCard>();
+		Integer broken_id = null; // in case we find something broken
+		try{
+			for (Integer id: recycleShortlist) {
+				ShowingCard sc =  mongo.getShowingCard(id);
+				if (sc!=null)
+					ret.add(sc);
+				else {
+					broken_id = id;
+					throw new Exception("card with id: "+id);
+				}
+			}
+		} catch (Exception e){
+			removeFromRecycleShortlist(broken_id);
+			UPDATE();
+		}
+		return ret;
     }
 
     public boolean removeFromRecycleShortlist(Integer cardId) {
@@ -734,10 +744,21 @@ public class User extends MongoObject implements Serializable{
 
 	public List<ShowingCard> getDontWantRecycleShowingCards(){
 		List<ShowingCard> ret = new ArrayList<ShowingCard>();
-		for (Object obj : getDontWantRecycleIds()){
-			Integer id = (Integer)obj;
-			ShowingCard sc = mongo.getShowingCard(id);
-			ret.add(sc);
+		Integer broken_id = null; // in case we find something broken
+		try{
+			for (Object obj: getDontWantRecycleIds()) {
+				Integer id  = (Integer)obj;
+				ShowingCard sc =  mongo.getShowingCard(id);
+				if (sc!=null)
+					ret.add(sc);
+				else {
+					broken_id = id;
+					throw new Exception("card with id: "+id);
+				}
+			}
+		} catch (Exception e){
+			removeFromDontWantRecycle(broken_id);
+			UPDATE();
 		}
 		return ret;
 	}

@@ -174,7 +174,7 @@ public class QueryPage extends MasterPage{
 
             @Override
             public boolean isVisible() {
-                return super.isVisible() && currentUser.isAdmin();
+                return super.isVisible();
             }
         };
         colorNumPanel.setText("Color num:");

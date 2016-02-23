@@ -166,10 +166,14 @@ public class ListChooser<T> extends ListChoice<T>{
 		String bc = "background-color:";
 		StringBuilder sb = new StringBuilder();
 		sb.append(" style=\"");
-		if(sc.hasInterests())
-			sb.append(bc).append("#F5A9A9;");
-		else
-			sb.append("inherit");
+		try{
+			if(sc.hasInterests())
+				sb.append(bc).append("#F5A9A9;");
+			else
+				sb.append("inherit");
+		} catch (Exception e){
+			System.out.println();
+		}
 		sb.append("\"");
 		return sb.toString();
 	}

@@ -121,13 +121,15 @@ public class MasterPage extends WebPage{
 		list.add(new Page("Malfunctions","ADMIN",MalfunctionsPage.class));
 		list.add(new Page("Admin", "ADMIN", AdminPage.class));
         list.add(new Page("Profile","USER",ProfilePage.class));
-        list.add(new Page("Stats", "STATS", StatsPage.class));
+//        list.add(new Page("Trades", "ADMIN", TradesPage.class));
         list.add(new Page("Store","USER",StorePage.class));
 		list.add(new Page("DeckPrint","USER",DeckPrint.class));
 		list.add(new Page("Decks","USER",DecksPage.class));
 		list.add(new Page("Market", "SHOPPER", MarketPage.class));
 		list.add(new Page("Cashier", "USER", CashierPage.class));
 		list.add(new Page("Tokens", "USER", TokensPage.class));
+		list.add(new Page("Stats", "USER", StatsPage.class));
+
 		return list;
 	}
 
