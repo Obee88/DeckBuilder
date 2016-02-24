@@ -301,7 +301,7 @@ public class MalfunctionsPage extends MasterPage {
 		form.add(inListNotOwnerPanel);
 		infoPanel = new InfoPanel("infoPanel",currentUser.getRoles().contains("ADMIN"));
 		form.add(infoPanel);
-		image = new CardView("image");
+		image = new CardView("image", currentUser.isInHackerMode());
 		form.add(image);
         checkOwnerNotInListButton = new AjaxLink<Object>("checkOwnerNotInListButton"){
             @Override

@@ -146,7 +146,7 @@ public class RecyclePage extends MasterPage {
         infoPanel.setOutputMarkupId(true);
         infoPanel.setInterestListlVisible(true);
         add(infoPanel);
-        cardView = new CardView("cardView");
+        cardView = new CardView("cardView", currentUser.isInHackerMode());
         cardView.setRarityLblVisible(true);
         add(cardView);
         recycleShortlistPanel = new CardSelectionPanel("recycleShortlistPanel",recycleShortlistList);

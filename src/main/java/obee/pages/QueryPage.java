@@ -80,7 +80,7 @@ public class QueryPage extends MasterPage{
 
     private void initComponents(PageParameters params) {
         infoPanel=new InfoPanel("panel",currentUser.getRoles().contains("ADMIN"));
-        cardView = new CardView("cardView");
+        cardView = new CardView("cardView", currentUser.isInHackerMode());
         nameTbx= new TextField<String>("component",new Model<String>());
         nameTbx.setOutputMarkupId(true);
         textTbx= new TextField<String>("component",new Model<String>());

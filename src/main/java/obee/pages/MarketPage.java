@@ -34,7 +34,7 @@ public class MarketPage extends MasterPage {
                     @Override
                     protected void populateItem(ListItem cellItem) {
                         MarketCard card = (MarketCard) cellItem.getModelObject();
-                        cellItem.add(new MarketCardView("cardPanel", card, currentUser, self));
+                        cellItem.add(new MarketCardView("cardPanel", card, currentUser, self, currentUser.isInHackerMode()));
                     }
                 });
 

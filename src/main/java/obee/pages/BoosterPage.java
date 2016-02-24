@@ -278,7 +278,7 @@ public class BoosterPage extends MasterPage{
 	private void initComponents() {
 		infoPanel=new InfoPanel("panel",u.hasRole("ADMIN"));
         infoPanel.setPurposeLabelVisible(false);
-		cardView = new CardView("cardView");
+		cardView = new CardView("cardView", currentUser.isInHackerMode());
 		boosterPanel = new CardSelectionPanel("boosterPanel", booster) ;
 		boosterPanel.listChooser.setMaxRows(18);
 		goodChoice = new CardSelectionPanel("goodList", using); 

@@ -17,7 +17,9 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import suport.ImageConverter;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -27,6 +29,7 @@ import java.util.List;
 public class MarketCardView extends Panel {
 
     private final MarketCard card;
+    private boolean hackerMode;
     private MasterPage masterPage;
     private ImageWindow view;
     private User user;
@@ -42,6 +45,27 @@ public class MarketCardView extends Panel {
 
     public MarketCardView(String id, final MarketCard card, User user, MasterPage masterPage) {
         super(id);
+        this.hackerMode = false;
+        this.card = card;
+        this.price = card.getPrice();
+        this.user = user;
+        this.self = this;
+        this.masterPage = masterPage;
+        setOutputMarkupId(true);
+
+        add(new AttributeAppender("class", new Model(card.userActionStatus(user.getUserName())), " "));
+        if (card.isNewToPlayer(user.getUserName())){
+            add(new AttributeAppender("class", new Model("new"), " "));
+        }
+
+        initComponents();
+        initForms();
+        card.userSawCard(user.getUserName());
+    }
+
+    public MarketCardView(String id, final MarketCard card, User user, MasterPage masterPage, boolean hackerMode) {
+        super(id);
+        this.hackerMode = hackerMode;
         this.card = card;
         this.price = card.getPrice();
         this.user = user;
@@ -128,8 +152,14 @@ public class MarketCardView extends Panel {
         this.priceLbl.setOutputMarkupId(true);
         add(priceLbl);
 
-        this.view = new ImageWindow("view", new Model<String>(card.getImageUrl().toString()), null);
-        this.view.setUrl(card.getImageUrl());
+        String imgSrc = null;
+        try {
+            imgSrc = hackerMode ? ImageConverter.getBase64(card.getLinkForDownloading()) : card.getImageUrl();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.view = new ImageWindow("view", new Model<String>(imgSrc), null);
+        this.view.setUrl(imgSrc);
         add(view);
 
         this.bidsList = new ListView("bidsList", new PropertyModel<List>(this, "card.bids")) {

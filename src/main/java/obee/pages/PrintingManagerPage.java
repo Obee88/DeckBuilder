@@ -81,7 +81,7 @@ public class PrintingManagerPage extends MasterPage {
 		printingCards = new CardSelectionPanel("printingCards", printing);
 		printingCards.listChooser.setMaxRows(14);
 		printingCards.setFilterVisible(false);
-		image = new CardView("image");
+		image = new CardView("image", currentUser.isInHackerMode());
 		forestLbl = new Label("forestLbl", new PropertyModel<Integer>(this, "forestN"));
 		forestLbl.setOutputMarkupId(true);
 		islandLbl = new Label("islandLbl", new PropertyModel<Integer>(this, "islandN"));

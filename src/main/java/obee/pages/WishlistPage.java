@@ -108,7 +108,7 @@ public class WishlistPage extends MasterPage {
     }
 
     private void initComponents() {
-		image = new CardView("image"){
+		image = new CardView("image", currentUser.isInHackerMode()){
 			@Override
 			public AjaxRequestTarget onEvent(AjaxRequestTarget target,
 					Object sender, String eventType) {

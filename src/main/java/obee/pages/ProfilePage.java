@@ -30,6 +30,7 @@ public class ProfilePage extends MasterPage {
     private PasswordTextField oldPassTbx;
     private PasswordTextField newPassTbx;
     private AjaxCheckBox wishMail, propMail;
+    private AjaxCheckBox hackMode;
 
     public ProfilePage(PageParameters params) {
 		super(params, "Profile");
@@ -81,6 +82,15 @@ public class ProfilePage extends MasterPage {
             }
         };
         add(propMail);
+        hackMode = new AjaxCheckBox("hackMode",new Model<Boolean>(user.isInHackerMode())){
+            @Override
+            protected void onUpdate(AjaxRequestTarget ajaxRequestTarget) {
+                Boolean val = (Boolean) getDefaultModelObject();
+                user.setHackerMode(val);
+                user.UPDATE();
+            }
+        };
+        add(hackMode);
 
     }
 }

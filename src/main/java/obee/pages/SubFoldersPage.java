@@ -134,7 +134,7 @@ public class SubFoldersPage extends MasterPage {
 			
 		};
 		form.add(printButton);
-		CardView image = new CardView("image");
+		CardView image = new CardView("image", currentUser.isInHackerMode());
 		image.setRarityLblVisible(true);
 		usingPanel = new CardSelectionPanel("usingPanel", usingList);
 		usingPanel.listChooser.addEventListener(image);

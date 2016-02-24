@@ -35,15 +35,22 @@ public abstract class TradingProposalPanel extends Panel implements IEventListen
 	private CardView zoom;
     private Form negotiateForm;
     private int jadOffer;
+	private boolean hackerMode = false;
 
     public TradingProposalPanel(String id) {
 		super(id);
 		initComponents();
 		setOutputMarkupId(true);
 	}
+	public TradingProposalPanel(String id, boolean hackerMode) {
+		super(id);
+		this.hackerMode = hackerMode;
+		initComponents();
+		setOutputMarkupId(true);
+	}
 
 	private void initComponents() {
-		zoom = new CardView("zoom"){
+		zoom = new CardView("zoom", this.hackerMode){
 			@Override
 			public AjaxRequestTarget onEvent(AjaxRequestTarget target,
 					Object sender, String eventType) {
@@ -56,18 +63,18 @@ public abstract class TradingProposalPanel extends Panel implements IEventListen
 		};
 		zoom.setOutputMarkupId(true);
 		fromLabel = new Label("fromLabel", new PropertyModel<String>(this, "from"));
-		imgFrom1 = new CardView("imgFrom1");
-		imgFrom2 = new CardView("imgFrom2");
-		imgFrom3 = new CardView("imgFrom3");
-		imgFrom4 = new CardView("imgFrom4");
-		imgFrom5 = new CardView("imgFrom5");
-		imgFrom6 = new CardView("imgFrom6");
-		imgTo1 = new CardView("imgTo1");
-		imgTo2 = new CardView("imgTo2");
-		imgTo3 = new CardView("imgTo3");
-		imgTo4 = new CardView("imgTo4");
-		imgTo5 = new CardView("imgTo5");
-		imgTo6 = new CardView("imgTo6");
+		imgFrom1 = new CardView("imgFrom1", hackerMode);
+		imgFrom2 = new CardView("imgFrom2", hackerMode);
+		imgFrom3 = new CardView("imgFrom3", hackerMode);
+		imgFrom4 = new CardView("imgFrom4", hackerMode);
+		imgFrom5 = new CardView("imgFrom5", hackerMode);
+		imgFrom6 = new CardView("imgFrom6", hackerMode);
+		imgTo1 = new CardView("imgTo1", hackerMode);
+		imgTo2 = new CardView("imgTo2", hackerMode);
+		imgTo3 = new CardView("imgTo3", hackerMode);
+		imgTo4 = new CardView("imgTo4", hackerMode);
+		imgTo5 = new CardView("imgTo5", hackerMode);
+		imgTo6 = new CardView("imgTo6", hackerMode);
 		fromWindows = new CardView[]{imgFrom1,imgFrom2,imgFrom3,imgFrom4,imgFrom5,imgFrom6};
 		toWindows = new CardView[]{imgTo1,imgTo2,imgTo3,imgTo4,imgTo5,imgTo6};
 		expireLbl = new Label("expireLbl",new PropertyModel<String>(this, "expire"));

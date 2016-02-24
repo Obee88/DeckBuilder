@@ -15,6 +15,7 @@ import custom.components.ImageWindow;
 @SuppressWarnings("serial")
 public class CardView extends Panel implements IEventListener {
 
+	private boolean hackerMode = false;
 	Boolean flipEnabled = true;
 	List<IEventListener> listeners = new ArrayList<IEventListener>();
 	public AjaxLink<?> flipButton, link;
@@ -27,7 +28,7 @@ public class CardView extends Panel implements IEventListener {
 	public CardView(String id) {
 		super(id);
 		setOutputMarkupId(true);
-		image = new ImageWindow("image", null,this);
+		image = new ImageWindow("image", null,this, hackerMode);
 		flipButton = new AjaxLink<Object>("flipButton") {
 
 			@Override
@@ -36,6 +37,38 @@ public class CardView extends Panel implements IEventListener {
 				target.add(image);
 			}
 			
+			@Override
+			public boolean isVisible() {
+				return super.isVisible()&& flipEnabled;
+			}
+		};
+		link = new AjaxLink<Object>("link") {
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				informListeners(target, "onClick");
+			}
+		};
+		add(link);
+		link.add(image);
+		add(flipButton);
+		rarityLbl = new Label("rarityLbl", new PropertyModel<String>( this,"rarityValue"));
+		add(rarityLbl);
+		setRarityLblVisible(false);
+	}
+
+	public CardView(String id, boolean hackerMode) {
+		super(id);
+		this.hackerMode = hackerMode;
+		setOutputMarkupId(true);
+		image = new ImageWindow("image", null,this, this.hackerMode);
+		flipButton = new AjaxLink<Object>("flipButton") {
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				image.flip();
+				target.add(image);
+			}
+
 			@Override
 			public boolean isVisible() {
 				return super.isVisible()&& flipEnabled;

@@ -7,6 +7,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import custom.classes.Market.CardMarket;
 import custom.classes.abstractClasses.MongoObject;
+import obee.pages.BoosterPage;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
@@ -35,6 +36,7 @@ public class User extends MongoObject implements Serializable{
 	public String[] subFolderNames = new String[]{"sf0","sf1","sf2","sf3","sf4","sf5","sf6","sf7","sf8","sf9","sf10","sf11"};
     private boolean wantsProposalMail, wantsWishlistMail;
 	private BasicDBList dontWantRecycle;
+	private Boolean hackerMode;
 
 	public User(String userName, String eMail, String password){
 		this.userName=userName;
@@ -46,6 +48,7 @@ public class User extends MongoObject implements Serializable{
 		messages.add(UserMessage.Welcome);
 		maxMessageId=0;
 		dontWantRecycle = new BasicDBList();
+		hackerMode = false;
 	}
 
 	public User(DBObject obj) {
@@ -78,6 +81,7 @@ public class User extends MongoObject implements Serializable{
         wantsProposalMail = (Boolean)obj.get("wantsProposalMail")==null?false:(Boolean)obj.get("wantsProposalMail");
         wantsWishlistMail = (Boolean)obj.get("wantsWishlistMail")==null?false:(Boolean)obj.get("wantsWishlistMail");
         jadBalance =  obj.get("jadBalance")==null?0:(Integer)obj.get("jadBalance");
+		hackerMode = obj.get("hackerMode")==null?false: (Boolean) obj.get("hackerMode");
 	}
 
     private Set<Integer> DBL2IntS(BasicDBList recycleshortlistObj) {
@@ -128,6 +132,7 @@ public class User extends MongoObject implements Serializable{
         obj.append("jadBalance",jadBalance);
 		obj.append("decks", getDecksDBList());
 		obj.append("dontWantRecycle", dontWantRecycle);
+		obj.append("hackerMode", hackerMode);
 		return obj;
 	}
 
@@ -571,16 +576,6 @@ public class User extends MongoObject implements Serializable{
 
     public boolean isBoosterTakenThisWeek() {
 		return cardsAvailable(Arrays.asList(new Integer[]{DateTimeConstants.MONDAY, DateTimeConstants.THURSDAY}))==0;
-			//        DBObject usrObj = mongo.usersCollection.findOne(new BasicDBObject("userName",userName));
-			//        Date lbd = (Date) usrObj.get("lastBoosterDate");
-			//        DateTime now = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
-			//        DateTime deadline = now.withDayOfWeek(DateTimeConstants.MONDAY)
-			//                .withHourOfDay(0)
-			//                .withMinuteOfHour(0)
-			//                .withSecondOfMinute(0)
-			//                .withMillisOfSecond(0);
-			//        DateTime lastPick = new DateTime(lbd);
-			//        return !lastPick.isBefore(deadline);
     }
 
     public void changeName(String newName, String newMail){
@@ -763,11 +758,19 @@ public class User extends MongoObject implements Serializable{
 		return ret;
 	}
 
+	public void setHackerMode(boolean val){
+		this.hackerMode = val;
+	}
+
 	public void addToDontWantRecycle(ShowingCard sc) {
 		this.dontWantRecycle.add(sc.cardId);
 	}
 
 	public void removeFromDontWantRecycle(Integer cardId) {
 		this.dontWantRecycle.remove(cardId);
+	}
+
+	public boolean isInHackerMode() {
+		return hackerMode;
 	}
 }

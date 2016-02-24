@@ -19,6 +19,7 @@ import java.util.List;
 public class MarketCard {
     private static final int BID_DURATION_DAYS = 2, DAYS_TO_LIVE = 3, HATES_LIMIT = 5;
     private static final double PRICE_RAISE_RATE = 1.2;
+    private String linkForDownloading;
     private Integer rarityInt;
     public BasicDBList bids = new BasicDBList();
     private Integer id;
@@ -38,6 +39,7 @@ public class MarketCard {
         this.cardName = ci.name;
         this.creationDate = new DateTime(DateTimeZone.forID("Asia/Tokyo"));
         this.rarityInt = ci.rarityInt;
+        this.linkForDownloading = ci.getLinkForDownloading();
     }
 
     public DBObject toDBObject(){
@@ -50,6 +52,7 @@ public class MarketCard {
         ret.put("bids", bids);
         ret.put("rarityInt", rarityInt);
         ret.put("saw", saw);
+        ret.put("linkForDownloading", linkForDownloading);
         return ret;
     }
 
@@ -84,6 +87,7 @@ public class MarketCard {
         this.rarityInt = (Integer)obj.get("rarityInt");
         this.bids = (BasicDBList)obj.get("bids");
         this.saw = obj.get("saw")!=null? (BasicDBList)obj.get("saw"):new BasicDBList();
+        this.linkForDownloading = obj.get("linkForDownloading")!=null? obj.get("linkForDownloading").toString() : null;
     }
 
     public DBObject q() {
@@ -226,4 +230,7 @@ public class MarketCard {
     }
 
 
+    public String getLinkForDownloading() {
+        return linkForDownloading;
+    }
 }

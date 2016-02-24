@@ -37,7 +37,9 @@ public class CardInfo {
         }
         try {
             _id = obj.get("_id").toString();
-        } catch (Exception ignorable){}
+        } catch (Exception ignorable){
+            _id = obj.get("string_id").toString();
+        }
         rarityInt = obj.get("rarity_int") == null ? calcRarityInt() : Integer.parseInt(obj.get("rarity_int").toString());
     }
 
@@ -69,6 +71,7 @@ public class CardInfo {
         obj.append("id", id);
         obj.append("isTwoSided", isTwoSided);
         obj.append("rarity_int", rarityInt);
+        obj.append("string_id", _id);
         return obj;
     }
 

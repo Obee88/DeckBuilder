@@ -83,7 +83,7 @@ public class TradePage extends MasterPage {
 		awayOffer.listChooser.setMaxRows(6);
 		awayOffer.setPrintCheckBoxVisible(false);
 		awayOffer.setFilterVisible(false);
-		cardView = new CardView("cardView");
+		cardView = new CardView("cardView", currentUser.isInHackerMode());
 		cardView.setRarityLblVisible(true);
 		userChooser = new DropDownChoice<String>("userChooser",
 				new Model(usersStringList.get(0)),
