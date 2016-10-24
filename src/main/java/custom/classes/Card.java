@@ -22,15 +22,19 @@ public class Card extends MongoObject{
     private boolean basicLand;
 
     public static Card generateCard(String owner, boolean isNew) {
-		return generateCard(owner,null, isNew);
+		return generateCard(owner,null, isNew, true);
 	}
 
-    public static Card generateCard(String owner, String rarity, boolean isNew) {
+    public static Card generateCard(String owner, boolean isNew, boolean includeHatedCards) {
+        return generateCard(owner,null, isNew, includeHatedCards);
+    }
+
+    public static Card generateCard(String owner, String rarity, boolean isNew, boolean includeHatedCards) {
         MongoHandler mongo;
         mongo = MongoHandler.getInstance();
         int _cardId=Administration.getNextCardId();
         boolean _printed=false;
-        int _cardInfoId = generateRandomCardInfo(_cardId, rarity, isNew);
+        int _cardInfoId = generateRandomCardInfo(_cardId, rarity, isNew, includeHatedCards);
         DBObject obj = new BasicDBObject()
                 .append("id", _cardId)
                 .append("printed", _printed)
@@ -63,14 +67,14 @@ public class Card extends MongoObject{
         return new Card(obj);
     }
 
-    public static Card generateCard(String owner, String rarity, String type, boolean isNew) {
+    public static Card generateCard(String owner, String rarity, String type, boolean isNew, boolean includeHatedCards) {
         MongoHandler mongo;
         mongo = MongoHandler.getInstance();
         int _cardId=Administration.getNextCardId();
         boolean _printed=false;
         int _cardInfoId = type==null
-                ?generateRandomCardInfo(_cardId, rarity, isNew)
-                :generateRandomCardInfo(_cardId, rarity, type, isNew);
+                ?generateRandomCardInfo(_cardId, rarity, isNew, includeHatedCards)
+                :generateRandomCardInfo(_cardId, rarity, type, isNew, includeHatedCards);
         DBObject obj = new BasicDBObject()
                 .append("id", _cardId)
                 .append("printed", _printed)
@@ -84,7 +88,7 @@ public class Card extends MongoObject{
         return new Card(obj);
     }
 
-    private static Integer generateRandomCardInfo(int creatingCardId, String minRarity, boolean isNew) {
+    private static Integer generateRandomCardInfo(int creatingCardId, String minRarity, boolean isNew, boolean includeHatedCards) {
         DBObject minRarityQ;
         if (minRarity==null){
             BasicDBList dbl = new BasicDBList();
@@ -98,6 +102,8 @@ public class Card extends MongoObject{
             BasicDBObject basObj = new BasicDBObject("rarity",minRarityQ);
 //            if (isNew) //only for one card in booster
 //                basObj.append("exist",false);
+            if (!includeHatedCards)
+                basObj.append("hated", false);
             DBCursor cur = MongoHandler.getInstance().cardInfoCollection.find(
                     basObj
             );
@@ -107,7 +113,7 @@ public class Card extends MongoObject{
         return ret;
     }
 
-    private static Integer generateRandomCardInfo(int creatingCardId, String minRarity,String type, boolean isNew) {
+    private static Integer generateRandomCardInfo(int creatingCardId, String minRarity,String type, boolean isNew, boolean includeHatedCards) {
         DBObject minRarityQ;
         if (minRarity==null){
             BasicDBList dbl = new BasicDBList();
@@ -125,6 +131,8 @@ public class Card extends MongoObject{
                 basObj = new BasicDBObject("rarity",minRarityQ);
             if (isNew) //only for one card in booster
                 basObj.append("exist",false);
+            if (!includeHatedCards)
+                basObj.append("hated", false);
             DBCursor cur = MongoHandler.getInstance().cardInfoCollection.find(
                     basObj
             );

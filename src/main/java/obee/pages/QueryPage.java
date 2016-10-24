@@ -185,17 +185,29 @@ public class QueryPage extends MasterPage{
             @Override
             public Object getCondition() {
                 BasicDBList dbl = new BasicDBList();
-                for(String choice : (ArrayList<String>)getComponent().getDefaultModelObject()){
+//                for(String choice : (ArrayList<String>)getComponent().getDefaultModelObject()){
+//                    if(choice.equals("Blue"))
+//                        dbl.add(new BasicDBObject("manaCost",Pattern.compile("U", Pattern.CASE_INSENSITIVE)));
+//                    if(choice.equals("Black"))
+//                        dbl.add(new BasicDBObject("manaCost",Pattern.compile("B", Pattern.CASE_INSENSITIVE)));
+//                    if(choice.equals("Red"))
+//                        dbl.add(new BasicDBObject("manaCost",Pattern.compile("R", Pattern.CASE_INSENSITIVE)));
+//                    if(choice.equals("White"))
+//                        dbl.add(new BasicDBObject("manaCost",Pattern.compile("W", Pattern.CASE_INSENSITIVE)));
+//                    if(choice.equals("Green"))
+//                        dbl.add(new BasicDBObject("manaCost",Pattern.compile("G", Pattern.CASE_INSENSITIVE)));
+//                }
+                for(String choice : (ArrayList<String>)getComponent().getDefaultModelObject()) {
                     if(choice.equals("Blue"))
-                        dbl.add(new BasicDBObject("manaCost",Pattern.compile("U", Pattern.CASE_INSENSITIVE)));
+                        dbl.add(new BasicDBObject("colorsList","U"));
                     if(choice.equals("Black"))
-                        dbl.add(new BasicDBObject("manaCost",Pattern.compile("B", Pattern.CASE_INSENSITIVE)));
+                        dbl.add(new BasicDBObject("colorsList","B"));
                     if(choice.equals("Red"))
-                        dbl.add(new BasicDBObject("manaCost",Pattern.compile("R", Pattern.CASE_INSENSITIVE)));
+                        dbl.add(new BasicDBObject("colorsList","R"));
                     if(choice.equals("White"))
-                        dbl.add(new BasicDBObject("manaCost",Pattern.compile("W", Pattern.CASE_INSENSITIVE)));
+                        dbl.add(new BasicDBObject("colorsList","W"));
                     if(choice.equals("Green"))
-                        dbl.add(new BasicDBObject("manaCost",Pattern.compile("G", Pattern.CASE_INSENSITIVE)));
+                        dbl.add(new BasicDBObject("colorsList","G"));
                 }
                 return dbl;
             }
@@ -203,13 +215,6 @@ public class QueryPage extends MasterPage{
         colorPanel.setText("Color:");
         form.add(colorPanel);
         form.setDefaultButton(querySubmitBtn);
-//        datetimePanel = new HidingQueryPanel("datetimePanel", new DatePickerPanel("component")){
-//            @Override
-//            public Object getCondition() {
-//                return null;  //To change body of implemented methods use File | Settings | File Templates.
-//            }
-//        };
-//        datetimePanel.setText("Created:");
         datetimePanel = new HidingQueryPanel("datetimePanel",new PlusMinusPanel("component")){
             @Override
             public Object getCondition() {

@@ -501,7 +501,7 @@ var drawTable = function(data){
     for (var i=0; i<keys.length; ++i){
         var un = keys[i], n = data[un]["n"], value = data[un]["value"];
         if(n>0){
-            ts+= "<tr><td>"+un+"</td><td>"+n+"</td><td>"+value+"</td></tr>";
+            ts+= "<tr><td>"+un+"</td><td>"+n+"</td><td>"+value+"</td><td>"+(value/n)+"</td></tr>";
         }
     }
     $('#tabla > tbody:last-child').append(ts);

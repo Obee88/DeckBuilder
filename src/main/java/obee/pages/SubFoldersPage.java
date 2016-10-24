@@ -532,7 +532,7 @@ public class SubFoldersPage extends MasterPage {
 			    	}
 
 					private int getIndex(String id) {
-						return Integer.parseInt(id.substring(id.length()-1));
+						return Integer.parseInt(id.substring(7));
 					}
 			    };
 		OnChangeAjaxBehavior printerChecked = new OnChangeAjaxBehavior() {

@@ -13,8 +13,10 @@ public class CardGenerator {
 		List<Card> ret = new ArrayList<Card>();
 		while(ret.size()<size){
             Card c = null;
-            while (c==null || c.isBasicLand())
-                c= Card.generateCard(owner, ret.size()==31);
+            while (c==null || c.isBasicLand()) {
+                boolean indcludeHatedCards = false;
+                c = Card.generateCard(owner, ret.size() == 31);
+            }
 			ShowingCard sc = new ShowingCard(c);
 			checkWishlists(sc,allUsrs, owner);
 			ret.add(c);
@@ -47,7 +49,7 @@ public class CardGenerator {
 
     public static Card generateOneCard(String owner, String rarity){
         List<User> allUsrs =MongoHandler.getInstance().getAllUsers();
-        Card c = Card.generateCard(owner, rarity, false);
+        Card c = Card.generateCard(owner, rarity, false, false);
         ShowingCard sc = new ShowingCard(c);
         checkWishlists(sc, allUsrs, owner);
         boolean success = false;
@@ -62,7 +64,7 @@ public class CardGenerator {
 
     public static Card generateOneCard(String owner, String rarity, String type){
         List<User> allUsrs =MongoHandler.getInstance().getAllUsers();
-        Card c = Card.generateCard(owner, rarity, type, false);
+        Card c = Card.generateCard(owner, rarity, type, false, false);
         ShowingCard sc = new ShowingCard(c);
         checkWishlists(sc, allUsrs, owner);
         return c;

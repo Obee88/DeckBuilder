@@ -134,7 +134,7 @@ public class TradePage extends MasterPage {
         sw.checkpoint("home trade list filled");
 		awayTradeList = new ArrayList<ShowingCard>();
 		usersStringList = new ArrayList<String>();
-		usersStringList.add("All users");
+		usersStringList.add("Select user");
 		homeOfferList = new ArrayList<ShowingCard>();
 		awayOfferList = new ArrayList<ShowingCard>();
         sw.checkpoint("lists initiated");
@@ -143,7 +143,8 @@ public class TradePage extends MasterPage {
 		for(User usr : usrs){
 			if(!usr.getUserName().equals(getUserName())){
 				usersStringList.add(usr.getUserName());
-				awayTradeList.addAll(usr.getTradingShowingCards());
+// 				adding all cards to tradelist --- SLOW
+//				awayTradeList.addAll(usr.getTradingShowingCards());
 			}
             sw.checkpoint("user "+usr.getUserName()+" done");
 		}
@@ -236,10 +237,7 @@ public class TradePage extends MasterPage {
 				String userSelection = userChooser.getDefaultModelObjectAsString();
 				awayTradeList.clear();
 				if(userSelection.equals("All users")){
-					List<User> users = mongo.getAllUsers();
-					for(User usr : users)
-						if(!usr.getUserName().equals(getUserName()))
-							awayTradeList.addAll(usr.getTradingShowingCards());
+					awayTradeList.clear();
 				} else {
 					User u = mongo.getUser(userSelection);
 					awayTradeList.addAll(u.getTradingShowingCards());

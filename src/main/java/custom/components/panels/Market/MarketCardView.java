@@ -112,7 +112,7 @@ public class MarketCardView extends Panel {
 
             @Override
             public boolean isVisible() {
-                return !card.listHaters().contains(user.getUserName()) && card.bids.isEmpty() && card.listHaters().size()==4;
+                return !card.listHaters().contains(user.getUserName()) && card.bids.isEmpty() && card.listHaters().size()==MarketCard.HATES_LIMIT-1;
             }
         };
         add(hateForm);
@@ -127,7 +127,7 @@ public class MarketCardView extends Panel {
 
             @Override
             public boolean isVisible() {
-                return !card.listHaters().contains(user.getUserName()) && card.bids.isEmpty() && card.listHaters().size()!=4;
+                return !card.listHaters().contains(user.getUserName()) && card.bids.isEmpty() && card.listHaters().size()!=MarketCard.HATES_LIMIT-1;
             }
         };
         add(hateLink);
@@ -154,7 +154,7 @@ public class MarketCardView extends Panel {
 
         String imgSrc = null;
         try {
-            imgSrc = hackerMode ? ImageConverter.getBase64(card.getLinkForDownloading()) : card.getImageUrl();
+            imgSrc = hackerMode ? "data:image/jpg;base64,"+ImageConverter.getBase64(card.getLinkForDownloading()) : card.getImageUrl();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Obee on 09/11/15.
  */
 public class MarketCard {
-    private static final int BID_DURATION_DAYS = 2, DAYS_TO_LIVE = 3, HATES_LIMIT = 5;
+    public static final int BID_DURATION_DAYS = 2, DAYS_TO_LIVE = 3, HATES_LIMIT = 4;
     private static final double PRICE_RAISE_RATE = 1.2;
     private String linkForDownloading;
     private Integer rarityInt;
