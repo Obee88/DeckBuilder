@@ -769,9 +769,18 @@ public class MongoHandler implements Serializable {
     }
 
     public void dislikeCard(String userName, String cardName) {
-        cardInfoCollection.update(new BasicDBObject("name", cardName), new BasicDBObject(
+        DBObject q = new BasicDBObject("name", cardName);
+        cardInfoCollection.update(q, new BasicDBObject(
                 "$addToSet",
                 new BasicDBObject("dislikes", userName)
-        ));
+            )
+        );
+        DBObject cardInfo = cardInfoCollection.findOne(new BasicDBObject("name", cardName));
+        int dislikesCount = cardInfo.keySet().contains("dislikes")? ((BasicDBList)cardInfo.get("dislikes")).size(): 0;
+        cardInfoCollection.update(q, new BasicDBObject(
+                "$set",
+                new BasicDBObject("dislikesCount",dislikesCount)
+            )
+        );
     }
 }

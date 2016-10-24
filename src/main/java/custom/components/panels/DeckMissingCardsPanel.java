@@ -1,6 +1,5 @@
 package custom.components.panels;
 
-import com.sun.xml.internal.xsom.impl.scd.Iterators;
 import custom.classes.User;
 import database.MongoHandler;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -12,7 +11,10 @@ import org.apache.wicket.model.PropertyModel;
 import suport.TappedOut.TOCard;
 import suport.TappedOut.TODeck;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
