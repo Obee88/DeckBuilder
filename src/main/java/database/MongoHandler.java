@@ -767,4 +767,11 @@ public class MongoHandler implements Serializable {
         }
         return ret;
     }
+
+    public void dislikeCard(String userName, String cardName) {
+        cardInfoCollection.update(new BasicDBObject("name", cardName), new BasicDBObject(
+                "$addToSet",
+                new BasicDBObject("dislikes", userName)
+        ));
+    }
 }

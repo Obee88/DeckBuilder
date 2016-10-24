@@ -156,6 +156,8 @@ public class BoosterPage extends MasterPage{
                     } else {
                         u.addToRecycleShortlist(sc);
                         sc.status = "removing";
+						String cardName = sc.cardInfo.name;
+						MongoHandler.getInstance().dislikeCard(userName, cardName);
                     }
                     sc.UPDATE();
 					u.UPDATE();
