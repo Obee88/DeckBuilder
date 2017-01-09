@@ -21,3 +21,5 @@ Functionalities:
  * mark card as hated 
  
 Created by Davor Obilinovic
+
+![screenshot](https://cloud.githubusercontent.com/assets/4610139/21763985/155731e2-d661-11e6-8558-933bd119c4ba.png)
