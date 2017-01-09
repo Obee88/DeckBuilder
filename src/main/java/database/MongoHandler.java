@@ -783,4 +783,13 @@ public class MongoHandler implements Serializable {
             )
         );
     }
+
+    public void addSomeJadToUser(String username, int amount) {
+        usersCollection.update(
+            new BasicDBObject("userName",username),
+            new BasicDBObject("$inc",
+                new BasicDBObject("jadBalance", amount)
+            )
+        );
+    }
 }

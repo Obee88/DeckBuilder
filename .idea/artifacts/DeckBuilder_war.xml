@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="DeckBuilder:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="DeckBuilder-1.1.war">
-      <element id="artifact" artifact-name="DeckBuilder:war exploded" />
-    </root>
-  </artifact>
-</component>

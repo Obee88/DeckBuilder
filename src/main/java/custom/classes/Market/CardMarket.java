@@ -104,7 +104,16 @@ public class CardMarket {
 
     private void onHatedLimitReached(MarketCard c) {
         setCardInfoStatusToHated(c);
+        addJadToEachHater(c);
         removeCard(c);
+    }
+
+    private void addJadToEachHater(MarketCard c) {
+        BasicDBList haters = c.listHaters();
+        for (Object usernameObject: haters) {
+            String username = usernameObject.toString();
+            MongoHandler.getInstance().addSomeJadToUser(username, 2);
+        }
     }
 
     private void removeCard(MarketCard c) {
