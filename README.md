@@ -7,7 +7,7 @@ Created for non commercial usage.
 Technologies: Java, Apache Wicket framework, Apache Tomcat, MongoDB, JavaScript
 
 Functionalities:
- * Users management
+ * users management
  * new random cards each week
  * cards trading
  * wishlist system
@@ -16,5 +16,8 @@ Functionalities:
  * cards recycleing
  * jad - virtual currency
  * querying for cards
+ * bid for cards in Market
+ * print tokens
+ * mark card as hated 
  
 Created by Davor Obilinovic
