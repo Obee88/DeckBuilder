@@ -21,7 +21,7 @@ Functionalities:
  * mark card as hated 
  * statistics visualisation
  * organize decks 
-Created by Davor Obilinovic
+
 
 Bid for cards in market:
 ![screenshot](https://cloud.githubusercontent.com/assets/4610139/21763985/155731e2-d661-11e6-8558-933bd119c4ba.png)
@@ -40,3 +40,6 @@ Organize your cards:
 
 Track your favorite cards in wishlist:
 ![wishlist](https://cloud.githubusercontent.com/assets/4610139/21764475/9a37a494-d663-11e6-880d-b92002ee75be.png)
+
+
+Created by Davor Obilinovic
