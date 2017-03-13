@@ -23,15 +23,16 @@ Functionalities:
  * organize decks 
 Created by Davor Obilinovic
 
+Bid for cards in market:
 ![screenshot](https://cloud.githubusercontent.com/assets/4610139/21763985/155731e2-d661-11e6-8558-933bd119c4ba.png)
 
-Interactive market stats:
+Keep up with interactive market stats:
 ![stats](https://cloud.githubusercontent.com/assets/4610139/23850421/ae8333a2-07df-11e7-9cb8-01e5d1763f0a.png)
 
-Decks overview:
+Overview your decks:
 ![decks](https://cloud.githubusercontent.com/assets/4610139/21764472/9a0b7af4-d663-11e6-80cb-2d05575b427c.png)
 
-Communication inbox:
+Communication with others:
 ![messages](https://cloud.githubusercontent.com/assets/4610139/21764473/9a23a46c-d663-11e6-861e-be1d3862e234.png)
 
 Organize your cards:
